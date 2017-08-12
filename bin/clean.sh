@@ -26,7 +26,7 @@ strip() {
 }
 
 main() {
-	NUM=3
+	NUM=4
 		while getopts ":n:r:h" opt; 
 	do
 		case $opt in
