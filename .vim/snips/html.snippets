@@ -1,30 +1,53 @@
 # snippets for personal website
 
 snippet "(code|pre)" "code block" r
-<pre class="language-${1:python}" pl-3"<code>${0:${VISUAL}}</code></pre>
+<pre class="language-${1:python} pl-3"><code>${2:${VISUAL}}</code></pre>
 endsnippet
 
-snippet "figu?r?e?" "figure" r
-<figure class="figure d-block mx-auto w-${1:100}>
+snippet "fig?u?r?e?" "figure" r
+<figure class="figure d-block mx-auto w-${1:100}">
     <img class="figure-img img-fluid rounded w-100" src="${2:url}" alt="$3">
     <figcaption class="figure-caption text-right">${3:caption}</figcaption>
 </figure>
 endsnippet
 
-snippet "(blockq?u?o?t?e?|quote)" "<blockquote>" r
+snippet "(blockq?u?o?t?e?|quote)" "a bootstrap <blockquote>" r
 <blockquote${1: class="blockquote border-left border-2 pl-2"}>
-${2:<p class="mb-0">${3}</p>}
-${4:<footer class="blockquote-footer">${5}</footer>}
-</blockquote>${0}
+    ${2:<p class="mb-0">${3}</p>}
+    ${4:<footer class="blockquote-footer">${5}</footer>}
+</blockquote>
 endsnippet
 
-snippet html "<html>" w
+snippet ings "A list of ingredients" b
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Ingredient</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        ${1:ingredient}
+    </tbody>
+</table>
+endsnippet
+
+snippet ing "A single ingredient" b
+<tr>
+    <td>${1:ingredient}</td>
+    <td>${2:quantity}</td>
+    <td>${3:notes}</td>
+</tr>
+endsnippet
+
+snippet blog-post "A personal blogpost template" w
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="${2:description}"
+    <meta name="description" content="${2:description}">
     <title>${1:title}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://static.agill.xyz/css/common.css">
@@ -59,7 +82,6 @@ snippet html "<html>" w
                 <a href="#" class="menu-icon text-muted"><span class="navbar-toggler-icon"></span></a>
                 <div class="trigger navbar-nav">
                     <a class="nav-item nav-link" href="/">Home</a>
-                    <a class="nav-item nav-link" href="/blog">Blog</a>
                     <a class="nav-item nav-link" href="/research">Research</a>
                     <a class="nav-item nav-link" href="https://mc.agill.xyz">Minecraft</a>
                     <a class="text-muted p-2" href="https://github.com/Notgnoshi"><i class="fab fa-github"></i></a>
@@ -74,12 +96,13 @@ snippet html "<html>" w
         ${0:${VISUAL}}
     </div>
 </body>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" crossorigin="anonymous">
 </html>
 endsnippet
 
 # fragment snippets
 snippet class
-class="${1}"${0}
+class="${1}"
 endsnippet
 
 # Individual HTML tags
@@ -88,10 +111,10 @@ snippet doctype
 <!doctype html>
 endsnippet
 snippet a "<a>" w
-<a ${5:class="${6}" }href="${1:https://${2:example.com}}"${3: target="_blank">${4:anchor text}</a>
+<a ${4:class="${5}" }href="${1:https://2:example.com}"${2: target="_blank"}>${3:anchor text}</a>
 endsnippet
 snippet address "<address>" w
-<address>${1}</address>${0}
+<address>${1}</address>
 endsnippet
 snippet article "<article>" w
 <article>
@@ -105,7 +128,7 @@ snippet aside "<aside>" w
 endsnippet
 
 snippet b "<b>" w
-<b>${0:${VISUAL}}</b>
+<b>${1:${VISUAL}}</b>
 endsnippet
 snippet body "<body>" w
 <body${1:class="d-flex flex-column"}>
@@ -157,7 +180,7 @@ snippet dt "<dt>" w
 endsnippet
 
 snippet em "<em>" w
-<em>${0:${VISUAL}}</em>
+<em>${1:${VISUAL}}</em>
 endsnippet
 
 snippet footer "<footer>" w
@@ -171,22 +194,22 @@ snippet form "<form>" w
 endsnippet
 
 snippet h1 "HTML <h1>" w
-<h1>${0:${VISUAL}}</h1>
+<h1>${1:${VISUAL}}</h1>
 endsnippet
 snippet h2 "HTML <h2>" w
-<h2>${0:${VISUAL}}</h2>
+<h2>${1:${VISUAL}}</h2>
 endsnippet
 snippet h3 "HTML <h3>" w
-<h3>${0:${VISUAL}}</h3>
+<h3>${1:${VISUAL}}</h3>
 endsnippet
 snippet h4 "HTML <h4>" w
-<h4>${0:${VISUAL}}</h4>
+<h4>${1:${VISUAL}}</h4>
 endsnippet
 snippet h5 "HTML <h5>" w
-<h5>${0:${VISUAL}}</h5>
+<h5>${1:${VISUAL}}</h5>
 endsnippet
 snippet h6 "HTML <h6>" w
-<h6>${0:${VISUAL}}</h6>
+<h6>${1:${VISUAL}}</h6>
 endsnippet
 snippet hr "<hr>" w
 <hr>
@@ -213,7 +236,7 @@ snippet legend "<legend>" w
 <legend>${1}</legend>
 endsnippet
 snippet li "<li>" w
-<li>${0:${VISUAL}}</li>
+<li>${1:${VISUAL}}</li>
 endsnippet
 snippet link "<link>" w
 <link rel="${1:stylesheet}" href="${2}" type="text/css">
@@ -244,20 +267,20 @@ snippet ol "<ol>" w
 endsnippet
 
 snippet p "<p>" w
-<p${1: class="${2}"}>${0:${VISUAL}}</p>
+<p>${1:${VISUAL}}</p>
 endsnippet
 
 snippet span "<span>" w
-<span${1: class="${2}"}>${0:${VISUAL}}</span>
+<span${1: class="${2}"}>${3:${VISUAL}}</span>
 endsnippet
 snippet strong "<strong>" w
-<strong>${0:${VISUAL}}</strong>
+<strong>${1:${VISUAL}}</strong>
 endsnippet
 snippet sub "<sub>" w
-<sub>${0:${VISUAL}}</sub>
+<sub>${1:${VISUAL}}</sub>
 endsnippet
 snippet sup "<sup>" w
-<sup>${0:${VISUAL}}</sup>
+<sup>${1:${VISUAL}}</sup>
 endsnippet
 snippet section "<section>" w
 <section${1: class="${2}"}>
@@ -307,5 +330,5 @@ snippet ul "<ul>" w
 </ul>
 endsnippet
 snippet var "<var>" w
-<var>${0:${VISUAL}}</var>
+<var>${1:${VISUAL}}</var>
 endsnippet

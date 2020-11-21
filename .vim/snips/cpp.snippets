@@ -3,9 +3,7 @@ extends c
 priority -49
 
 snippet class
-/**
- * @brief ${2:Brief description}
- */
+//! @brief ${2:Brief description}
 class ${1:`!p
 tokens = (snip.basename or "Class").split("-")
 snip.rv = "".join(token.title() for token in tokens)

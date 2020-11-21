@@ -1,4 +1,4 @@
-snippet safe "Safety settings" w
+snippet set "Safety settings" w
 set -o errexit
 set -o pipefail
 set -o nounset
@@ -39,7 +39,7 @@ snippet case
             ${0};;
     esac
 endsnippet
-snippet sdir "Get script directory" b
+snippet source "Get script directory" b
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do
     # resolve $SOURCE until the file is no longer a symlink

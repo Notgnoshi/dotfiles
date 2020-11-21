@@ -9,7 +9,7 @@ int main(int argc, const char* argv[])
 endsnippet
 
 snippet inc
-#include <${1:stdio}.h>
+#include <${1:stdio.h}>
 endsnippet
 
 snippet once "include header guard" b
@@ -85,15 +85,19 @@ snippet switch
 switch (${1:variable})
 {
     case ${2:value}:
+    {
         ${3}
         ${4:break}${5}
+    }
 }
 endsnippet
 
 snippet case
     case ${1:value}:
+    {
         ${2}
         ${3:break;}
+    }
 endsnippet
 
 snippet typedef
