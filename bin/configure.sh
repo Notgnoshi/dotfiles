@@ -16,7 +16,7 @@ DOTFILES_DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)/.."
 DOTFILES_DIR="$(readlink --canonicalize --no-newline "${DOTFILES_DIR}")"
 echo "Found configuration directory: ${DOTFILES_DIR}"
 
-# Life isn't complete without some colors.
+# Life isn't complete without some color.
 source "${DOTFILES_DIR}/lib/colors.sh"
 
 read -p "${BOLD}${UNDERLINE}Install/update fzf? (y/N)${RESET} " -n 1 -r
@@ -27,14 +27,19 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "${GREEN}Installed fzf.${RESET}"
 
     # A fancier git diff. Used by ~/.gitconfig and git-gl
-    echo "${YELLOW}Installing delta...${RESET}"
+    echo "${YELLOW}Installing bat, delta, fd, and rg...${RESET}"
     USERNAME="dandavison"
     REPO="delta"
     curl --silent "https://api.github.com/repos/$USERNAME/$REPO/releases/latest" | # Get latest release from GitHub api
-        grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")' |        # Get the latest tag
+        grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")' |            # Get the latest tag
         xargs -I {} curl --location --output /tmp/delta.deb --remote-name "https://github.com/$USERNAME/$REPO/releases/download/{}/git-delta_{}_amd64.deb"
     sudo apt install /tmp/delta.deb
-    echo "${GREEN}Installed delta.${RESET}"
+    # workaround https://bugs.launchpad.net/ubuntu/+source/rust-bat/+bug/1868517
+    sudo apt install -o Dpkg::Options::="--force-overwrite" bat ripgrep fd-find
+    # Make symlinks so that we can use their canonical names from scripts
+    ln -s $(which fdfind) ~/.local/bin/fd || true
+    ln -s $(which batcat) ~/.local/bin/bat || true
+    echo "${GREEN}Installed bat, delta, fd, and rg.${RESET}"
 fi
 
 read -p "${BOLD}${UNDERLINE}Install Tilix as default terminal? (y/N)${RESET} " -n 1 -r
@@ -123,41 +128,41 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo "${YELLOW}Modifying $(which pylint) to use environment python...${RESET}"
         sed -i 's|/usr/bin/python3|/usr/bin/env python3|' "$(which pylint)"
 
-        # https://github.com/t-makaro/nb_pdf_template
-        python3 -m nb_pdf_template.install
-        mkdir -p ~/.jupyter
+        # # https://github.com/t-makaro/nb_pdf_template
+        # python3 -m nb_pdf_template.install
+        # mkdir -p ~/.jupyter
 
-        # TODO: Don't add these lines if they already exist.
-        echo "c.LatexExporter.template_file = 'classicm'" >>~/.jupyter/jupyter_nbconvert_config.py
-        {
-            echo "c.LatexExporter.template_file = 'classicm'"
-            echo "c.NotebookApp.contents_manager_class = 'jupytext.TextFileContentsManager'"
-            echo 'c.ContentsManager.default_jupytext_formats = "ipynb,md"'
-        } >>~/.jupyter/jupyter_notebook_config.py
+        # # TODO: Don't add these lines if they already exist.
+        # echo "c.LatexExporter.template_file = 'classicm'" >>~/.jupyter/jupyter_nbconvert_config.py
+        # {
+        #     echo "c.LatexExporter.template_file = 'classicm'"
+        #     echo "c.NotebookApp.contents_manager_class = 'jupytext.TextFileContentsManager'"
+        #     echo 'c.ContentsManager.default_jupytext_formats = "ipynb,md"'
+        # } >>~/.jupyter/jupyter_notebook_config.py
 
-        read -p "${BOLD}${UNDERLINE}Install node.js and npm from package manager? (y/N)${RESET} " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            sudo apt install nodejs npm
-        fi
-        read -p "${BOLD}${UNDERLINE}Install Jupyter extensions (requires node.js)? (y/N)${RESET} " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            if which node && which npm; then
-                # https://github.com/mwouts/jupytext
-                jupyter nbextension install --user --py jupytext
-                jupyter nbextension enable jupytext --user --py
-                # https://github.com/ryantam626/jupyterlab_code_formatter
-                # TODO: Configure <ctrl-shift-I> to format cells
-                # TODO: Configure 100-column limit
-                jupyter labextension install @ryantam626/jupyterlab_code_formatter
-                jupyter serverextension enable --user --py jupyterlab_code_formatter
-            else
-                echo "${BOLD}${RED}node.js not found. Try again.${RESET}"
-            fi
-        fi
+        # read -p "${BOLD}${UNDERLINE}Install node.js and npm from package manager? (y/N)${RESET} " -n 1 -r
+        # echo
+        # if [[ $REPLY =~ ^[Yy]$ ]]; then
+        #     sudo apt install nodejs npm
+        # fi
+        # read -p "${BOLD}${UNDERLINE}Install Jupyter extensions (requires node.js)? (y/N)${RESET} " -n 1 -r
+        # echo
+        # if [[ $REPLY =~ ^[Yy]$ ]]; then
+        #     if which node && which npm; then
+        #         # https://github.com/mwouts/jupytext
+        #         jupyter nbextension install --user --py jupytext
+        #         jupyter nbextension enable jupytext --user --py
+        #         # https://github.com/ryantam626/jupyterlab_code_formatter
+        #         # TODO: Configure <ctrl-shift-I> to format cells
+        #         # TODO: Configure 100-column limit
+        #         jupyter labextension install @ryantam626/jupyterlab_code_formatter
+        #         jupyter serverextension enable --user --py jupyterlab_code_formatter
+        #     else
+        #         echo "${BOLD}${RED}node.js not found. Try again.${RESET}"
+        #     fi
+        # fi
         echo "${BOLD}${RED}Install all other packages in a virtualenv!${RESET}"
-        echo "${BOLD}${RED}Use 'python3 -m ipykernel install --user --name=<kernel name>' to install the current venv as a Jupyter kernel."
+        # echo "${BOLD}${RED}Use 'python3 -m ipykernel install --user --name=<kernel name>' to install the current venv as a Jupyter kernel."
         echo "${GREEN}Installed Python development packages.${RESET}"
     fi
 fi
@@ -228,7 +233,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     USERNAME="mvdan"
     REPO="sh"
     curl --silent "https://api.github.com/repos/$USERNAME/$REPO/releases/latest" | # Get latest release from GitHub api
-        grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")' |        # Get the latest tag
+        grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")' |            # Get the latest tag
         xargs -I {} curl --location --output ~/.local/bin/shfmt --remote-name "https://github.com/$USERNAME/$REPO/releases/download/{}/shfmt_{}_linux_amd64"
     chmod +x ~/.local/bin/shfmt
     echo "${GREEN}Installed shfmt version: $(shfmt --version)${RESET}"
@@ -250,7 +255,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     USERNAME="stedolan"
     REPO="jq"
     curl --silent "https://api.github.com/repos/$USERNAME/$REPO/releases/latest" | # Get latest release from GitHub api
-        grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")' |        # Get the latest tag
+        grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")' |            # Get the latest tag
         xargs -I {} curl --location --output ~/.local/bin/jq --remote-name "https://github.com/$USERNAME/$REPO/releases/download/{}/jq-linux64"
     chmod +x ~/.local/bin/jq
     echo "${GREEN}Installed jq version: $(jq --version)${RESET}"
@@ -259,7 +264,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     USERNAME="hadolint"
     REPO="hadolint"
     curl --silent "https://api.github.com/repos/$USERNAME/$REPO/releases/latest" | # Get latest release from GitHub api
-        grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")' |        # Get the latest tag
+        grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")' |            # Get the latest tag
         xargs -I {} curl --location --output ~/.local/bin/hadolint --remote-name "https://github.com/$USERNAME/$REPO/releases/download/{}/hadolint-Linux-x86_64"
     chmod +x ~/.local/bin/hadolint
     echo "${GREEN}Installed hadolint version: $(hadolint --version | cut -d' ' -f4)${RESET}"
@@ -289,14 +294,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "${GREEN}Installed checkmake version: $(checkmake --version | cut -d' ' -f2)${RESET}"
 fi
 
-read -p "${BOLD}${UNDERLINE}Install useful utilities? (y/N)${RESET} " -n 1 -r
+read -p "${BOLD}${UNDERLINE}Install useful system utilities? (y/N)${RESET} " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo "${YELLOW}Installing utilities....${RESET}"
+    echo "${YELLOW}Installing system utilities....${RESET}"
     sudo apt install \
         colordiff \
         dos2unix \
-        fd-find \
         htop \
         iperf \
         linux-tools-common \
@@ -311,22 +315,16 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         screenfetch \
         traceroute \
         tree
-    # workaround https://bugs.launchpad.net/ubuntu/+source/rust-bat/+bug/1868517
-    sudo apt install -o Dpkg::Options::="--force-overwrite" bat ripgrep
-    ln -s $(which fdfind) ~/.local/bin/fd
-    ln -s $(which batcat) ~/.local/bin/bat
-    echo "${GREEN}Installed utilities.${RESET}"
+    echo "${GREEN}Installed system utilities.${RESET}"
 fi
 
 read -p "${BOLD}${UNDERLINE}Install VS Code? (y/N)${RESET} " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo "${YELLOW}Installing VS Code and setting-sync...${RESET}"
+    echo "${YELLOW}Installing VS Code...${RESET}"
     curl --location https://go.microsoft.com/fwlink/?LinkID=760868 --output /tmp/code.deb
     sudo apt install /tmp/code.deb
-    code --install-extension shan.code-settings-sync
-    echo "${BOLD}${RED}See: https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync${RESET}"
-    echo "${GREEN}Installed VS Code and settings-sync.${RESET}"
+    echo "${GREEN}Installed VS Code.${RESET}"
 fi
 
 read -p "${BOLD}${UNDERLINE}Install Discord and Spotify? (y/N)${RESET} " -n 1 -r
@@ -365,10 +363,8 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "${YELLOW}Opening Gnome Shell extensions in the default browser...${RESET}"
     EXTENSIONS=(
         https://extensions.gnome.org/extension/104/netspeed/
-        https://extensions.gnome.org/extension/1166/extension-update-notifier/
         https://extensions.gnome.org/extension/1319/gsconnect/
         https://extensions.gnome.org/extension/1485/workspace-matrix/
-        https://extensions.gnome.org/extension/1723/wintile-windows-10-window-tiling-for-gnome/
         https://extensions.gnome.org/extension/708/panel-osd/
         https://extensions.gnome.org/extension/906/sound-output-device-chooser/
         https://extensions.gnome.org/extension/921/multi-monitors-add-on/
@@ -385,8 +381,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "${YELLOW} Downloading Pointfree to ~/.local/share/fonts${RESET}"
     mkdir -p ~/.local/share/fonts
     curl --location --output /tmp/pointfree.zip "https://dl.dafont.com/dl/?f=pointfree"
-    # BUG: This unzips in the CWD
-    unzip /tmp/pointfree.zip
+    unzip -d /tmp/ /tmp/pointfree.zip
     mkdir -p ~/.local/share/fonts/
     mv /tmp/pointfree.ttf ~/.local/share/fonts/
     fc-cache -f -v
@@ -448,7 +443,7 @@ fi
 read -p "${BOLD}${UNDERLINE}Configure /etc/fstab for NAS? (y/N)${RESET} " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    NAS_STATIC_IP=192.168.0.123
+    NAS_STATIC_IP=192.168.1.67
     # Nautilus integrates better with stuff here.
     MOUNT_ROOT="/media/$USER"
     sudo mkdir -p "$MOUNT_ROOT/"{documents,plex}
