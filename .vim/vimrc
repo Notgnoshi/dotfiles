@@ -1,5 +1,7 @@
 " NOTE: Must be set *before* ALE is loaded to take effect.
 let g:ale_completion_enabled = 1
+" TODO: Need to learn how to make this play well with virtualenvs.
+let g:deoplete#enable_at_startup = 1
 " Enable showing hover balloons when mousing over a symbol or problem.
 let g:ale_set_balloons = 1
 " Highlight marks in colors determined by vim-gitgutter
@@ -20,6 +22,18 @@ highlight Keyword cterm=bold ctermfg=66
 highlight DiffDelete ctermfg=1 ctermbg=NONE
 highlight DiffAdd    ctermfg=2 ctermbg=NONE
 highlight DiffChange ctermfg=3 ctermbg=NONE
+
+" Some of the background colors are hard to read.
+highlight IncSearch  ctermfg=3
+highlight SpellLocal ctermfg=8
+highlight MatchParen ctermfg=8
+highlight SpellBad   ctermfg=7
+highlight SpellRare  ctermfg=8
+highlight SpellCap   ctermfg=8
+" Make warnings stand out from info messages
+" I don't know why this isn't the default.
+highlight link ALEWarning SpellRare
+highlight link ALEInfo    SpellCap
 
 let g:airline_theme='minimalist'
 " Show opened buffers at the top of the screen.
@@ -140,14 +154,6 @@ augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Custom Commands
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command Stage  GitGutterStageHunk
-command Revert GitGutterUndoHunk
-" TODO: Figure out how to diff/show a hunk's changes.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Netrw
 " NERDTree replacement that's baked into Vim.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -164,7 +170,6 @@ augroup netrw_close
     autocmd WinEnter * if winnr("$") == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" | q | endif
 augroup END
 
-" Script to toggle netrw with <Ctrl-n>
 function! ToggleNetrw()
     let i = bufnr("$")
     let wasOpen = 0
@@ -202,36 +207,51 @@ let g:netrw_list_hide .= ',.*\.swp$'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ale
-" Provides asynchronous Language Server Protocol support.
+" ALE
+"
+"   <F1> - run all available fixers, in the order specified by g:ale_fixers.
+"   <F2> - go to definition (Qt Creator shortcut)
+"   <F3> - find references
+"   <F4> - toggle header/source (Qt Creator shortcut)
+"   :ALERename - rename symbol under cursor
+"   ]p,[p - next/previos problem
+"
+" BUG: Vim sometimes segfaults when editing Python projects
+"
+" Deoplete
+"
+" BUG: Deoplete requires msgpack and pynvim packages, and as such doesn't work
+" out-of-the-box when using virtualenvs.
+"
+"   <C-x><C-n>  - trigger smart completion
+"   <C-n>       - trigger dumb completion
+"   <C-n>,<C-p> - next/previous completion
+"
+" Note that Deoplete will complete snippets, but you need to use <Tab> to
+" expand.
+"
+" UltiSnips
+"
+"   <Tab>   - expand snippet, and navigate forward through tab stops
+"   <S-Tab> - navigate backwards through tab stops
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Default fixers
+" Override the automatically loaded fixers and linters for certain filetypes.
 let g:ale_fixers = {
-\   '*':        ['remove_trailing_lines', 'trim_whitespace'],
-\   'c':        ['clang-format'],
-\   'cpp':      ['clang-format'],
-\   'diff':     [],
-\   'python':   ['isort', 'black'],
-\   'sh':       ['shfmt'],
-\   'tex':      ['latexindent'],
-\}
-
-" Default linters
+            \   '*':        ['remove_trailing_lines', 'trim_whitespace'],
+            \   'c':        ['clang-format'],
+            \   'cpp':      ['clang-format'],
+            \   'diff':     [],
+            \   'python':   ['isort', 'black'],
+            \   'sh':       ['shfmt'],
+            \   'tex':      ['latexindent'],
+            \}
 let g:ale_linters = {
-\   'python':   ['pydocstyle', 'pylint', 'pyls'],
-\   'tex':      ['chktex'],
-\   'cpp':      ['clangd'],
-\}
+            \   'python':   ['pydocstyle', 'pylint', 'pyls'],
+            \   'tex':      ['chktex'],
+            \   'cpp':      ['clangd'],
+            \}
 
 let g:ale_sign_column_always = 1
-" Allow ALE to trigger manual completion with <C-X><C-O>
-set omnifunc=ale#completion#OmniFunc
-if has("textprop")
-    set completeopt=menu,menuone,popup,noinsert
-else
-    set completeopt=menu,menuone,preview,noinsert
-endif
-
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%severity%][%linter%][%code%] %s'
@@ -244,27 +264,57 @@ let g:ale_python_pydocstyle_options = '--add-ignore=D100'
 " Additionally, you can set g:ale_cpp_clangd_executable, or set `clangd` to `clangd-11`
 " sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-11 100
 let g:ale_cpp_clangd_options = '
-    \ --background-index
-    \ --header-insertion=iwyu
-    \ --pch-storage=memory
-    \ --completion-style=bundled
-    \ --compute-dead
-    \ --recovery-ast
-    \ --query-driver="/opt/poky/1.5.1/**/i586-poky-linux-*,/opt/dey/1.6.7/**/arm-dey-linux-gnueabi-*"
-    \ -j=4
-    \ --clang-tidy
-    \'
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+            \ --background-index
+            \ --header-insertion=iwyu
+            \ --pch-storage=memory
+            \ --completion-style=bundled
+            \ --compute-dead
+            \ --recovery-ast
+            \ --query-driver="/opt/poky/1.5.1/**/i586-poky-linux-*,/opt/dey/1.6.7/**/arm-dey-linux-gnueabi-*"
+            \ -j=4
+            \ --clang-tidy
+            \'
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" UltiSnips
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-inoremap <C-Space> <C-@>
-" BUG: This doesn't work in paste made.
-let g:UltiSnipsExpandTrigger="<C-@>"
-let g:UltiSnipsJumpForwardTrigger="<C-E>"
-let g:UltiSnipsJumpBackwardTrigger="<C-Q>"
+" BUG: Vim can't distinguish <ctrl-shift-I> from <ctrl-I> from <Tab>
+" https://stackoverflow.com/questions/14641942/how-to-unmap-tab-and-do-not-make-ctrl-i-invalid-in-vim
+" I would prefer to use <C-S-I>, because that's the VS Code shortcut, and I already have it learned.
+nmap <F1> <Plug>(ale_fix)
+imap <F1> <C-\><C-O>:ALEFix<CR>
 
+" gd is normally goto definition of word in current function. gD is in current file.
+nmap gd <Plug>(ale_go_to_definition)
+nmap <F2> <Plug>(ale_go_to_definition)
+imap <F2> <C-\><C-O>:ALEGoToDefinition<CR>
+
+" Find references to the symbol under the cursor.
+" TODO: Use FZF to select and preview (with syntax highlighting!)
+" See https://github.com/dense-analysis/ale/issues/2252
+" TODO: Use ALERepeatSelection to re-open results (Maybe find a way to keep
+" the window open until it's closed manually?)
+nmap <F3> <Plug>(ale_find_references)
+imap <F3> <C-\><C-O>:ALEFindReferences<CR>
+
+" Toggle between header and source. Use a plugin rather than a simple
+" s/.cpp/.h/ replacement because you can have .hpp, .HPP, .cxx, and more
+nnoremap <F4> :call CurtineIncSw()<CR>
+inoremap <F4> <C-\><C-O>:call CurtineIncSw()<CR>
+
+" Go to next/previous problems
+" Can also open  loclist with :lopen
+nmap ]p <Plug>(ale_next_wrap)
+nmap [p <Plug>(ale_previous_wrap)
+
+" <C-N> and <C-P> for regular completion
+" <C-X><C-N> and <C-X><C-P> for intelligent completion
+call deoplete#custom#option({
+            \   'smart_case': v:true,
+            \   'sources':    {'_': ['buffer', 'ale', 'ultisnips']},
+            \ })
+call deoplete#custom#source('ultisnips', 'matchers', ['matcher_fuzzy'])
+
+let g:UltiSnipsExpandTrigger="<Tab>"
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
+let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 " Use an absolute path for a speedup.
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/snips']
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -335,28 +385,7 @@ nmap <C-h> :bprevious<CR>
 
 " Open netrw to the side. Use <C-B>, because that's the shortcut in VS Code.
 noremap <silent> <C-B> :call ToggleNetrw()<CR>
-
-" BUG: Vim can't distinguish <ctrl-shift-I> from <ctrl-I> from <Tab>
-" https://stackoverflow.com/questions/14641942/how-to-unmap-tab-and-do-not-make-ctrl-i-invalid-in-vim
-" I would prefer to use <C-S-I>, because that's the VS Code shortcut, and I already have it learned.
-nmap <F1> <Plug>(ale_fix)
-imap <F1> <C-\><C-O>:ALEFix<CR>
-
-" gd is normally goto definition of word in current function. gD is in current file.
-nmap gd <Plug>(ale_go_to_definition)
-nmap <F2> <Plug>(ale_go_to_definition)
-imap <F2> <C-\><C-O>:ALEGoToDefinition<CR>
-" nmap <F4> <Plug>(ale_find_references)
-" imap <F4> <C-\><C-O>:ALEFindReferences<CR>
-nnoremap <F4> :call CurtineIncSw()<CR>
-inoremap <F4> :call CurtineIncSw()<CR>
-
-" Use <C-N>, because that's the default insert-mode dumb completion.
-inoremap <C-N> <C-\><C-O>:ALEComplete<CR>
-
-" Go to next problem.
-nmap ]p <Plug>(ale_next_wrap)
-nmap [p <Plug>(ale_previous_wrap)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vimwiki settings
