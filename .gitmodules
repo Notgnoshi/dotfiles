@@ -47,27 +47,30 @@
     url = https://github.com/junegunn/fzf.vim.git
     branch = master
 [submodule ".vim/bundle/vim-surround"]
-	path = .vim/bundle/vim-surround
-	url = https://github.com/tpope/vim-surround.git
-	branch = master
+    path = .vim/bundle/vim-surround
+    url = https://github.com/tpope/vim-surround.git
+    branch = master
 [submodule ".vim/bundle/vim-repeat"]
-	path = .vim/bundle/vim-repeat
-	url = https://github.com/tpope/vim-repeat.git
-	branch = master
+    path = .vim/bundle/vim-repeat
+    url = https://github.com/tpope/vim-repeat.git
+    branch = master
 [submodule ".vim/bundle/vim-signature"]
-	path = .vim/bundle/vim-signature
-	url = https://github.com/kshenoy/vim-signature.git
-	branch = master
+    path = .vim/bundle/vim-signature
+    url = https://github.com/kshenoy/vim-signature.git
+    branch = master
 [submodule ".vim/bundle/ultisnips"]
-	path = .vim/bundle/ultisnips
-	url = https://github.com/SirVer/ultisnips.git
-	branch = master
+    path = .vim/bundle/ultisnips
+    url = https://github.com/SirVer/ultisnips.git
+    branch = master
 [submodule ".vim/bundle/qmake-syntax-vim"]
-	path = .vim/bundle/qmake-syntax-vim
-	url = https://github.com/artoj/qmake-syntax-vim.git
+    path = .vim/bundle/qmake-syntax-vim
+    url = https://github.com/artoj/qmake-syntax-vim.git
+    branch = master
 [submodule ".vim/bundle/vim-qml"]
-	path = .vim/bundle/vim-qml
-	url = https://github.com/peterhoeg/vim-qml.git
+    path = .vim/bundle/vim-qml
+    url = https://github.com/peterhoeg/vim-qml.git
+    branch = master
 [submodule ".vim/bundle/CurtineIncSw.vim"]
-	path = .vim/bundle/CurtineIncSw.vim
-	url = https://github.com/ericcurtin/CurtineIncSw.vim.git
+    path = .vim/bundle/CurtineIncSw.vim
+    url = https://github.com/ericcurtin/CurtineIncSw.vim.git
+    branch = master
