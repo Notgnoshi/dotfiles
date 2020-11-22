@@ -17,7 +17,7 @@ DOTFILES_DIR="$(readlink --canonicalize --no-newline "${DOTFILES_DIR}")"
 echo "Found configuration directory: ${DOTFILES_DIR}"
 
 # Life isn't complete without some color.
-source "${DOTFILES_DIR}/lib/colors.sh"
+source "${DOTFILES_DIR}/lib/01-colors.sh"
 
 read -p "${BOLD}${UNDERLINE}Install/update fzf? (y/N)${RESET} " -n 1 -r
 echo
