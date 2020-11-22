@@ -86,3 +86,7 @@
 	path = .vim/bundle/nvim-yarp
 	url = https://github.com/roxma/nvim-yarp.git
 	branch = master
+[submodule ".vim/bundle/vim-fakeclip"]
+	path = .vim/bundle/vim-fakeclip
+    url = git@github.com:Notgnoshi/vim-fakeclip.git
+    branch = ag/x11-clipboard

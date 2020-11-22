@@ -151,6 +151,21 @@ augroup END
 augroup commentarySettings
     autocmd FileType c,cpp setlocal commentstring=//\ %s
 augroup END
+
+function! s:paste_toggled(new, old) abort
+    if a:new && !a:old
+        let b:saved_foldexpr = &foldexpr
+        let &l:foldexpr = ''
+    elseif !a:new && a:old && exists('b:saved_foldexpr')
+        let &l:foldexpr = b:saved_foldexpr
+        unlet b:saved_foldexpr
+    endif
+endfunc
+
+" Disable foldexpr when pasting to fix slow pasting performance.
+augroup FastPaste
+    autocmd OptionSet paste call s:paste_toggled(v:option_new, v:option_old)
+augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -322,20 +337,6 @@ let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/snips']
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Keybinds
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:paste_toggled(new, old) abort
-    if a:new && !a:old
-        let b:saved_foldexpr = &foldexpr
-        let &l:foldexpr = ''
-    elseif !a:new && a:old && exists('b:saved_foldexpr')
-        let &l:foldexpr = b:saved_foldexpr
-        unlet b:saved_foldexpr
-    endif
-endfunc
-
-" Disable foldexpr when pasting to fix slow pasting performance.
-augroup FastPaste
-    autocmd OptionSet paste call s:paste_toggled(v:option_new, v:option_old)
-augroup END
 
 " Turn off search highlighting with enter
 nnoremap <CR> :nohl<CR><CR>
@@ -366,8 +367,14 @@ vnoremap <C-k> :m '<-2<CR>gv=gv
 " map <C-S-i> :echo "ctrl shift i"<CR>
 " map <C-i>   :echo "ctrl i"<CR>
 
-" Copy visual selection to clipboard. Works for <ctrl-c> not <ctrl-shift-c>
-vnoremap <C-y> :'<,'>:w !xclip -selection clipboard<CR><CR>
+" BUG: The collowing copies the whole line
+" vnoremap <C-y> !xclip -filter -selection clipboard<CR>
+
+" Use vim-fakeclip to use xclip for X11 clipboard integration.
+vmap <C-x> <Plug>(fakeclip-d)
+vmap <C-y> <Plug>(fakeclip-y)
+nmap <C-p> <Plug>(fakeclip-p)
+vmap <C-p> <Plug>(fakeclip-p)
 
 " Map <space> to fold.
 nnoremap <space> za
