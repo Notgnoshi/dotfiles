@@ -40,8 +40,6 @@
     rebase = true
 [fetch]
     prune = true
-[submodule]
-    recurse = true
 
 [includeIf "gitdir:~/swdev/"]
     path = .gitconfig-work
