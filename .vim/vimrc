@@ -150,6 +150,7 @@ augroup END
 
 augroup commentarySettings
     autocmd FileType c,cpp setlocal commentstring=//\ %s
+    autocmd FileType qmake setlocal commentstring=#\ %s
 augroup END
 
 function! s:paste_toggled(new, old) abort
