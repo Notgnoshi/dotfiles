@@ -14,6 +14,10 @@ execute pathogen#infect()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax on
 colorscheme blaquemagick
+" Use default font color (allows Tilix to dim inactive Vim panes)
+highlight Normal     ctermfg=NONE
+highlight Function   ctermfg=NONE
+highlight Statement  ctermfg=NONE
 " Only takes effect if added *after* 'syntax on'.
 highlight Comment cterm=italic
 " Need to distringuish Keyword from Normal enough so that gitcommitSummary is distinguishable.

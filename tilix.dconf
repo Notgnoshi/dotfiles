@@ -10,13 +10,13 @@ use-tabs=true
 
 [profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
 background-color='#000000000000'
-background-transparency-percent=24
+background-transparency-percent=15
 badge-color-set=false
 bold-color-set=false
 cursor-colors-set=false
 default-size-columns=160
 default-size-rows=48
-dim-transparency-percent=16
+dim-transparency-percent=50
 foreground-color='#A7A7A7'
 highlight-colors-set=false
 login-shell=true
