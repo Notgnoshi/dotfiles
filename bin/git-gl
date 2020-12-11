@@ -73,7 +73,7 @@ fzf-git-browse() {
                     | head -1 \
                     | tr -d '\n' \
                     | xclip -selection clipboard \
-                )+abort" \
+                )" \
             `# Perform an interactive rebase from the current HEAD to the selected commit` \
             --bind "ctrl-r:execute(
                 echo {} \
