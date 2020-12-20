@@ -100,6 +100,16 @@ snippet blog-post "A personal blogpost template" w
 </html>
 endsnippet
 
+snippet sidenote "A tufte.css sidenote" wsm
+<label for="sn-${1:id}" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-$1" class="margin-toggle"/>
+<span class="sidenote">${2:sidenote}</span>
+endsnippet
+
+snippet marginnote "A tufte.css marginnote" wsm
+<label for="mn-${1:id}" class="margin-toggle"></label><input type="checkbox" id="mn-$1" class="margin-toggle"/>
+<span class="marginnote">${2:marginnote}</span>
+endsnippet
+
 # fragment snippets
 snippet class
 class="${1}"
