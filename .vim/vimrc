@@ -101,7 +101,8 @@ set mouse=a
 set foldenable
 set foldlevelstart=15
 set foldnestmax=10
-set foldmethod=syntax
+" Sure, syntax folding is nice, but it seriouslly slows down large C++ files
+set foldmethod=indent
 
 " Highlight current line
 set cursorline
