@@ -18,6 +18,11 @@ highlight Function   ctermfg=NONE
 highlight Statement  ctermfg=NONE
 " Only takes effect if added *after* 'syntax on'.
 highlight Comment cterm=italic
+highlight link doxygenComment Comment
+highlight link doxygenBrief Comment
+highlight link doxygenSpecialTypeOnelineDesc SpecialComment
+highlight link doxygenSpecialOnelineDesc SpecialComment
+highlight link doxygenSpecialHeading SpecialComment
 " Need to distringuish Keyword from Normal enough so that gitcommitSummary is distinguishable.
 highlight Keyword cterm=bold ctermfg=66
 " Don't use blaquemagick blue/green/purple for gitgutter signs
@@ -128,6 +133,7 @@ au BufRead,BufNewFile nginx.conf set ft=nginx
 
 " Vim natively knows about Doxygen.
 let g:load_doxygen_syntax = 1
+let g:doxygen_enhanced_color = 0
 
 " The *.spl is a binary file format necessary for speed.
 " But that doesn't track very well in git (and opens up potential for nasty conflicts).
@@ -327,6 +333,11 @@ imap <F3> <C-\><C-O>:ALEFindReferences<CR>
 " s/.cpp/.h/ replacement because you can have .hpp, .HPP, .cxx, and more
 nnoremap <F4> :call CurtineIncSw()<CR>
 inoremap <F4> <C-\><C-O>:call CurtineIncSw()<CR>
+
+" Show the syntax groups at the location under the cursor.
+map <F6> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+            \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+            \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " Go to next/previous problems
 " Can also open  loclist with :lopen
