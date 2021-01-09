@@ -306,7 +306,7 @@ let g:ale_cpp_clangd_options = '
             \ --clang-tidy
             \'
 
-set completeopt=menu,menuone,preview,longest
+set completeopt=menu,menuone,preview
 " If the completion popup is visible, accept the selected completion on <Enter>
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
