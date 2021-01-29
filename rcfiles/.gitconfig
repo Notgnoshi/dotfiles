@@ -14,6 +14,16 @@
 [delta]
     line-numbers = true
     syntax-theme = base16
+[merge]
+    tool = vimdiff
+    guitool = vscode
+[mergetool "vscode"]
+    cmd = code --wait $MERGED
+[diff]
+    tool = vimdiff
+    guitool = vscode
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
 [commit]
     # commit -v by default
     verbose = true
@@ -34,6 +44,8 @@
     chp   = cherry-pick
     cor   = checkout --recurse-submodules
     yolo  = !git commit -am \"$(curl -s http://whatthecommit.com/index.txt)\"
+    dt    = difftool
+    mt    = mergetool
 [push]
     default = simple
 [pull]
