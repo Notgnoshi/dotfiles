@@ -125,6 +125,12 @@ set display=truncate
 " windows. E.g., when using vsplit multiple times.
 set equalalways
 
+if !isdirectory($HOME."/.vim/undo")
+    call mkdir($HOME."/.vim/undo", "", 0700)
+endif
+set undodir=~/.vim/undo
+set undofile
+
 " Force vim to think .md are markdown files on older systems that don't
 " have the filetype properly set in /usr/share/vim/vim74/filetype.vim
 " (Looking at you $COMPANY dev servers)

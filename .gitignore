@@ -4,6 +4,7 @@
 .netrwhist
 .histlogs/logrotate.status
 .histlogs/.bash_history.*
+.vim/undo
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
