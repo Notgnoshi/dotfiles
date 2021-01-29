@@ -115,6 +115,10 @@ set cursorline
 "set cursorcolumn
 " Comma separated list of columns to highlight
 set colorcolumn=100
+augroup gitCommitLineLength
+    autocmd!
+    autocmd FileType gitcommit setlocal colorcolumn=72
+augroup END
 set display=truncate
 
 " When creating a new window, make it equal sized to any currently open
