@@ -11,4 +11,5 @@ parsedatetime
 pydocstyle
 pygments
 pylint
+pylint-venv
 pynvim
