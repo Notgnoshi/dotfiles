@@ -139,7 +139,7 @@ set showcmd
 " Highlight as characters are entered
 set incsearch
 set ignorecase
-" Overrite ignorecase, unless the query contains a capital letter.
+" Override ignorecase, unless the query contains a capital letter.
 set smartcase
 " Must be turned off manually
 set hlsearch
@@ -150,7 +150,7 @@ set mouse=a
 set foldenable
 set foldlevelstart=15
 set foldnestmax=10
-" Sure, syntax folding is nice, but it seriouslly slows down large C++ files
+" Sure, syntax folding is nice, but it seriously slows down large C++ files
 set foldmethod=indent
 
 " Highlight current line
@@ -194,6 +194,13 @@ let g:doxygen_enhanced_color = 0
 " But that doesn't track very well in git (and opens up potential for nasty conflicts).
 " So generate the .spl file if the .add file is newer.
 for d in glob('~/.vim/spell/*.add', 1, 1)
+    " This likely forces the generation of the binary .spl file. Until the
+    " performance becomes noticeable, that's acceptable. Otherwise, I think a
+    " git-hook, or a more sophisticated shell incantation to also _diff_ the
+    " sorted file against the original one, would be the approach to use.
+    " BUG: This clears the screen, so when you exit vim, the prompt is on the
+    " bottom of the screen. This is surprisingly frustrating.
+    "silent! execute '!sort --unique ' fnameescape(d) ' --output ' fnameescape(d)
     if filereadable(d) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))
         silent exec 'mkspell! ' . fnameescape(d)
     endif
@@ -201,10 +208,16 @@ endfor
 " Don't spellcheck everything, instead check a restricted subset of filetypes.
 set spelllang=en_us
 set spellfile=~/.vim/spell/en.utf-8.add
+" This is a vim 8.2 feature.
+if exists("&spelloptions")
+    set spelloptions=camel
+endif
+
 augroup spellingFiletypes
     autocmd!
     autocmd FileType vimwiki,markdown,text,gitcommit setlocal spell
 augroup END
+nnoremap <F7> :setlocal spell! spell?<CR>
 
 " Jump to last position when opening file.
 augroup restoreCursorPosition
@@ -294,7 +307,7 @@ let g:netrw_list_hide .= ',.*\.swp$'
 "   <F3> - find references
 "   <F4> - toggle header/source (Qt Creator shortcut)
 "   :ALERename - rename symbol under cursor
-"   ]p,[p - next/previos problem
+"   ]p,[p - next/previous problem
 "
 " ALE Completion
 "
@@ -441,7 +454,7 @@ vnoremap <C-k> :m '<-2<CR>gv=gv
 " map <C-S-i> :echo "ctrl shift i"<CR>
 " map <C-i>   :echo "ctrl i"<CR>
 
-" BUG: The collowing copies the whole line
+" BUG: The following copies the whole line
 " vnoremap <C-y> !xclip -filter -selection clipboard<CR>
 
 " Use vim-fakeclip to use xclip for X11 clipboard integration.
