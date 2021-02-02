@@ -9,6 +9,11 @@
     # pager = perl /usr/share/doc/git/contrib/diff-highlight/diff-highlight | less
     pager = delta
     excludesFile = ~/.gitignore
+[color]
+    status = true
+[color "status"]
+    branch = bold blue
+    unmerged = magenta
 [interactive]
     diffFilter = delta --color-only
 [delta]
