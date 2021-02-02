@@ -12,12 +12,13 @@ export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -n 60'"
 export FZF_CTRL_T_OPTS="--preview 'bat --style changes --color=always --line-range :60 {}'"
 
 # Some customizations for __git_ps1
-export GIT_PS1_SHOWDIRTYSTATE=1
-export GIT_PS1_DESCRIBE_STYLE='branch'
-export GIT_PS1_SHOWCOLORHINTS=1
-export GIT_PS1_SHOWSTASHSTATE=1
-export GIT_PS1_SHOWUNTRACKEDFILES=1
-export GIT_PS1_SHOWUPSTREAM='auto'
+# See https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh for more details.
+export GIT_PS1_SHOWDIRTYSTATE=1         # Adds '*' and '+' for unstaged and staged changes
+export GIT_PS1_DESCRIBE_STYLE='branch'  # When in a detached head state, attempt to find the branch HEAD is on.
+export GIT_PS1_SHOWCOLORHINTS=1         # Use colored output to indicate the current status ('git status -sb'). Only works if __git_ps1 is used from PROMPT_COMMAND, not PS1.
+export GIT_PS1_SHOWSTASHSTATE=1         # Show a '$' next to the branch name if something is stashed.
+export GIT_PS1_SHOWUNTRACKEDFILES=1     # Show a '%' next to the branch name if there are untracked files.
+export GIT_PS1_SHOWUPSTREAM='auto'      # '=' means up to date with upstream, '<' means you're behind, and '>' means you're ahead. '<>' means you've diverged.
 
 # Add ~/.local/bin/ to PATH
 PATH="$HOME/.local/bin${PATH:+:${PATH}}"
