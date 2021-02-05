@@ -31,7 +31,7 @@ fzf-git-browse() {
         --exclude='save/*' \
         --exclude='trash/*' \
         --color=always \
-        --format="%C(auto)%h%d %s %C(black)%C(bold)%an, %cr" \
+        --format="%C(auto)%h%d %s %C(black)%C(bold)%an, %ar" \
         --decorate=short \
         `#--decorate-refs-exclude='refs/tags/*'` \
         `# Pass all arguments through to git-log` \
