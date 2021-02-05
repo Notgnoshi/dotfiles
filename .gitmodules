@@ -90,3 +90,7 @@
 	path = .vim/bundle/vim-fakeclip
     url = git@github.com:Notgnoshi/vim-fakeclip.git
     branch = ag/x11-clipboard
+[submodule ".vim/bundle/vim-cpp-enhanced-highlight"]
+	path = .vim/bundle/vim-cpp-enhanced-highlight
+	url = https://github.com/octol/vim-cpp-enhanced-highlight.git
+	branch = master
