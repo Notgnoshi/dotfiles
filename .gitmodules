@@ -82,3 +82,7 @@
 	path = .vim/bundle/vim-cpp-enhanced-highlight
 	url = https://github.com/octol/vim-cpp-enhanced-highlight.git
 	branch = master
+[submodule ".vim/bundle/vim-autoread"]
+	path = .vim/bundle/vim-autoread
+	url = https://github.com/djoshea/vim-autoread
+	branch = master

@@ -95,6 +95,10 @@ set enc=utf-8
 
 " Set autowrite for use with :make
 set autowrite
+" autoread will check for external file changes when a command is run, which
+" is only part of the answer if we want Vim to load external changes.
+" So we use https://github.com/djoshea/vim-autoread which checks for changes
+" every four seconds (configurable with 'updatetime').
 set autoread
 
 " Number of visual spaces per TAB
