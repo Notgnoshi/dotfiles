@@ -86,3 +86,7 @@
 	path = .vim/bundle/vim-autoread
 	url = https://github.com/djoshea/vim-autoread
 	branch = master
+[submodule ".vim/bundle/vim-toml"]
+	path = .vim/bundle/vim-toml
+	url = https://github.com/cespare/vim-toml.git
+	branch = master
