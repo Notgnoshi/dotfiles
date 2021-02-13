@@ -7,3 +7,4 @@ if [ -n "$BASH_VERSION" ]; then
         . ~/.bashrc
     fi
 fi
+[ -f ~/.cargo/env ] && source ~/.cargo/env || true

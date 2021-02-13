@@ -325,13 +325,15 @@ let g:ale_fixers = {
             \   'cpp':      ['clang-format'],
             \   'diff':     [],
             \   'python':   ['isort', 'black'],
+            \   'rust':     ['rustfmt'],
             \   'sh':       ['shfmt'],
             \   'tex':      ['latexindent'],
             \}
 let g:ale_linters = {
-            \   'python':   ['pydocstyle', 'pylint', 'pyls'],
-            \   'tex':      ['chktex'],
             \   'cpp':      ['clangd'],
+            \   'python':   ['pydocstyle', 'pylint', 'pyls'],
+            \   'rust':     ['analyzer'],
+            \   'tex':      ['chktex'],
             \}
 
 let g:ale_sign_column_always = 1

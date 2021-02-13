@@ -7,6 +7,7 @@ from os.path import expanduser
 # distinctly different.
 MULTI_COMMAND_COMMANDS = {
     "apt",
+    "cargo",
     "docker",
     "git",
     "ip",

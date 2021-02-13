@@ -58,3 +58,4 @@ fi
 
 # Enable fzf
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.cargo/env ] && source ~/.cargo/env || true
