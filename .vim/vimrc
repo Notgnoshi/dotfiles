@@ -251,12 +251,13 @@ set pastetoggle=<F5>
 " Netrw
 " NERDTree replacement that's baked into Vim.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Open netrw if no files were given to vim.
-" BUG: When you open one of the listed files, the netrw window moves to the bottom of the screen.
-augroup ProjectDrawer
-    autocmd!
-    autocmd VimEnter * if argc() == 0 | Explore! | endif
-augroup END
+" It's easy enough to hit <C-B> to open the netrw window that this isn't worth dealing with
+" " Open netrw if no files were given to vim.
+" " BUG: When you open one of the listed files, the netrw window moves to the bottom of the screen.
+" augroup ProjectDrawer
+"     autocmd!
+"     autocmd VimEnter * if argc() == 0 | Lexplore! | endif
+" augroup END
 
 " Close netrw if last window open.
 augroup netrw_close
@@ -275,7 +276,7 @@ function! ToggleNetrw()
         let i-=1
     endwhile
     if !wasOpen
-        silent Vexplore
+        silent Lexplore
     endif
 endfunction
 
