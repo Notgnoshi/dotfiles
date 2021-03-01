@@ -65,13 +65,3 @@ additions() {
 function remove-from-path() {
     export PATH=$(echo -n "$PATH" | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//')
 }
-
-remote-screenshot() {
-    HOST=${1:-inferno}
-    # Default to the same format as Gnome.
-    IMG="${2:-"/home/root/${HOST} on $(date '+%Y-%m-%d at %H-%M-%S').png"}"
-    echo "Saving screenshot as ${IMG}"
-    ssh "${HOST}" import -display 0:0 -window root "'${IMG}'"
-    echo "Downloading ${IMG} to ~/Pictures/"
-    scp "${HOST}:${IMG//\ /\\\ }" ~/Pictures/
-}

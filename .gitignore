@@ -4,6 +4,9 @@
 .netrwhist
 vim/undo
 
+# Allow adding work-specific aliases without tracking them.
+lib/10-work.sh
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
