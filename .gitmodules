@@ -90,3 +90,7 @@
 	path = .vim/bundle/vim-toml
 	url = https://github.com/cespare/vim-toml.git
 	branch = master
+[submodule ".vim/bundle/vim-mundo"]
+	path = .vim/bundle/vim-mundo
+	url = https://github.com/simnalamburt/vim-mundo.git
+	branch = master

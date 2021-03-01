@@ -5,6 +5,9 @@ let g:ale_set_balloons = 1
 " Highlight marks in colors determined by vim-gitgutter
 let g:SignatureMarkTextHLDynamic = 1
 let g:SignatureMarkerTextHLDynamic = 1
+
+" Make the mundo preview window wider
+let g:mundo_preview_bottom=1
 execute pathogen#infect()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -171,6 +174,7 @@ if !isdirectory($HOME."/.vim/undo")
 endif
 set undodir=~/.vim/undo
 set undofile
+nnoremap <F8> :MundoToggle<CR>
 
 " Force vim to think .md are markdown files on older systems that don't
 " have the filetype properly set in /usr/share/vim/vim74/filetype.vim
