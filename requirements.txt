@@ -1,6 +1,9 @@
 black
 ipython
 isort
+jedi
+# Works better than pyls on a certain work project.
+jedi-language-server
 #jupyter
 #jupyterlab
 #jupyterlab_code_formatter

@@ -340,7 +340,7 @@ let g:netrw_list_hide .= ',.*\.swp$'
 let g:ale_fixers = {
             \   '*':        ['remove_trailing_lines', 'trim_whitespace'],
             \   'c':        ['clang-format'],
-            \   'cpp':      ['clang-format'],
+            \   'cpp':      ['clangtidy', 'clang-format'],
             \   'diff':     [],
             \   'python':   ['isort', 'black'],
             \   'rust':     ['rustfmt'],
@@ -349,7 +349,7 @@ let g:ale_fixers = {
             \}
 let g:ale_linters = {
             \   'cpp':      ['clangd'],
-            \   'python':   ['pydocstyle', 'pylint', 'pyls'],
+            \   'python':   ['pydocstyle', 'pylint', 'pyls', 'jedils'],
             \   'rust':     ['analyzer'],
             \   'tex':      ['chktex'],
             \}
