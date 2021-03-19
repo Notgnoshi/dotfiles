@@ -98,3 +98,7 @@
 	path = vim/bundle/vim-bitbake
 	url = https://github.com/kergoth/vim-bitbake.git
 	branch = master
+[submodule "vim/bundle/vim-flatbuffers"]
+	path = vim/bundle/vim-flatbuffers
+	url = https://github.com/zchee/vim-flatbuffers.git
+	branch = master
