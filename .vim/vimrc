@@ -405,10 +405,15 @@ imap <F3> <C-\><C-O>:ALEFindReferences<CR>
 nnoremap <F4> :call CurtineIncSw()<CR>
 inoremap <F4> <C-\><C-O>:call CurtineIncSw()<CR>
 
+" <F5> toggles paste mode
+
 " Show the syntax groups at the location under the cursor.
 map <F6> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" <F7> toggles spell mode
+" <F8> toggles undo tree
 
 " Go to next/previous problems
 " Can also open  loclist with :lopen
@@ -478,8 +483,10 @@ nmap <C-l> :bnext<CR>
 " Move to the previous buffer.
 nmap <C-h> :bprevious<CR>
 
-" Open netrw to the side. Use <C-B>, because that's the shortcut in VS Code.
-noremap <silent> <C-B> :call ToggleNetrw()<CR>
+" Use fzf.vim to open searchable list of buffers and their previews.
+noremap <silent> <C-b> :Buffers<CR>
+" Toggle the netrw pane to the side.
+noremap <silent> <C-f> :call ToggleNetrw()<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
