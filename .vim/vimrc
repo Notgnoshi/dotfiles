@@ -11,36 +11,73 @@ execute pathogen#infect()
 " Theming.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax on
-colorscheme blaquemagick
-" Use default font color (allows Tilix to dim inactive Vim panes)
-highlight Normal     ctermfg=NONE
-highlight Function   ctermfg=NONE
-highlight Statement  ctermfg=NONE
-" Only takes effect if added *after* 'syntax on'.
-highlight Comment cterm=italic
-highlight link doxygenComment Comment
-highlight link doxygenBrief Comment
-highlight link doxygenSpecialTypeOnelineDesc SpecialComment
-highlight link doxygenSpecialOnelineDesc SpecialComment
-highlight link doxygenSpecialHeading SpecialComment
-" Need to distringuish Keyword from Normal enough so that gitcommitSummary is distinguishable.
-highlight Keyword cterm=bold ctermfg=66
-" Don't use blaquemagick blue/green/purple for gitgutter signs
-highlight DiffDelete ctermfg=1 ctermbg=NONE
-highlight DiffAdd    ctermfg=2 ctermbg=NONE
-highlight DiffChange ctermfg=3 ctermbg=NONE
 
-" Some of the background colors are hard to read.
+let g:cpp_class_scope_highlight = 1
+" let g:cpp_member_variable_highlight = 1
+let g:cpp_posix_standard = 1
+
+let g:gruvbox_italic = 1
+let g:gruvbox_termcolors=16
+let g:gruvbox_improved_warnings=1
+let g:gruvbox_contrast_dark="hard"
+
+let g:gruvbox_invert_selection=0
+set background=dark
+
+colorscheme gruvbox
+
+highlight! link cCustomClass    GruvboxPurple
+highlight! link cCustomFunc     GruvboxBlue
+highlight! link cppSTLfunction  cCustomFunc
+highlight! link Type            GruvboxPurple
+highlight! link Constant        GruvboxRed
+highlight! link Number          GruvboxRed
+highlight! link Operator        GruvboxGray
+highlight! link Repeat          GruvboxBlueBold
+highlight! link Conditional     GruvboxBlueBold
+highlight! link Statement       GruvboxAquaBold
+highlight! link StorageClass    GruvboxAqua
+highlight! link cppCast         GruvboxRed
+highlight! link Special         GruvboxPurpleBold
+highlight! link pythonBuiltin   GruvboxPurpleBold
+
+highlight String          cterm=italic
+highlight cppSTLtype      cterm=italic
+highlight cppSTLnamespace cterm=italic
+
+highlight Normal     ctermfg=NONE   ctermbg=NONE
+
 highlight IncSearch  ctermfg=3
 highlight SpellLocal ctermfg=8
-highlight MatchParen ctermfg=8
-highlight SpellBad   ctermfg=7
-highlight SpellRare  ctermfg=8
-highlight SpellCap   ctermfg=8
+highlight MatchParen ctermfg=0      ctermbg=6
+
+highlight SpellBad   ctermfg=0      ctermbg=1
+highlight SpellRare  ctermfg=8      ctermbg=3
+highlight SpellCap   ctermfg=8      ctermbg=2
+
+" Orange isn't one of the 16 colors, so it doesn't quite work right with Tilix :/
+highlight! link GruvboxOrange GruvboxYellowBold
+
+highlight Comment           cterm=italic ctermfg=8
+highlight CustomDoxyComment cterm=italic ctermfg=8
+
+highlight CursorLine        ctermbg=237
+highlight Visual            ctermbg=237
+
+highlight! link doxygenComment  CustomDoxyComment
+highlight! link doxygenBrief    CustomDoxyComment
+highlight! link doxygenStartL   GruvboxBg0
+highlight! link doxygenCommentL SpecialComment
+highlight! link doxygenSpecialTypeOnelineDesc   SpecialComment
+highlight! link doxygenSpecialOnelineDesc       CustomDoxyComment
+highlight! link doxygenSpecialHeading           SpecialComment
+
 " Make warnings stand out from info messages
 " I don't know why this isn't the default.
-highlight link ALEWarning SpellRare
-highlight link ALEInfo    SpellCap
+highlight! link ALEWarning  SpellRare
+highlight! link ALEInfo     SpellCap
+" gruvbox undoes this, so I'm redoing it
+highlight! link ALEError    SpellBad
 
 let g:airline_theme='minimalist'
 " Show opened buffers at the top of the screen.
