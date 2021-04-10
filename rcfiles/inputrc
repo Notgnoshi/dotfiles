@@ -1,0 +1,20 @@
+# If tab complete is abimguous, show completions on first <TAB>, not second.
+set show-all-if-ambiguous on
+# Use first <TAB> to show completions, and second <TAB> to complete.
+set menu-complete-display-prefix on
+# Cycle through completions with <TAB>
+TAB:menu-complete
+# Trailing slash for symlinked directories
+set mark-symlinked-directories on
+set mark-directories on
+set colored-stats on
+set colored-completion-prefix on
+set history-size -1
+set blink-matching-paren on
+
+# <C-a> - Move to start of line
+# <C-k> - Kill from cursor to end of line
+"\C-f":forward-word
+"\C-b":backward-word
+# <C-w> - kill previous word.
+# TODO: I can't seem to bind <C-w> to kill-word

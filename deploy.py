@@ -14,6 +14,7 @@ MAPPINGS = {
     "rcfiles/.gitignore": ".gitignore",
     "rcfiles/.pylintrc": ".pylintrc",
     "rcfiles/.profile": ".profile",
+    "rcfiles/inputrc": ".inputrc",
     "bash-completion.d/git-gl.bash-completion": ".bash-completion.d/git-gl.bash-completion",
 }
 
