@@ -1,7 +1,5 @@
 " NOTE: Must be set *before* ALE is loaded to take effect.
 let g:ale_completion_enabled = 1
-" TODO: Need to learn how to make this play well with virtualenvs.
-let g:deoplete#enable_at_startup = 1
 " Enable showing hover balloons when mousing over a symbol or problem.
 let g:ale_set_balloons = 1
 " Highlight marks in colors determined by vim-gitgutter
@@ -171,6 +169,7 @@ endfunc
 augroup FastPaste
     autocmd OptionSet paste call s:paste_toggled(v:option_new, v:option_old)
 augroup END
+set pastetoggle=<F5>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -215,11 +214,10 @@ let g:netrw_altv = 1
 " Set netrw width percentage
 let g:netrw_winsize = 18
 " Enable the following hide patterns.
-" NOTE: Some vim versions I use don't support hiding files.
 let g:netrw_hide = 1
 " Hidden patterns. Respect gitignores and dotfiles.
 " let g:netrw_list_hide = netrw_gitignore#Hide()
-" netrw_gitignore#Hide() interprets '*.o' as '.*\.o', which matches unexpected things
+" BUG: netrw_gitignore#Hide() interprets '*.o' from the .gitignore as '.*\.o', which matches unexpected things
 " let g:netrw_list_hide = substitute(g:netrw_list_hide, '\.\*\\\.o,', '', '')
 let g:netrw_list_hide = ''
 let g:netrw_list_hide .= ',\(^\|\s\s\)\zs\.\S\+'
@@ -230,25 +228,32 @@ let g:netrw_list_hide .= ',.*\.swp$'
 " ALE
 "
 "   <F1> - run all available fixers, in the order specified by g:ale_fixers.
-"   <F2> - go to definition (Qt Creator shortcut)
+"   <F2> - go to definition (Qt Creator shortcut) (also 'gd', which I use more often)
 "   <F3> - find references
 "   <F4> - toggle header/source (Qt Creator shortcut)
 "   :ALERename - rename symbol under cursor
 "   ]p,[p - next/previos problem
 "
+" ALE Completion
+"
+"   Use <C-n> for regular omnicompletion. Otherwise, ALE auto-triggers
+"   completion as you type. It doesn't always trigger the completion popup
+"   when typing '.' or '->' (I'd prefer to immediately get a list of methods
+"   and/or attributes.
+"
+"   <C-n> - In insert mode, triggers omnicompletion. If ALE has automatically
+"           triggered the completion popup, <C-n> and <C-p> will navigate the
+"           popup.
+"   <CR>  - Use <CR> to accept a selected completion.
+"
+" TODO: Find a way to manually trigger ALE completion. The suggested
+"   inoremap <silent> <C-Space> <C-\><C-O>:AleComplete<CR>
+" or
+"   imap <C-Space> <Plug>(ale_complete)
+" don't work (regardless of the mapping).
+" TODO: Find a way to make ALE include snippets in its completion. Right now,
+" you have to remember the name of the snippet, and press <Tab> to expand.
 " BUG: Vim sometimes segfaults when editing Python projects
-"
-" Deoplete
-"
-" BUG: Deoplete requires msgpack and pynvim packages, and as such doesn't work
-" out-of-the-box when using virtualenvs.
-"
-"   <C-x><C-n>  - trigger smart completion
-"   <C-n>       - trigger dumb completion
-"   <C-n>,<C-p> - next/previous completion
-"
-" Note that Deoplete will complete snippets, but you need to use <Tab> to
-" expand.
 "
 " UltiSnips
 "
@@ -281,19 +286,22 @@ let g:ale_python_pydocstyle_options = '--add-ignore=D100'
 
 " You probably want clangd-11 for project-specific config files.
 " https://clangd.llvm.org/config.html
-" Additionally, you can set g:ale_cpp_clangd_executable, or set `clangd` to `clangd-11`
-" sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-11 100
+" Additionally, you can set g:ale_cpp_clangd_executable, or use update-alternatives:
+"   sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-11 100
 let g:ale_cpp_clangd_options = '
             \ --background-index
             \ --header-insertion=iwyu
             \ --pch-storage=memory
             \ --completion-style=bundled
             \ --compute-dead
-            \ --recovery-ast
             \ --query-driver="/opt/poky/1.5.1/**/i586-poky-linux-*,/opt/dey/1.6.7/**/arm-dey-linux-gnueabi-*"
             \ -j=4
             \ --clang-tidy
             \'
+
+set completeopt=menu,menuone,preview,longest
+" If the completion popup is visible, accept the selected completion on <Enter>
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " BUG: Vim can't distinguish <ctrl-shift-I> from <ctrl-I> from <Tab>
 " https://stackoverflow.com/questions/14641942/how-to-unmap-tab-and-do-not-make-ctrl-i-invalid-in-vim
@@ -301,7 +309,7 @@ let g:ale_cpp_clangd_options = '
 nmap <F1> <Plug>(ale_fix)
 imap <F1> <C-\><C-O>:ALEFix<CR>
 
-" gd is normally goto definition of word in current function. gD is in current file.
+" gd is normally goto definition of word in current function. gD is in current file. So rebind to use LSP-aware goto def.
 nmap gd <Plug>(ale_go_to_definition)
 nmap <F2> <Plug>(ale_go_to_definition)
 imap <F2> <C-\><C-O>:ALEGoToDefinition<CR>
@@ -323,14 +331,6 @@ inoremap <F4> <C-\><C-O>:call CurtineIncSw()<CR>
 " Can also open  loclist with :lopen
 nmap ]p <Plug>(ale_next_wrap)
 nmap [p <Plug>(ale_previous_wrap)
-
-" <C-N> and <C-P> for regular completion
-" <C-X><C-N> and <C-X><C-P> for intelligent completion
-call deoplete#custom#option({
-            \   'smart_case': v:true,
-            \   'sources':    {'_': ['buffer', 'ale', 'ultisnips']},
-            \ })
-call deoplete#custom#source('ultisnips', 'matchers', ['matcher_fuzzy'])
 
 let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
