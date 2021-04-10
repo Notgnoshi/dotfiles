@@ -1,0 +1,29 @@
+#!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+
+# fkill - fuzzily search and kill processes
+# Usage:
+#     fkill
+#     fkill SIGTERM
+#     fkill SIGKILL
+#     fkill SIGINT
+# TODO: Pass process name as argument
+#     fkill vim
+#     fkill SIGTERM vim
+#     fkill SIGSTOP vim
+fkill() {
+    local pid
+    if [ "$UID" != "0" ]; then
+        pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
+    else
+        pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+    fi
+
+    if [ "x$pid" != "x" ]; then
+        echo $pid | xargs kill -${1:-9}
+    fi
+}
+
+fkill "$1"
