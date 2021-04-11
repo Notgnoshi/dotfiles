@@ -94,3 +94,7 @@
 	path = .vim/bundle/vim-mundo
 	url = https://github.com/simnalamburt/vim-mundo.git
 	branch = master
+[submodule ".vim/bundle/vim-eunuch"]
+	path = .vim/bundle/vim-eunuch
+	url = https://github.com/tpope/vim-eunuch.git
+	branch = master
