@@ -61,8 +61,8 @@ highlight SpellCap   ctermfg=8      ctermbg=2
 " Orange isn't one of the 16 colors, so it doesn't quite work right with Tilix :/
 highlight! link GruvboxOrange GruvboxYellowBold
 
-highlight Comment           cterm=italic ctermfg=8
-highlight CustomDoxyComment cterm=italic ctermfg=8
+highlight Comment           cterm=italic ctermfg=243
+highlight CustomDoxyComment cterm=italic ctermfg=243
 
 highlight CursorLine        ctermbg=237
 highlight Visual            ctermbg=237
