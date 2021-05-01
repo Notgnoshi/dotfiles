@@ -6,7 +6,6 @@ from pathlib import Path
 
 MAPPINGS = {
     ".vim/": ".vim/",
-    ".histlogs": ".histlogs",
     "rcfiles/.bashrc": ".bashrc",
     "rcfiles/.gdbinit": ".gdbinit",
     "rcfiles/.gitconfig": ".gitconfig",
