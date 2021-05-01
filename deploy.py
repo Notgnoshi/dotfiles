@@ -5,14 +5,14 @@ import os
 from pathlib import Path
 
 MAPPINGS = {
-    ".vim/": ".vim/",
-    "rcfiles/.bashrc": ".bashrc",
-    "rcfiles/.gdbinit": ".gdbinit",
-    "rcfiles/.gitconfig": ".gitconfig",
-    "rcfiles/.gitconfig-work": ".gitconfig-work",
-    "rcfiles/.gitignore": ".gitignore",
-    "rcfiles/.pylintrc": ".pylintrc",
-    "rcfiles/.profile": ".profile",
+    "vim/": ".vim/",
+    "rcfiles/bashrc": ".bashrc",
+    "rcfiles/gdbinit": ".gdbinit",
+    "rcfiles/gitconfig": ".gitconfig",
+    "rcfiles/gitconfig-work": ".gitconfig-work",
+    "rcfiles/gitignore": ".gitignore",
+    "rcfiles/pylintrc": ".pylintrc",
+    "rcfiles/profile": ".profile",
     "rcfiles/inputrc": ".inputrc",
     "bash-completion.d/git-gl.bash-completion": ".bash-completion.d/git-gl.bash-completion",
 }

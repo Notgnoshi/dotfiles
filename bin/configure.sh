@@ -23,7 +23,7 @@ read -p "${BOLD}${UNDERLINE}Install/update fzf? (y/N)${RESET} " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "${YELLOW}Installing fzf...${RESET}"
-    "${DOTFILES_DIR}/.vim/bundle/fzf/install" --all
+    "${DOTFILES_DIR}/vim/bundle/fzf/install" --all
     echo "${GREEN}Installed fzf.${RESET}"
 
     # A fancier git diff. Used by ~/.gitconfig and git-gl

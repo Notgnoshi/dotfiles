@@ -1,100 +1,100 @@
-[submodule ".vim/bundle/colorschemes"]
-    path = .vim/bundle/colorschemes
+[submodule "vim/bundle/colorschemes"]
+	path = vim/bundle/colorschemes
     url = https://github.com/flazz/vim-colorschemes.git
     branch = master
-[submodule ".vim/bundle/sensible"]
-    path = .vim/bundle/sensible
+[submodule "vim/bundle/sensible"]
+	path = vim/bundle/sensible
     url = https://github.com/tpope/vim-sensible.git
     branch = master
-[submodule ".vim/bundle/commentary"]
-    path = .vim/bundle/commentary
+[submodule "vim/bundle/commentary"]
+	path = vim/bundle/commentary
     url = https://github.com/tpope/vim-commentary.git
     branch = master
-[submodule ".vim/bundle/fzf"]
-    path = .vim/bundle/fzf
+[submodule "vim/bundle/fzf"]
+	path = vim/bundle/fzf
     url = https://github.com/junegunn/fzf.git
     branch = master
-[submodule ".vim/bundle/ale"]
-    path = .vim/bundle/ale
+[submodule "vim/bundle/ale"]
+	path = vim/bundle/ale
     url = https://github.com/w0rp/ale.git
     branch = master
-[submodule ".vim/bundle/vim-airline"]
-    path = .vim/bundle/vim-airline
+[submodule "vim/bundle/vim-airline"]
+	path = vim/bundle/vim-airline
     url = https://github.com/vim-airline/vim-airline.git
     branch = master
-[submodule ".vim/bundle/vim-airline-themes"]
-    path = .vim/bundle/vim-airline-themes
+[submodule "vim/bundle/vim-airline-themes"]
+	path = vim/bundle/vim-airline-themes
     url = https://github.com/vim-airline/vim-airline-themes.git
     branch = master
-[submodule ".vim/bundle/vim-fugitive"]
-    path = .vim/bundle/vim-fugitive
+[submodule "vim/bundle/vim-fugitive"]
+	path = vim/bundle/vim-fugitive
     url = https://github.com/tpope/vim-fugitive.git
     branch = master
-[submodule ".vim/bundle/vim-gitgutter"]
-    path = .vim/bundle/vim-gitgutter
+[submodule "vim/bundle/vim-gitgutter"]
+	path = vim/bundle/vim-gitgutter
     url = https://github.com/airblade/vim-gitgutter.git
     branch = master
-[submodule ".vim/bundle/vimwiki"]
-    path = .vim/bundle/vimwiki
+[submodule "vim/bundle/vimwiki"]
+	path = vim/bundle/vimwiki
     url = https://github.com/vimwiki/vimwiki.git
     branch = master
-[submodule ".vim/bundle/vim-systemd-syntax"]
-    path = .vim/bundle/vim-systemd-syntax
+[submodule "vim/bundle/vim-systemd-syntax"]
+	path = vim/bundle/vim-systemd-syntax
     url = https://github.com/Matt-Deacalion/vim-systemd-syntax.git
     branch = master
-[submodule ".vim/bundle/fzf.vim"]
-    path = .vim/bundle/fzf.vim
+[submodule "vim/bundle/fzf.vim"]
+	path = vim/bundle/fzf.vim
     url = https://github.com/junegunn/fzf.vim.git
     branch = master
-[submodule ".vim/bundle/vim-surround"]
-    path = .vim/bundle/vim-surround
+[submodule "vim/bundle/vim-surround"]
+	path = vim/bundle/vim-surround
     url = https://github.com/tpope/vim-surround.git
     branch = master
-[submodule ".vim/bundle/vim-repeat"]
-    path = .vim/bundle/vim-repeat
+[submodule "vim/bundle/vim-repeat"]
+	path = vim/bundle/vim-repeat
     url = https://github.com/tpope/vim-repeat.git
     branch = master
-[submodule ".vim/bundle/vim-signature"]
-    path = .vim/bundle/vim-signature
+[submodule "vim/bundle/vim-signature"]
+	path = vim/bundle/vim-signature
     url = https://github.com/kshenoy/vim-signature.git
     branch = master
-[submodule ".vim/bundle/ultisnips"]
-    path = .vim/bundle/ultisnips
+[submodule "vim/bundle/ultisnips"]
+	path = vim/bundle/ultisnips
     url = https://github.com/SirVer/ultisnips.git
     branch = master
-[submodule ".vim/bundle/qmake-syntax-vim"]
-    path = .vim/bundle/qmake-syntax-vim
+[submodule "vim/bundle/qmake-syntax-vim"]
+	path = vim/bundle/qmake-syntax-vim
     url = https://github.com/artoj/qmake-syntax-vim.git
     branch = master
-[submodule ".vim/bundle/vim-qml"]
-    path = .vim/bundle/vim-qml
+[submodule "vim/bundle/vim-qml"]
+	path = vim/bundle/vim-qml
     url = https://github.com/peterhoeg/vim-qml.git
     branch = master
-[submodule ".vim/bundle/CurtineIncSw.vim"]
-    path = .vim/bundle/CurtineIncSw.vim
+[submodule "vim/bundle/CurtineIncSw.vim"]
+	path = vim/bundle/CurtineIncSw.vim
     url = https://github.com/ericcurtin/CurtineIncSw.vim.git
     branch = master
-[submodule ".vim/bundle/vim-fakeclip"]
-	path = .vim/bundle/vim-fakeclip
+[submodule "vim/bundle/vim-fakeclip"]
+	path = vim/bundle/vim-fakeclip
     url = git@github.com:Notgnoshi/vim-fakeclip.git
     branch = ag/x11-clipboard
-[submodule ".vim/bundle/vim-cpp-enhanced-highlight"]
-	path = .vim/bundle/vim-cpp-enhanced-highlight
+[submodule "vim/bundle/vim-cpp-enhanced-highlight"]
+	path = vim/bundle/vim-cpp-enhanced-highlight
 	url = https://github.com/octol/vim-cpp-enhanced-highlight.git
 	branch = master
-[submodule ".vim/bundle/vim-autoread"]
-	path = .vim/bundle/vim-autoread
+[submodule "vim/bundle/vim-autoread"]
+	path = vim/bundle/vim-autoread
 	url = https://github.com/djoshea/vim-autoread
 	branch = master
-[submodule ".vim/bundle/vim-toml"]
-	path = .vim/bundle/vim-toml
+[submodule "vim/bundle/vim-toml"]
+	path = vim/bundle/vim-toml
 	url = https://github.com/cespare/vim-toml.git
 	branch = master
-[submodule ".vim/bundle/vim-mundo"]
-	path = .vim/bundle/vim-mundo
+[submodule "vim/bundle/vim-mundo"]
+	path = vim/bundle/vim-mundo
 	url = https://github.com/simnalamburt/vim-mundo.git
 	branch = master
-[submodule ".vim/bundle/vim-eunuch"]
-	path = .vim/bundle/vim-eunuch
+[submodule "vim/bundle/vim-eunuch"]
+	path = vim/bundle/vim-eunuch
 	url = https://github.com/tpope/vim-eunuch.git
 	branch = master
