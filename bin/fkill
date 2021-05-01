@@ -22,8 +22,8 @@ fkill() {
     fi
 
     if [ "x$pid" != "x" ]; then
-        echo $pid | xargs kill -${1:-9}
+        echo $pid | xargs kill ${1}
     fi
 }
 
-fkill "$1"
+fkill "${1:--s SIGTERM}"
