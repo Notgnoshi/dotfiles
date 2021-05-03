@@ -93,6 +93,13 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 filetype indent plugin on
 set nocompatible
+" Practical Vim, by Drew Neil, says to enable matchit with the following
+"     runtime macros/matchit.vim
+" but the matchit documentation says to use packadd.
+" TODO: Add Python support. Perhaps using https://www.vim.org/scripts/script.php?script_id=386
+" or perhaps using https://github.com/andymass/vim-matchup and a ftplugin for
+" adding Python b:match_words.
+packadd! matchit
 " Set default encoding to UTF-8
 set enc=utf-8
 
