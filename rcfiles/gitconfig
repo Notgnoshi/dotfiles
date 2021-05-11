@@ -57,6 +57,8 @@
     rebase = true
 [fetch]
     prune = true
+[rerere]
+    enabled = true
 
 [includeIf "gitdir:~/swdev/"]
     path = .gitconfig-work
