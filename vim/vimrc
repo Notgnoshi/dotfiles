@@ -463,11 +463,20 @@ vnoremap <C-k> :m '<-2<CR>gv=gv
 " BUG: The following copies the whole line
 " vnoremap <C-y> !xclip -filter -selection clipboard<CR>
 
-" Use vim-fakeclip to use xclip for X11 clipboard integration.
-vmap <C-x> <Plug>(fakeclip-d)
-vmap <C-y> <Plug>(fakeclip-y)
-nmap <C-p> <Plug>(fakeclip-p)
-vmap <C-p> <Plug>(fakeclip-p)
+" " Use vim-fakeclip to use xclip for X11 clipboard integration.
+" vmap <C-x> <Plug>(fakeclip-d)
+" vmap <C-y> <Plug>(fakeclip-y)
+" nmap <C-p> <Plug>(fakeclip-p)
+" vmap <C-p> <Plug>(fakeclip-p)
+
+" These keybinds require a Vim built with the +clipboard feature.
+" On Ubuntu, the vim-gtk package provides such a Vim.
+inoremap <C-p> <ESC>"+pa
+inoremap <C-y> <ESC>"+yy
+vnoremap <C-y> "+y
+vnoremap <C-p> "+p
+nnoremap <C-p> "+p
+nnoremap <C-y> "+yy
 
 " Map <space> to fold.
 nnoremap <space> za

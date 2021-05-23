@@ -9,6 +9,7 @@ My personal dotfiles and shell scripts
 **Important:** SSH keys for GitHub should already be set up before cloning this repository.
 
 ```bash
+sudo apt install vim-gtk git curl
 git clone --recurse-submodules git@github.com:Notgnoshi/dotfiles.git ~/.config/dotfiles
 ~/.config/dotfiles/deploy.py ~
 # Will prompt for each set of configurations, but note that there are undocumented dependencies between them.
