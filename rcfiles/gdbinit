@@ -31,7 +31,7 @@ python
 import glob
 import sys
 
-gcc = glob.glob("/usr/share/gcc-*")
+gcc = glob.glob("/usr/share/gcc*")
 # TODO: Do something better than grabbing the first match.
 if gcc: sys.path.insert(0, gcc[0] + "/python")
 
