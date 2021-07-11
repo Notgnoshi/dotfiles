@@ -335,8 +335,10 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     sudo apt install /tmp/discord.deb
     echo "${GREEN}Installed Discord.${RESET}"
     echo "${YELLOW}Installing Spotify...${RESET}"
-    # I kept having to reinstall the debian package to fix some issues.
-    sudo snap install spotify
+    curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
+    echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+    sudo apt update
+    sudo apt install spotify-client
     echo "${GREEN}Installed Spotify.${RESET}"
 fi
 
