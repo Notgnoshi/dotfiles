@@ -494,14 +494,10 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "${GREEN}Installed Minecraft.${RESET}"
 fi
 
-read -p "${BOLD}${UNDERLINE}Install Steam, and Lutris? (y/N)${RESET} " -n 1 -r
+read -p "${BOLD}${UNDERLINE}Install Steam? (y/N)${RESET} " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "${YELLOW}Installing Steam...${RESET}"
     sudo apt install steam
     echo "${GREEN}Installed Steam.${RESET}"
-    echo "${YELLOW}Installing Lutris...${RESET}"
-    sudo add-apt-repository ppa:lutris-team/lutris -y
-    sudo apt install lutris
-    echo "${GREEN}Installed Lutris.${RESET}"
 fi
