@@ -414,7 +414,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     gsettings set org.gnome.settings-daemon.plugins.power ambient-enabled true
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 3600
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-    gsettings set org.gnome.shell disabled-extensions "['desktop-icons@csoriano']"
+    gnome-extensions disable ding@rastersoft.com
     gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 48
     gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
     # Every time, I have to look this up...
@@ -433,8 +433,6 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     gsettings set org.gnome.mutter dynamic-workspaces false
     gsettings set org.gnome.mutter edge-tiling false
     gsettings set org.gnome.mutter workspaces-only-on-primary false
-    gsettings set org.gnome.shell.extensions.desktop-icons show-home false
-    gsettings set org.gnome.shell.extensions.desktop-icons show-trash false
     gsettings set org.gnome.shell.overrides edge-tiling false
     gsettings set org.gnome.shell.overrides workspaces-only-on-primary false
     echo "${GREEN}Configured Gnome tweaks.${RESET}"
