@@ -71,6 +71,7 @@ fzf-git-browse() {
                 echo {} \
                     | grep -o '\<[a-f0-9]\{7,\}\>' \
                     | head -1 \
+                    | xargs git rev-parse \
                     | tr -d '\n' \
                     | xclip -selection clipboard \
                 )" \
