@@ -114,6 +114,8 @@ set autowrite
 " So we use https://github.com/djoshea/vim-autoread which checks for changes
 " every four seconds (configurable with 'updatetime').
 set autoread
+" Check files and GitGutter hunks for changes every 100 ms
+set updatetime=100
 
 " Number of visual spaces per TAB
 set tabstop=4
