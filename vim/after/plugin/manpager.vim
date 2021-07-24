@@ -1,0 +1,1 @@
+../../bundle/vim-manpager/plugin/manpager.vim

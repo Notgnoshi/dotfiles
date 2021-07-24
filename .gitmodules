@@ -94,3 +94,7 @@
 	path = vim/bundle/vim-eunuch
 	url = https://github.com/tpope/vim-eunuch.git
 	branch = master
+[submodule "vim/bundle/vim-manpager"]
+	path = vim/bundle/vim-manpager
+	url = https://github.com/lambdalisue/vim-manpager.git
+	branch = master

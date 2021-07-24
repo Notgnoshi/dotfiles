@@ -107,6 +107,9 @@ set nocompatible
 " Set default encoding to UTF-8
 set enc=utf-8
 
+" Open man pages with :Man instead of shelling out.
+set keywordprg=:Man
+
 " Set autowrite for use with :make
 set autowrite
 " autoread will check for external file changes when a command is run, which
