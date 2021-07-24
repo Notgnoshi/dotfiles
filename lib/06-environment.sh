@@ -27,6 +27,9 @@ PATH="$HOME/.local/bin${PATH:+:${PATH}}"
 MANPATH="$(manpath --quiet)"
 MANPATH="$HOME/.local/man${MANPATH:+:${MANPATH}}"
 MANPATH="$HOME/.local/share/man${MANPATH:+:${MANPATH}}"
+# Use vim as my MANPAGER. Has folding, ability to follow links.
+MANPAGER="vim -M +MANPAGER -"
+MANWIDTH=100
 
 # Add the user-defined CUDA installation to paths.
 # The default CUDA installation directory is /usr/local/cuda-xx.y/. But if there are multiple installations
@@ -48,6 +51,8 @@ export CPATH
 export LIBRARY_PATH
 export LD_LIBRARY_PATH
 export MANPATH
+export MANPAGER
+export MANWIDTH
 export EDITOR=vim
 export BAT_THEME=base16
 # Path to my vimwiki clone
