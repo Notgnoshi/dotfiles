@@ -269,6 +269,12 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     chmod +x ~/.local/bin/hadolint
     echo "${GREEN}Installed hadolint version: $(hadolint --version | cut -d' ' -f4)${RESET}"
 
+    echo "${YELLOW}Installing prettier..."
+    sudo apt install npm
+    npm config set prefix '~/.local/'
+    npm install --global prettier
+    echo "${GREEN}Installed prettier."
+
     # Unfortunately, the packages for checkmake seem to be out of date, so we have to build it ourselves.
     echo "${YELLOW}Building and installing checkmake...${RESET}"
     if [ -d /tmp/checkmake ]; then
