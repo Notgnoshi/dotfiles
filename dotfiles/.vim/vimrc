@@ -156,6 +156,8 @@ set autoindent
 set backspace=indent,eol,start
 set nojoinspaces
 
+let g:python_recommended_style = 0
+
 "Use terminal title
 set title
 " Same as title string set by .bashrc, but with the filename and mode too.
