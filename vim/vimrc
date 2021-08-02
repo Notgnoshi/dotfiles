@@ -127,6 +127,7 @@ set softtabstop=0
 " Expand tabs with spaces.
 set expandtab
 set shiftwidth=4
+set shiftround
 set smarttab
 set smartindent
 set autoindent
