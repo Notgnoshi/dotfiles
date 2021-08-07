@@ -40,6 +40,7 @@
     ll    = log --pretty=format:'%C(red)%h%C(reset) -%C(yellow)%d%C(reset) %s %C(bold blue) <%an>' --decorate --numstat --abbrev-commit
     rf    = reflog --pretty=format:'%C(auto)%h %gd %gs%C(black)%C(bold), %cr'
     co    = checkout
+    sw    = switch
     amend = commit --amend --no-edit
     st    = status
     b     = branch -vv
