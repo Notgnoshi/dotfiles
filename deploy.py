@@ -14,7 +14,7 @@ MAPPINGS = {
     "rcfiles/pylintrc": ".pylintrc",
     "rcfiles/profile": ".profile",
     "rcfiles/inputrc": ".inputrc",
-    "bash-completion.d/git-gl.bash-completion": ".bash-completion.d/git-gl.bash-completion",
+    "bash_completion.d/git-gl.bash-completion": ".bash_completion.d/git-gl.bash-completion",
 }
 
 
@@ -45,7 +45,7 @@ def main(args):
         if not args.dry_run:
             TARGET_BIN_DIR.mkdir(parents=True, exist_ok=True)
 
-    completion_dir = TARGET.joinpath(".bash-completion.d").resolve()
+    completion_dir = TARGET.joinpath(".bash_completion.d").resolve()
     if not completion_dir.exists():
         print(completion_dir, "not present, making.")
         if not args.dry_run:

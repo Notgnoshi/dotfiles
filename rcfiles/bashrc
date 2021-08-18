@@ -44,10 +44,10 @@ if ! shopt -oq posix; then
     elif [ -f /etc/bash_completion ]; then
         . /etc/bash_completion
     fi
-    if [ ! -d ~/.bash-completion.d ]; then
-        mkdir -p ~/.bash-completion.d
+    if [ ! -d ~/.bash_completion.d ]; then
+        mkdir -p ~/.bash_completion.d
     fi
-    for completion_file in ~/.bash-completion.d/*; do
+    for completion_file in ~/.bash_completion.d/*; do
         [ -f "$completion_file" ] && source "$completion_file"
     done
     # Find and source clang bash completion scripts
