@@ -399,6 +399,9 @@ let g:ale_cpp_clangd_options = '
             \ -j=4
             \ --clang-tidy
             \'
+" Install with
+"     rustup +nightly component add rust-analyzer-preview
+let g:ale_rust_analyzer_executable = "/home/nots/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer"
 
 set completeopt=menu,menuone,popup
 " If the completion popup is visible, accept the selected completion on <Enter>
