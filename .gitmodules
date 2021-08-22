@@ -98,3 +98,7 @@
 	path = vim/bundle/vim-manpager
 	url = https://github.com/lambdalisue/vim-manpager.git
 	branch = master
+[submodule "vim/bundle/vim-indent-object"]
+	path = vim/bundle/vim-indent-object
+	url = https://github.com/michaeljsmith/vim-indent-object.git
+	branch = master
