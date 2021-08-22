@@ -440,6 +440,8 @@ map <F6> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<
 
 " <F7> toggles spell mode
 " <F8> toggles undo tree
+" Toggle the netrw pane to the side.
+noremap <silent> <F9> :call ToggleNetrw()<CR>
 
 " Go to next/previous problems
 " Can also open  loclist with :lopen
@@ -519,9 +521,13 @@ nmap <C-l> :bnext<CR>
 nmap <C-h> :bprevious<CR>
 
 " Use fzf.vim to open searchable list of buffers and their previews.
-noremap <silent> <C-b> :Buffers<CR>
-" Toggle the netrw pane to the side.
-noremap <silent> <C-f> :call ToggleNetrw()<CR>
+noremap <silent> <C-F><C-B> :Buffers<CR>
+noremap <silent> <C-F><C-F> :Files<CR>
+" If run on a visual selection, it will show the history for that selection.
+" Otherwise, show the history for the current buffer.
+noremap <silent> <C-F><C-G> :BCommits<CR>
+noremap <silent> <C-F><C-M> :Marks<CR>
+" noremap <silent> <C-F><C-S> :Snippets<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
