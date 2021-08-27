@@ -239,10 +239,10 @@ augroup spellingFiletypes
 augroup END
 nnoremap <F7> :setlocal spell! spell?<CR>
 
-" Jump to last position when opening file.
-augroup restoreCursorPosition
-    let blacklist = ['gitcommit', 'gitrebase']
-    autocmd BufReadPost * if index(blacklist, &ft) < 0 && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup doNotUseViminfoFor
+    " Using a viminfo file restores the last cursor position.
+    " This is awkward for commit messages and the git-rebase-todo. So disable it.
+    autocmd FileType gitcommit,gitrebase setlocal viminfo=
 augroup END
 
 augroup commentarySettings
