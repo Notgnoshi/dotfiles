@@ -211,13 +211,15 @@ let g:doxygen_enhanced_color = 0
 " But that doesn't track very well in git (and opens up potential for nasty conflicts).
 " So generate the .spl file if the .add file is newer.
 for d in glob('~/.vim/spell/*.add', 1, 1)
+    " BUG: This clears the screen, so when you exit vim, the prompt is on the
+    " bottom of the screen. This is surprisingly frustrating.
+    "
+    "     silent! execute '!sort --unique ' fnameescape(d) ' --output ' fnameescape(d)
+
     " This likely forces the generation of the binary .spl file. Until the
     " performance becomes noticeable, that's acceptable. Otherwise, I think a
     " git-hook, or a more sophisticated shell incantation to also _diff_ the
     " sorted file against the original one, would be the approach to use.
-    " BUG: This clears the screen, so when you exit vim, the prompt is on the
-    " bottom of the screen. This is surprisingly frustrating.
-    "silent! execute '!sort --unique ' fnameescape(d) ' --output ' fnameescape(d)
     if filereadable(d) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))
         silent exec 'mkspell! ' . fnameescape(d)
     endif
