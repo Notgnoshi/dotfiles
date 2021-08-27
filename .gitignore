@@ -3,6 +3,7 @@
 *.spl
 .netrwhist
 vim/undo
+vim/viminfo
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

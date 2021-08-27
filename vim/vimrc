@@ -239,6 +239,15 @@ augroup spellingFiletypes
 augroup END
 nnoremap <F7> :setlocal spell! spell?<CR>
 
+" ! - save and restore global variables
+" ' - Maximum number of files to remember marks from
+" / - Maximum number of items in the search pattern history to remember
+" : - Maximum number of items in the command history to remember
+" < - Maximum number of lines saved for each register
+" s - Maximum size of registers in Kbytes
+" h - Disable hlsearch when loading viminfo
+set viminfo=!,'500,/5000,:5000,<500,s1000,h
+set viminfofile=~/.vim/viminfo
 augroup doNotUseViminfoFor
     " Using a viminfo file restores the last cursor position.
     " This is awkward for commit messages and the git-rebase-todo. So disable it.
