@@ -202,6 +202,7 @@ au BufRead,BufNewFile *.nginx set ft=nginx
 au BufRead,BufNewFile */etc/nginx/* set ft=nginx
 au BufRead,BufNewFile */usr/local/nginx/conf/* set ft=nginx
 au BufRead,BufNewFile nginx.conf set ft=nginx
+au BufRead,BufNewFile nginx/*.conf set ft=nginx
 
 " Vim natively knows about Doxygen.
 let g:load_doxygen_syntax = 1
@@ -246,7 +247,7 @@ augroup END
 
 augroup commentarySettings
     autocmd FileType c,cpp setlocal commentstring=//\ %s
-    autocmd FileType qmake setlocal commentstring=#\ %s
+    autocmd FileType nginx,qmake setlocal commentstring=#\ %s
 augroup END
 
 function! s:paste_toggled(new, old) abort
