@@ -1,79 +1,79 @@
 [submodule "vim/bundle/colorschemes"]
 	path = vim/bundle/colorschemes
-    url = https://github.com/flazz/vim-colorschemes.git
-    branch = master
+	url = https://github.com/flazz/vim-colorschemes.git
+	branch = master
 [submodule "vim/bundle/sensible"]
 	path = vim/bundle/sensible
-    url = https://github.com/tpope/vim-sensible.git
-    branch = master
+	url = https://github.com/tpope/vim-sensible.git
+	branch = master
 [submodule "vim/bundle/commentary"]
 	path = vim/bundle/commentary
-    url = https://github.com/tpope/vim-commentary.git
-    branch = master
+	url = https://github.com/tpope/vim-commentary.git
+	branch = master
 [submodule "vim/bundle/fzf"]
 	path = vim/bundle/fzf
-    url = https://github.com/junegunn/fzf.git
-    branch = master
+	url = https://github.com/junegunn/fzf.git
+	branch = master
 [submodule "vim/bundle/ale"]
 	path = vim/bundle/ale
-    url = https://github.com/w0rp/ale.git
-    branch = master
+	url = https://github.com/w0rp/ale.git
+	branch = master
 [submodule "vim/bundle/vim-airline"]
 	path = vim/bundle/vim-airline
-    url = https://github.com/vim-airline/vim-airline.git
-    branch = master
+	url = https://github.com/vim-airline/vim-airline.git
+	branch = master
 [submodule "vim/bundle/vim-airline-themes"]
 	path = vim/bundle/vim-airline-themes
-    url = https://github.com/vim-airline/vim-airline-themes.git
-    branch = master
+	url = https://github.com/vim-airline/vim-airline-themes.git
+	branch = master
 [submodule "vim/bundle/vim-fugitive"]
 	path = vim/bundle/vim-fugitive
-    url = https://github.com/tpope/vim-fugitive.git
-    branch = master
+	url = https://github.com/tpope/vim-fugitive.git
+	branch = master
 [submodule "vim/bundle/vim-gitgutter"]
 	path = vim/bundle/vim-gitgutter
-    url = https://github.com/airblade/vim-gitgutter.git
-    branch = master
+	url = https://github.com/airblade/vim-gitgutter.git
+	branch = master
 [submodule "vim/bundle/vimwiki"]
 	path = vim/bundle/vimwiki
     url = https://github.com/vimwiki/vimwiki.git
     branch = master
 [submodule "vim/bundle/vim-systemd-syntax"]
 	path = vim/bundle/vim-systemd-syntax
-    url = https://github.com/Matt-Deacalion/vim-systemd-syntax.git
-    branch = master
+	url = https://github.com/Matt-Deacalion/vim-systemd-syntax.git
+	branch = master
 [submodule "vim/bundle/fzf.vim"]
 	path = vim/bundle/fzf.vim
-    url = https://github.com/junegunn/fzf.vim.git
-    branch = master
+	url = https://github.com/junegunn/fzf.vim.git
+	branch = master
 [submodule "vim/bundle/vim-surround"]
 	path = vim/bundle/vim-surround
-    url = https://github.com/tpope/vim-surround.git
-    branch = master
+	url = https://github.com/tpope/vim-surround.git
+	branch = master
 [submodule "vim/bundle/vim-repeat"]
 	path = vim/bundle/vim-repeat
-    url = https://github.com/tpope/vim-repeat.git
-    branch = master
+	url = https://github.com/tpope/vim-repeat.git
+	branch = master
 [submodule "vim/bundle/vim-signature"]
 	path = vim/bundle/vim-signature
-    url = https://github.com/kshenoy/vim-signature.git
-    branch = master
+	url = https://github.com/kshenoy/vim-signature.git
+	branch = master
 [submodule "vim/bundle/ultisnips"]
 	path = vim/bundle/ultisnips
-    url = https://github.com/SirVer/ultisnips.git
-    branch = master
+	url = https://github.com/SirVer/ultisnips.git
+	branch = master
 [submodule "vim/bundle/qmake-syntax-vim"]
 	path = vim/bundle/qmake-syntax-vim
-    url = https://github.com/artoj/qmake-syntax-vim.git
-    branch = master
+	url = https://github.com/artoj/qmake-syntax-vim.git
+	branch = master
 [submodule "vim/bundle/vim-qml"]
 	path = vim/bundle/vim-qml
-    url = https://github.com/peterhoeg/vim-qml.git
-    branch = master
+	url = https://github.com/peterhoeg/vim-qml.git
+	branch = master
 [submodule "vim/bundle/CurtineIncSw.vim"]
 	path = vim/bundle/CurtineIncSw.vim
-    url = https://github.com/ericcurtin/CurtineIncSw.vim.git
-    branch = master
+	url = https://github.com/ericcurtin/CurtineIncSw.vim.git
+	branch = master
 [submodule "vim/bundle/vim-cpp-enhanced-highlight"]
 	path = vim/bundle/vim-cpp-enhanced-highlight
 	url = https://github.com/octol/vim-cpp-enhanced-highlight.git
