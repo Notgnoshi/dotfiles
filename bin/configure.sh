@@ -280,28 +280,29 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     fi
 
     # Unfortunately, the packages for checkmake seem to be out of date, so we have to build it ourselves.
-    echo "${YELLOW}Building and installing checkmake...${RESET}"
-    if [ -d /tmp/checkmake ]; then
-        (
-            cd /tmp/checkmake
-            git pull
-        )
-    else
-        git clone https://github.com/mrtazz/checkmake.git /tmp/checkmake
-    fi
-    (
-        cd /tmp/checkmake
-        # This will pull a golang and alpine image, but you can't delete the image without knowing its tag.
-        sudo docker build . -t checkmake
-        id=$(sudo docker create checkmake)
-        sudo docker cp "$id":/checkmake - >/tmp/checkmake.tar
-        sudo docker rm -v "$id"
-        sudo docker rmi --force checkmake
-        sudo docker system prune --force
+    # This fails to build: https://github.com/mrtazz/checkmake/pull/51
+    # echo "${YELLOW}Building and installing checkmake...${RESET}"
+    # if [ -d /tmp/checkmake ]; then
+    #     (
+    #         cd /tmp/checkmake
+    #         git pull
+    #     )
+    # else
+    #     git clone https://github.com/mrtazz/checkmake.git /tmp/checkmake
+    # fi
+    # (
+    #     cd /tmp/checkmake
+    #     # This will pull a golang and alpine image, but you can't delete the image without knowing its tag.
+    #     sudo docker build . -t checkmake
+    #     id=$(sudo docker create checkmake)
+    #     sudo docker cp "$id":/checkmake - >/tmp/checkmake.tar
+    #     sudo docker rm -v "$id"
+    #     sudo docker rmi --force checkmake
+    #     sudo docker system prune --force
 
-        tar -xvf /tmp/checkmake.tar -C ~/.local/bin
-    )
-    echo "${GREEN}Installed checkmake version: $(checkmake --version | cut -d' ' -f2)${RESET}"
+    #     tar -xvf /tmp/checkmake.tar -C ~/.local/bin
+    # )
+    # echo "${GREEN}Installed checkmake version: $(checkmake --version | cut -d' ' -f2)${RESET}"
 fi
 
 read -p "${BOLD}${UNDERLINE}Install useful system utilities? (y/N)${RESET} " -n 1 -r
