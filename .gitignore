@@ -4,6 +4,7 @@
 .netrwhist
 vim/undo
 vim/viminfo
+vim/bundle/vis/doc/tags
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
