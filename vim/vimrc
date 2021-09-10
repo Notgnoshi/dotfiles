@@ -255,6 +255,7 @@ augroup doNotUseViminfoFor
 augroup END
 
 augroup commentarySettings
+    autocmd FileType c,cpp set comments^=:///,://!
     autocmd FileType c,cpp setlocal commentstring=//\ %s
     autocmd FileType nginx,qmake setlocal commentstring=#\ %s
 augroup END
