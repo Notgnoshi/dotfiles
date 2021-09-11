@@ -557,6 +557,8 @@ let wiki.automatic_nested_syntaxes = 1
 let wiki.nested_syntaxes = {'bash':'sh', 'shell':'sh', 'terminal':'sh', 'latex': 'tex'}
 let g:vimwiki_list = [wiki]
 " let g:vimwiki_folding = 'expr'
+let g:vimwiki_table_mappings = 0
+let g:vimwiki_key_mappings = { 'table_mappings': 0, }
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Load all plugins now.
