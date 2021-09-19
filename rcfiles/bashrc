@@ -6,13 +6,6 @@ case $- in
 *) return ;;
 esac
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
 ##################################################################################################
 # Find the location of the dotfiles repository by resolving the ~/.bashrc symlink.
 ##################################################################################################
@@ -25,7 +18,8 @@ while [ -h "$SOURCE" ]; do
     [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 DOTFILES_DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)/.."
-export DOTFILES_DIR="$(readlink --canonicalize --no-newline "${DOTFILES_DIR}")"
+DOTFILES_DIR="$(readlink --canonicalize --no-newline "${DOTFILES_DIR}")"
+export DOTFILES_DIR
 
 ##################################################################################################
 # Source each of components in alphabetical order.
@@ -34,27 +28,6 @@ export DOTFILES_DIR="$(readlink --canonicalize --no-newline "${DOTFILES_DIR}")"
 for lib in "${DOTFILES_DIR}/lib/"*.sh; do
     [ -f "$lib" ] && source "$lib"
 done
-
-##################################################################################################
-# Bash completion
-##################################################################################################
-if ! shopt -oq posix; then
-    if [ -f /usr/share/bash-completion/bash_completion ]; then
-        . /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ]; then
-        . /etc/bash_completion
-    fi
-    if [ ! -d ~/.bash_completion.d ]; then
-        mkdir -p ~/.bash_completion.d
-    fi
-    for completion_file in ~/.bash_completion.d/*; do
-        [ -f "$completion_file" ] && source "$completion_file"
-    done
-    # Find and source clang bash completion scripts
-    for f in $(find /usr/lib -name 'bash-autocomplete.sh'); do
-        source "$f"
-    done
-fi
 
 # Enable fzf
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
