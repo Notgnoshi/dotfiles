@@ -370,6 +370,7 @@ let g:netrw_list_hide .= ',.*\.swp$'
 let g:ale_fixers = {
             \   '*':        ['remove_trailing_lines', 'trim_whitespace'],
             \   'c':        ['clang-format'],
+            \   'cmake':    ['cmakeformat'],
             \   'cpp':      ['clangtidy', 'clang-format'],
             \   'css':      ['prettier'],
             \   'diff':     [],
@@ -381,6 +382,7 @@ let g:ale_fixers = {
             \   'tex':      ['latexindent'],
             \}
 let g:ale_linters = {
+            \   'cmake':    ['cmakelint'],
             \   'cpp':      ['clangd'],
             \   'python':   ['pydocstyle', 'pylint', 'pyls', 'jedils'],
             \   'rust':     ['analyzer'],
