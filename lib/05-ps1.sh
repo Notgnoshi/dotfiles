@@ -51,6 +51,18 @@ if function_exists __git_ps1; then
     PS1="${PS1}\[${BLUE}\]\$(__git_ps1)\[${RESET}\]"
 fi
 
+function __list_background_jobs() {
+    OLD_EXIT_STATUS=$?
+    NUM_BACKGROUND_JOBS=$(jobs | wc -l)
+    if [ "$NUM_BACKGROUND_JOBS" -gt 0 ]; then
+        echo -n " [$NUM_BACKGROUND_JOBS]"
+    fi
+    return $OLD_EXIT_STATUS
+}
+
+# Display how many background jobs there are, when there are background jobs
+PS1="${PS1}\$(__list_background_jobs)"
+
 # Prints different escape codes to stdout indicating the exit code of the previous command
 function __decorate_exit_status() {
     if [ $? -eq 0 ]; then
