@@ -73,4 +73,4 @@ function __decorate_exit_status() {
 }
 
 # Append a colored $ to the end of the $PS1 indicating the exit code
-PS1="${PS1} \[${WHITE}\]\[\$(__decorate_exit_status)\]\$\[${RESET}\] "
+PS1="${PS1} \[\$(__decorate_exit_status)\]\$\[${RESET}\] "
