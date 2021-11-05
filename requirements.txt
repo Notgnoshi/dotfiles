@@ -1,15 +1,10 @@
 black
+gitlint
 ipython
 isort
 jedi
 # Works better than pyls on a certain work project.
 jedi-language-server
-#jupyter
-#jupyterlab
-#jupyterlab_code_formatter
-#jupytext
-#nb-pdf-template
-parse-torrent-name
 parsedatetime
 pydocstyle
 pygments

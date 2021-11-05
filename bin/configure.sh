@@ -238,19 +238,6 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     chmod +x ~/.local/bin/shfmt
     echo "${GREEN}Installed shfmt version: $(shfmt --version)${RESET}"
 
-    echo "${YELLOW}Installing Python linters, formatters...${RESET}"
-    pip install --upgrade --user \
-        black \
-        isort \
-        pydocstyle \
-        pylint \
-        'python-language-server[pydocstyle]'
-    echo "${GREEN}Installed Python linters, formatters.${RESET}"
-
-    echo "${YELLOW}Installing gitcommit linter...${RESET}"
-    pip install --upgrade --user gitlint
-    echo "${GREEN}Installed gitlint.${RESET}"
-
     echo "${YELLOW}Installing jq...${RESET}"
     USERNAME="stedolan"
     REPO="jq"
