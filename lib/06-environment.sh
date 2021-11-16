@@ -68,7 +68,8 @@ export VIMWIKI_PATH="$HOME/Documents/notes/"
 export LESS=FRX
 
 # Use parallel make by default
-export MAKEFLAGS="-j$(nproc)"
+PROCS=$(( $(nproc) - 1 ))
+export MAKEFLAGS="-j$PROCS"
 
 __delta_side_by_side_width() {
     local columns=$(tput cols)
