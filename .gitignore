@@ -1,6 +1,7 @@
 *.sw?
 *.bak
 *.spl
+*.tmp
 .netrwhist
 vim/undo
 vim/viminfo
