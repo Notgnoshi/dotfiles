@@ -43,6 +43,8 @@ highlight! link StorageClass    GruvboxAqua
 highlight! link cppCast         GruvboxRed
 highlight! link Special         GruvboxPurpleBold
 highlight! link pythonBuiltin   GruvboxPurpleBold
+highlight! link Search          DiffAdd
+highlight! link IncSearch       DiffAdd
 
 highlight String          cterm=italic
 highlight cppSTLtype      cterm=italic
@@ -50,7 +52,6 @@ highlight cppSTLnamespace cterm=italic
 
 highlight Normal     ctermfg=NONE   ctermbg=NONE
 
-highlight IncSearch  ctermfg=3
 highlight SpellLocal ctermfg=8
 highlight MatchParen ctermfg=0      ctermbg=6
 
