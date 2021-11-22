@@ -70,7 +70,7 @@ highlight Visual            ctermbg=237
 
 highlight! link doxygenComment  CustomDoxyComment
 highlight! link doxygenBrief    CustomDoxyComment
-highlight! link doxygenStartL   GruvboxBg0
+highlight! link doxygenStartL   GruvboxBg2
 highlight! link doxygenCommentL SpecialComment
 highlight! link doxygenSpecialTypeOnelineDesc   SpecialComment
 highlight! link doxygenSpecialOnelineDesc       CustomDoxyComment
