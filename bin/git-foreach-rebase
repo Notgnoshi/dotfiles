@@ -1,0 +1,10 @@
+#!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o noclobber
+
+echo ""
+while [ $? -eq 0 ]; do
+    bash -c "$* && git rebase --continue"
+done
