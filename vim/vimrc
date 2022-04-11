@@ -86,7 +86,11 @@ highlight! link ALEError    SpellBad
 let g:airline_theme='minimalist'
 " Show opened buffers at the top of the screen.
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#switch_buffers_and_tabs = 0
+let g:airline#extensions#tabline#show_splits = 1
+let g:airline#extensions#tabline#middle_click_preserves_windows = 1
 
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -126,6 +130,7 @@ set autowrite
 " every four seconds (configurable with 'updatetime').
 set autoread
 " Allow switching away from an unsaved buffer without writing it.
+" TODO: This is also what's responsible for the buffer tabline not working...
 set hidden
 " Check files and GitGutter hunks for changes every 100 ms
 set updatetime=100
