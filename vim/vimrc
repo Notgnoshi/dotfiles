@@ -383,11 +383,16 @@ let g:netrw_list_hide .= ',.*\.swp$'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALE
 "
-"   <F1> - run all available fixers, in the order specified by g:ale_fixers.
-"   <F2> - go to definition (Qt Creator shortcut) (also 'gd', which I use more often)
+"   <F1> - run all available fixers, in the order specified by g:ale_fixers
+"   <F2> - show more details on lint closest to cursor
 "   <F3> - find references
 "   <F4> - toggle header/source (Qt Creator shortcut)
+"   :ALESymbolSearch - search for symbol from LSP
 "   :ALERename - rename symbol under cursor
+"   :ALEFileRename - rename file and fix imports
+"   :ALEDocumentation - Preview window of documentation for the current symbol
+"   gd - go to definition
+"   gD - go to type definition
 "   ]p,[p - next/previous problem
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -449,18 +454,24 @@ let g:ale_dockerfile_hadolint_use_docker = 'yes'
 nmap <F1> <Plug>(ale_fix)
 imap <F1> <C-\><C-O>:ALEFix<CR>
 
-" gd is normally goto definition of word in current function. gD is in current file. So rebind to use LSP-aware goto def.
+" gd is normally goto definition of word in current function.
 nmap gd <Plug>(ale_go_to_definition)
-nmap <F2> <Plug>(ale_go_to_definition)
-imap <F2> <C-\><C-O>:ALEGoToDefinition<CR>
+" gD is normally goto definition in the current file, but rebind to ALEGoToTypeDefinition.
+nmap gD <Plug>(ale_go_to_type_definition)
+nmap <F2> <Plug>(ale_detail)
+imap <F2> <C-\><C-O>:ALEDetail<CR>
+" Use a popup, not a new window for the lint details and hover
+let g:ale_floating_preview = 1
+let g:ale_floating_window_border = []
 
 " Find references to the symbol under the cursor.
 " TODO: Use FZF to select and preview (with syntax highlighting!)
 " See https://github.com/dense-analysis/ale/issues/2252
 " TODO: Use ALERepeatSelection to re-open results (Maybe find a way to keep
 " the window open until it's closed manually?)
-nmap <F3> <Plug>(ale_find_references)
-imap <F3> <C-\><C-O>:ALEFindReferences<CR>
+nnoremap <silent> <Plug>(ale_find_references_quickfix) :ALEFindReferences -quickfix<CR>
+nmap <F3> <Plug>(ale_find_references_quickfix)
+imap <F3> <C-\><C-O>:ALEFindReferences -quickfix<CR>
 
 " Toggle between header and source. Use a plugin rather than a simple
 " s/.cpp/.h/ replacement because you can have .hpp, .HPP, .cxx, and more
@@ -483,6 +494,10 @@ noremap <silent> <F9> :call ToggleNetrw()<CR>
 " Can also open  loclist with :lopen
 nmap ]p <Plug>(ale_next_wrap)
 nmap [p <Plug>(ale_previous_wrap)
+
+" Got to next/previous item in the quickfix list
+nmap ]q :cnext
+nmap [q :cprev
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
