@@ -87,8 +87,9 @@ switch (${1:variable})
     case ${2:value}:
     {
         ${3}
-        ${4:break}${5}
+        ${4:break}
     }
+    ${5}
 }
 endsnippet
 
@@ -98,6 +99,7 @@ snippet case
         ${2}
         ${3:break;}
     }
+    ${4}
 endsnippet
 
 snippet typedef

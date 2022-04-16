@@ -5,7 +5,7 @@ priority -49
 snippet class
 //! @brief ${2:Brief description}
 class ${1:`!p
-tokens = (snip.basename or "Class").split("-")
+tokens = (snip.basename or "Class").split("_")
 snip.rv = "".join(token.title() for token in tokens)
 `}
 public:
