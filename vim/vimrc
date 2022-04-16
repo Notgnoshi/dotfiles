@@ -313,21 +313,21 @@ set pastetoggle=<F5>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Netrw
-" NERDTree replacement that's baked into Vim.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" It's easy enough to hit <C-B> to open the netrw window that this isn't worth dealing with
-" " Open netrw if no files were given to vim.
-" " BUG: When you open one of the listed files, the netrw window moves to the bottom of the screen.
-" augroup ProjectDrawer
-"     autocmd!
-"     autocmd VimEnter * if argc() == 0 | Lexplore! | endif
-" augroup END
 
 " Close netrw if last window open.
 augroup netrw_close
     autocmd!
     autocmd WinEnter * if winnr("$") == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" | q | endif
 augroup END
+
+" Open netrw to the current file's directory
+"
+" I originally wanted it to open the CWD, and expand the tree to reveal the
+" current file, but it appears that's not possible. So the next best thing is
+" to open the current file's directory, and use "-" to open the parent
+" directory.
+command! NetrwFind let @/=expand("%:t") | execute 'Lexplore' expand("%:h") | normal n
 
 function! ToggleNetrw()
     let i = bufnr("$")
@@ -340,7 +340,7 @@ function! ToggleNetrw()
         let i-=1
     endwhile
     if !wasOpen
-        silent Lexplore
+        silent NetrwFind
     endif
 endfunction
 
