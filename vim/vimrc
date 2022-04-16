@@ -181,6 +181,12 @@ set shortmess-=S
 " Use mouse interaction in every mode
 set mouse=a
 
+" The path used for gf and friends Set to the default value, but also add
+" "**", which searches down from the current directory.
+set path& | let &path .= "**"
+" Files to ignore while searching
+set wildignore+=.git/*,*/node_modules/*,*/target/*,*/build/*,*.class,*.png,*.gif,*.pdf,*.exe,*.o,*.so,*.jar,*.war,*.ear,*.dll,*.swp,*.zip
+
 " enable code folding
 set foldenable
 set foldlevelstart=15
