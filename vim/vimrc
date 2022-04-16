@@ -157,6 +157,7 @@ set titlestring=%{$USER}@%{hostname()}:\ %F\ %m
 set number
 " Keep the cursor 6 lines from bottom of screen.
 set scrolloff=6
+set sidescrolloff=6
 " Allow the cursor to move off the end of a line.
 set virtualedit=all
 
