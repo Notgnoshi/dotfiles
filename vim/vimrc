@@ -233,15 +233,9 @@ au BufRead,BufNewFile nginx/*.conf set ft=nginx
 let g:load_doxygen_syntax = 1
 let g:doxygen_enhanced_color = 0
 
+" Generate the binary *.spl files from the plaintext *.add files checked into Git.
 function! SetupSpellfile()
-    " The *.spl is a binary file format necessary for speed.
-    " But that doesn't track very well in git (and opens up potential for nasty conflicts).
-    " So generate the .spl file if the .add file is newer.
     for d in glob('~/.vim/spell/*.add', 1, 1)
-        " It's nice to have the spellfile sorted, and duplicates removed as
-        " you add new words.
-        silent! execute '!sort --unique ' shellescape(d) ' --output ' shellescape(d)
-
         " This likely forces the generation of the binary .spl file. Until the
         " performance becomes noticeable, that's acceptable. Otherwise, I think a
         " git-hook, or a more sophisticated shell incantation to also _diff_ the
@@ -252,14 +246,25 @@ function! SetupSpellfile()
     endfor
 endfunction
 
-" Need to delay shelling out to sort until after the vim-altscreen plugin has
-" been initialized with the myNoAltScreen augroup has executed.
+" Sort the spellfile, and remove duplicates right before Vim exits.
 "
-" Otherwise, :execute commands get printed to the "normal" screen. Even if you
-" use silent!, this moves the prompt to the bottom of the screen.
-augroup DelaySpellfileSetupUntilAltScreen
+" NOTE: This relies on the vim-altscreen plugin (and requires myNoAltScreen augroup to be executed)
+" to prevent :execute commands getting printed to the "normal" screen, which, even if you use
+" "silent!", shoves the shell prompt to the bottom of the screen.
+function! SortSpellfile()
+    for d in glob('~/.vim/spell/*.add', 1, 1)
+        silent! execute '!sort --unique ' shellescape(d) ' --output ' shellescape(d)
+    endfor
+endfunction
+
+augroup setupSpellfileAfterStart
     autocmd!
     autocmd VimEnter * call SetupSpellfile()
+augroup END
+
+augroup sortSpellfileBeforeExit
+    autocmd!
+    autocmd VimLeave * call SortSpellfile()
 augroup END
 
 " Don't spellcheck everything, instead check a restricted subset of filetypes.
