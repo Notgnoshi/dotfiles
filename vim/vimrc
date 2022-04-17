@@ -218,10 +218,6 @@ set undodir=~/.vim/undo
 set undofile
 nnoremap <F8> :MundoToggle<CR>
 
-" Force vim to think .md are markdown files on older systems that don't
-" have the filetype properly set in /usr/share/vim/vim74/filetype.vim
-" (Looking at you $COMPANY dev servers)
-autocmd BufNewFile,BufRead *.md set filetype=markdown
 " Set Nginx conf filetype
 au BufRead,BufNewFile *.nginx set ft=nginx
 au BufRead,BufNewFile */etc/nginx/* set ft=nginx
