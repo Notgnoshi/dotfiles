@@ -122,3 +122,7 @@
 	path = vim/bundle/vim-flatbuffers
 	url = https://github.com/zchee/vim-flatbuffers.git
 	branch = master
+[submodule "vim/bundle/rust.vim"]
+	path = vim/bundle/rust.vim
+	url = https://github.com/rust-lang/rust.vim.git
+	branch = master
