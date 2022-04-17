@@ -82,7 +82,11 @@ highlight! link ALEWarning  SpellRare
 highlight! link ALEInfo     SpellCap
 " gruvbox undoes this, so I'm redoing it
 highlight! link ALEError    SpellBad
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Airline statusline and tablint
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_theme='minimalist'
 " Show opened buffers at the top of the screen.
 let g:airline#extensions#tabline#enabled = 1
@@ -103,9 +107,6 @@ let g:airline_symbols.linenr = ' ln:'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Practical Vim, by Drew Neil, says to enable matchit with the following
-"     runtime macros/matchit.vim
-" but the matchit documentation says to use packadd.
 " TODO: Add Python support. Perhaps using https://www.vim.org/scripts/script.php?script_id=386
 " or perhaps using https://github.com/andymass/vim-matchup and a ftplugin for
 " adding Python b:match_words.
@@ -127,13 +128,14 @@ set autowrite
 " autoread will check for external file changes when a command is run, which
 " is only part of the answer if we want Vim to load external changes.
 " So we use https://github.com/djoshea/vim-autoread which checks for changes
-" every four seconds (configurable with 'updatetime').
+" every "updatetime" ms.
 set autoread
+" Check files and GitGutter hunks for changes every 1000 ms
+set updatetime=1000
+
 " Allow switching away from an unsaved buffer without writing it.
 " TODO: This is also what's responsible for the buffer tabline not working...
 set hidden
-" Check files and GitGutter hunks for changes every 100 ms
-set updatetime=100
 
 " Number of visual spaces per TAB
 set tabstop=4
@@ -329,7 +331,6 @@ augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Netrw
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " Close netrw if last window open.
 augroup netrw_close
     autocmd!
@@ -408,12 +409,6 @@ let g:netrw_list_hide .= ',.*\.swp$'
 " don't work (regardless of the mapping).
 " TODO: Find a way to make ALE include snippets in its completion. Right now,
 " you have to remember the name of the snippet, and press <Tab> to expand.
-" BUG: Vim sometimes segfaults when editing Python projects
-"
-" UltiSnips
-"
-"   <Tab>   - expand snippet, and navigate forward through tab stops
-"   <S-Tab> - navigate backwards through tab stops
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Override the automatically loaded fixers and linters for certain filetypes.
 let g:ale_fixers = {
@@ -449,10 +444,6 @@ let g:ale_python_pydocstyle_options = '--add-ignore=D100'
 " more common use-case for me.
 let g:ale_javascript_prettier_options = '--print-width 120 --prose-wrap always --tab-width 4 --html-whitespace-sensitivity css'
 
-" You probably want clangd-11 for project-specific config files.
-" https://clangd.llvm.org/config.html
-" Additionally, you can set g:ale_cpp_clangd_executable, or use update-alternatives:
-"   sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-11 100
 let g:ale_cpp_clangd_options = '
             \ --background-index
             \ --header-insertion=iwyu
@@ -478,9 +469,6 @@ set completeopt=menu,menuone,popup
 " If the completion popup is visible, accept the selected completion on <Enter>
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" BUG: Vim can't distinguish <ctrl-shift-I> from <ctrl-I> from <Tab>
-" https://stackoverflow.com/questions/14641942/how-to-unmap-tab-and-do-not-make-ctrl-i-invalid-in-vim
-" I would prefer to use <C-S-I>, because that's the VS Code shortcut, and I already have it learned.
 nmap <F1> <Plug>(ale_fix)
 imap <F1> <C-\><C-O>:ALEFix<CR>
 
@@ -519,6 +507,12 @@ noremap <silent> <F9> :call ToggleNetrw()<CR>
 nmap ]p <Plug>(ale_next_wrap)
 nmap [p <Plug>(ale_previous_wrap)
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" UltiSnips
+"
+"   <Tab>   - expand snippet, and navigate forward through tab stops
+"   <S-Tab> - navigate backwards through tab stops
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
@@ -538,35 +532,12 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Use ctrl+[jk] to move lines up and down in normal, insert, and visual mode.
-" TODO: Something with QtCreator seems to have broken -- these no longer work...
 nnoremap <C-j> :m .+1<CR>==
 nnoremap <C-k> :m .-2<CR>==
 inoremap <C-j> <Esc>:m .+1<CR>==gi
 inoremap <C-k> <Esc>:m .-2<CR>==gi
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
-
-" Combined with adding the following to ~/.Xresources
-" XTerm*vt100.translations: #override \n\
-"    Ctrl ~Meta Shift <Key>a: string(0x1b) string("[65;5u") \n\
-"    Ctrl ~Meta Shift <Key>i: string(0x1b) string("[73;5u") \n\
-" This will map <C-S-a> and <C-a> differently.
-" Unfortunately, this only works in XTerm terminals, which I don't use.
-" map <ESC>[65;5u <C-S-a>
-" map <ESC>[73;5u <C-S-i>
-" map <C-S-a> :echo "ctrl shift a"<CR>
-" map <C-a>   :echo "ctrl a"<CR>
-" map <C-S-i> :echo "ctrl shift i"<CR>
-" map <C-i>   :echo "ctrl i"<CR>
-
-" BUG: The following copies the whole line
-" vnoremap <C-y> !xclip -filter -selection clipboard<CR>
-
-" " Use vim-fakeclip to use xclip for X11 clipboard integration.
-" vmap <C-x> <Plug>(fakeclip-d)
-" vmap <C-y> <Plug>(fakeclip-y)
-" nmap <C-p> <Plug>(fakeclip-p)
-" vmap <C-p> <Plug>(fakeclip-p)
 
 " These keybinds require a Vim built with the +clipboard feature.
 " On Ubuntu, the vim-gtk package provides such a Vim.
@@ -631,7 +602,4 @@ packloadall
 " All messages and errors will be ignored.
 silent! helptags ALL
 " Do not show the default mode indicator, because airline's is better.
-" BUG: If the default indicator is left, I can leave INSERT mode with a single
-" <C-c>, but I need to press it twice to make the indicator change.
-" BUG: Something above is settings this back, so turn it off at the end.
 set noshowmode
