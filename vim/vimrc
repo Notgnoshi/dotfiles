@@ -390,25 +390,6 @@ let g:netrw_list_hide .= ',.*\.swp$'
 "   :ALERename - rename symbol under cursor
 "   ]p,[p - next/previous problem
 "
-" ALE Completion
-"
-"   Use <C-n> for regular omnicompletion. Otherwise, ALE auto-triggers
-"   completion as you type. It doesn't always trigger the completion popup
-"   when typing '.' or '->' (I'd prefer to immediately get a list of methods
-"   and/or attributes.
-"
-"   <C-n> - In insert mode, triggers omnicompletion. If ALE has automatically
-"           triggered the completion popup, <C-n> and <C-p> will navigate the
-"           popup.
-"   <CR>  - Use <CR> to accept a selected completion.
-"
-" TODO: Find a way to manually trigger ALE completion. The suggested
-"   inoremap <silent> <C-Space> <C-\><C-O>:AleComplete<CR>
-" or
-"   imap <C-Space> <Plug>(ale_complete)
-" don't work (regardless of the mapping).
-" TODO: Find a way to make ALE include snippets in its completion. Right now,
-" you have to remember the name of the snippet, and press <Tab> to expand.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Override the automatically loaded fixers and linters for certain filetypes.
 let g:ale_fixers = {
@@ -465,10 +446,6 @@ let g:ale_rust_analyzer_config = {
 
 let g:ale_dockerfile_hadolint_use_docker = 'yes'
 
-set completeopt=menu,menuone,popup
-" If the completion popup is visible, accept the selected completion on <Enter>
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
 nmap <F1> <Plug>(ale_fix)
 imap <F1> <C-\><C-O>:ALEFix<CR>
 
@@ -506,6 +483,33 @@ noremap <silent> <F9> :call ToggleNetrw()<CR>
 " Can also open  loclist with :lopen
 nmap ]p <Plug>(ale_next_wrap)
 nmap [p <Plug>(ale_previous_wrap)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ALE Completion
+"
+"   <C-n> - In insert mode, triggers omnicompletion. If ALE has automatically
+"           triggered the completion popup, <C-n> and <C-p> will navigate the
+"           popup.
+"   <CR>  - Use <CR> to accept a selected completion.
+"
+" TODO: Find a way to make ALE include snippets in its completion. Right now,
+" you have to remember the name of the snippet, and press <Tab> to expand.
+set completeopt=menu,menuone,popup
+" If the completion popup is visible, accept the selected completion on <Enter>
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Use FZF :Files to do file completion in insert mode
+imap <c-x><c-f> <plug>(fzf-complete-path)
+
+" Use fzf.vim to open searchable list of buffers and their previews.
+noremap <silent> <C-F><C-B> :Buffers<CR>
+" All files
+noremap <silent> <C-F><C-F> :Files<CR>
+" git ls-files
+noremap <silent> <C-F><C-G> :GFiles<CR>
+noremap <silent> <C-F><C-M> :Marks<CR>
+noremap <silent> <C-F><C-S> :Snippets<CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " UltiSnips
@@ -565,15 +569,6 @@ nmap <C-h> :bprevious<CR>
 " https://vim.fandom.com/wiki/Deleting_a_buffer_without_closing_the_window
 " https://stackoverflow.com/questions/2605036/how-to-redefine-a-command-in-vim
 cnoreabbrev <expr> bd getcmdtype() == ":" && getcmdline() == 'bd' ? 'bprevious\|bdelete #' : 'bdelete'
-
-" Use fzf.vim to open searchable list of buffers and their previews.
-noremap <silent> <C-F><C-B> :Buffers<CR>
-" All files
-noremap <silent> <C-F><C-F> :Files<CR>
-" git ls-files
-noremap <silent> <C-F><C-G> :GFiles<CR>
-noremap <silent> <C-F><C-M> :Marks<CR>
-noremap <silent> <C-F><C-S> :Snippets<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
