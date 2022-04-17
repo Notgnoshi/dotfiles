@@ -16,12 +16,8 @@
 # I called it 'gl' because I was trying to replace 'lg' with it, and didn't want to remove 'lg' completely.
 # I had every intention of naming it properly, but it's no longer just a shortlog, and I've memorized `git gl`.
 #
-# BUG: While you can use git-gl to pass arguments to the underlying git-log command, tab-completion doesn't work.
 # BUG: There is nothing stopping you from cherry-picking the selected commit on top of itself.
 #      (If you're browsing the current branch, not another one)
-# BUG: There's something wonky in the interaction of diff-highlight, less, and fzf.
-#      The background highlight is often wrong in the fzf preview pane, but correct when opened in less.
-# TODO: Figure out how to get the full commit from the short commit.
 # TODO: There's a lot of boilerplate here, maybe tone down the copy-paste.
 # TODO: Test how interactive rebase works when you are on branch A, and run 'git gl B`.
 fzf-git-browse() {
