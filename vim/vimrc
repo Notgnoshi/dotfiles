@@ -315,6 +315,11 @@ augroup FastPaste
     autocmd OptionSet paste call s:paste_toggled(v:option_new, v:option_old)
 augroup END
 set pastetoggle=<F5>
+
+augroup autoOpenQuickFixAfterMake
+    autocmd!
+    autocmd QuickFixCmdPost make belowright cwindow
+augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
