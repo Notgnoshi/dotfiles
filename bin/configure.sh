@@ -71,14 +71,20 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         g++ \
         gcc \
         gdb \
+        git-extras \
         graphviz \
+        lld \
+        lldb \
         make \
         optipng \
         pandoc \
+        pkg-config \
         python3-dev \
         python3-distutils \
+        wl-clipboard \
         valgrind \
-        xclip
+        xclip \
+        ;
 
     echo "${YELLOW}Installing colout...${RESET}"
     if [ -d /tmp/colout ]; then
