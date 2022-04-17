@@ -258,6 +258,7 @@ endfunction
 " Otherwise, :execute commands get printed to the "normal" screen. Even if you
 " use silent!, this moves the prompt to the bottom of the screen.
 augroup DelaySpellfileSetupUntilAltScreen
+    autocmd!
     autocmd VimEnter * call SetupSpellfile()
 augroup END
 
@@ -270,6 +271,7 @@ if exists("&spelloptions")
 endif
 
 augroup spellingFiletypes
+    autocmd!
     autocmd FileType vimwiki,markdown,gitcommit setlocal spell
 augroup END
 nnoremap <F7> :setlocal spell! spell?<CR>
@@ -284,12 +286,14 @@ nnoremap <F7> :setlocal spell! spell?<CR>
 set viminfo=!,'500,/5000,:5000,<500,s1000,h
 set viminfofile=~/.vim/viminfo
 augroup doNotUseViminfoFor
+    autocmd!
     " Using a viminfo file restores the last cursor position.
     " This is awkward for commit messages and the git-rebase-todo. So disable it.
     autocmd FileType gitcommit,gitrebase setlocal viminfo=
 augroup END
 
 augroup commentarySettings
+    autocmd!
     autocmd FileType c,cpp set comments^=:///,://!
     autocmd FileType c,cpp setlocal commentstring=//\ %s
     autocmd FileType nginx,qmake setlocal commentstring=#\ %s
@@ -307,6 +311,7 @@ endfunc
 
 " Disable foldexpr when pasting to fix slow pasting performance.
 augroup FastPaste
+    autocmd!
     autocmd OptionSet paste call s:paste_toggled(v:option_new, v:option_old)
 augroup END
 set pastetoggle=<F5>
