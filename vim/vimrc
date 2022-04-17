@@ -200,6 +200,7 @@ set cursorline
 "set cursorcolumn
 " Comma separated list of columns to highlight
 set colorcolumn=100
+set textwidth=100
 augroup gitCommitLineLength
     autocmd!
     autocmd FileType gitcommit setlocal colorcolumn=72
