@@ -149,6 +149,7 @@ set smarttab
 set smartindent
 set autoindent
 set backspace=indent,eol,start
+set nojoinspaces
 
 "Use terminal title
 set title
