@@ -62,7 +62,7 @@ additions() {
 }
 
 # Remove the given item from your $PATH.
-function remove-from-path() {
+remove-from-path() {
     export PATH=$(echo -n "$PATH" | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//')
 }
 
@@ -73,4 +73,16 @@ fman() {
         tr -d '()' |
         awk '{printf "%s ", $2} {print $1}' |
         xargs -r man
+}
+
+plog() {
+    # Log stdin to stdout AND stderr, but prefix stderr with an identifying tag.
+    # Taken from https://raimonster.com/scripting-field-guide/#org92f4850
+    local log_prefix="${1:-plog}"
+    tee >(sed -e "s/^/[$log_prefix] /" 1>&2)
+}
+
+shellquote () {
+  printf '%q' "$(cat)"
+  echo
 }
