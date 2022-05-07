@@ -322,7 +322,7 @@ read -p "${BOLD}${UNDERLINE}Install Gnome tweaks? (y/N)${RESET} " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "${YELLOW}Installing tweaks...${RESET}"
-    sudo apt install gnome-tweak-tool chrome-gnome-shell numix-gtk-theme numix-icon-theme-circle
+    sudo apt install gnome-shell-extension-manager gnome-tweaks numix-gtk-theme numix-icon-theme-circle
     echo "${GREEN}Installed tweaks.${RESET}"
 fi
 
