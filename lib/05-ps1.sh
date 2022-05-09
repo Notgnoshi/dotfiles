@@ -55,8 +55,16 @@ function function_exists() {
     return $?
 }
 
+# Some customizations for __git_ps1
+# See https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh for more details.
+export GIT_PS1_SHOWDIRTYSTATE=1        # Adds '*' and '+' for unstaged and staged changes
+export GIT_PS1_DESCRIBE_STYLE='branch' # When in a detached head state, attempt to find the branch HEAD is on.
+export GIT_PS1_SHOWCOLORHINTS=1        # Use colored output to indicate the current status ('git status -sb'). Only works if __git_ps1 is used from PROMPT_COMMAND, not PS1.
+export GIT_PS1_SHOWSTASHSTATE=1        # Show a '$' next to the branch name if something is stashed.
+export GIT_PS1_SHOWUNTRACKEDFILES=1    # Show a '%' next to the branch name if there are untracked files.
+export GIT_PS1_SHOWUPSTREAM='auto'     # '=' means up to date with upstream, '<' means you're behind, and '>' means you're ahead. '<>' means you've diverged.
+
 # Decorate PS1 with git branch, rebase, cherry-pick state.
-# Further customized by $DOTFILES_DIR/lib/06-environment.sh
 if function_exists __git_ps1; then
     PS1="${PS1}\[${BLUE}\]\$(__git_ps1)\[${RESET}\]"
 fi
@@ -84,3 +92,15 @@ function __decorate_exit_status() {
 
 # Append a colored $ to the end of the $PS1 indicating the exit code
 PS1="${PS1} \[\$(__decorate_exit_status)\]\$\[${RESET}\] "
+
+__delta_side_by_side_width() {
+    local columns=$(tput cols)
+    # Enough room for two side-by-side 80-char diffs with some room for line numbers to spare
+    if [ $columns -ge 170 ]; then
+        export DELTA_FEATURES="+side-by-side"
+    else
+        export DELTA_FEATURES=""
+    fi
+}
+
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}__delta_side_by_side_width"
