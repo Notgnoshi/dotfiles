@@ -24,7 +24,7 @@ usage() {
 convert_all_to_mp3() {
     local activation_bytes="$1"
     local -n audible_drm_audiobooks="$2"
-    local max_jobs=24
+    local max_jobs=8
 
     for audiobook in "${audible_drm_audiobooks[@]}"; do
         if test "$(jobs | wc -l)" -ge $max_jobs; then
