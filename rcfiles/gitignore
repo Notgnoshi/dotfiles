@@ -4,3 +4,4 @@
 .cache/
 compile_commands.json
 doc/tags
+.vscode/
