@@ -277,10 +277,6 @@ if exists("&spelloptions")
     set spelloptions=camel
 endif
 
-augroup spellingFiletypes
-    autocmd!
-    autocmd FileType vimwiki,markdown,gitcommit setlocal spell
-augroup END
 nnoremap <F7> :setlocal spell! spell?<CR>
 
 " ! - save and restore global variables
