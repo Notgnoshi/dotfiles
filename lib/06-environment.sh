@@ -31,12 +31,6 @@ MANPATH="$HOME/.local/share/man${MANPATH:+:${MANPATH}}"
 MANPAGER="vim -M +MANPAGER -"
 MANWIDTH=100
 
-# Add the user-defined CUDA installation to paths.
-# The default CUDA installation directory is /usr/local/cuda-xx.y/. But if there are multiple installations
-# available, symlink the desired installation to ~/.local/cuda/.
-PATH="$HOME/.local/cuda/bin${PATH:+:${PATH}}"
-LIBRARY_PATH="$HOME/.local/cuda/lib64${LIBRARY_PATH:+:${LIBRARY_PATH}}"
-
 # Add local header files to gcc include path
 CPATH="$HOME/.local/include${CPATH:+:${CPATH}}"
 
