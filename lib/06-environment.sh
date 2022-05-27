@@ -32,7 +32,8 @@ MANPAGER="vim -M +MANPAGER -"
 MANWIDTH=100
 
 # Add local header files to gcc include path
-CPATH="$HOME/.local/include${CPATH:+:${CPATH}}"
+C_INCLUDE_PATH="$HOME/.local/include${C_INCLUDE_PATH:+:${C_INCLUDE_PATH}}"
+CPLUS_INCLUDE_PATH="$HOME/.local/include${CPLUS_INCLUDE_PATH:+:${CPLUS_INCLUDE_PATH}}"
 
 # Add local libraries to library path.
 LIBRARY_PATH="$HOME/.local/lib${LIBRARY_PATH:+:${LIBRARY_PATH}}"
@@ -41,7 +42,8 @@ LIBRARY_PATH="$HOME/.local/lib${LIBRARY_PATH:+:${LIBRARY_PATH}}"
 LD_LIBRARY_PATH="$LIBRARY_PATH"
 
 export PATH
-export CPATH
+export C_INCLUDE_PATH
+export CPLUS_INCLUDE_PATH
 export LIBRARY_PATH
 export LD_LIBRARY_PATH
 export MANPATH
