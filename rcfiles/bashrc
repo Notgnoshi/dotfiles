@@ -21,6 +21,7 @@ DOTFILES_DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)/.."
 DOTFILES_DIR="$(readlink --canonicalize --no-newline "${DOTFILES_DIR}")"
 export DOTFILES_DIR
 
+[ -f ~/.cargo/env ] && source ~/.cargo/env
 ##################################################################################################
 # Source each of components in alphabetical order.
 # This is where most of the customizations come from.
@@ -31,4 +32,3 @@ done
 
 # Enable fzf
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[ -f ~/.cargo/env ] && source ~/.cargo/env
