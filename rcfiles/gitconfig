@@ -68,5 +68,5 @@
 
 [includeIf "gitdir:~/swdev/"]
     path = .gitconfig-work
-[includeIf "gitdir:/tmp/fishspear_release"]
+[includeIf "gitdir:~/workspace/"]
     path = .gitconfig-work
