@@ -25,7 +25,7 @@ let g:gruvbox_improved_warnings=1
 let g:gruvbox_contrast_dark="hard"
 
 let g:gruvbox_invert_selection=0
-set background=dark
+set background=light
 
 runtime colors/gruvbox.vim
 
@@ -65,8 +65,8 @@ highlight! link GruvboxOrange GruvboxYellowBold
 highlight Comment           cterm=italic ctermfg=243
 highlight CustomDoxyComment cterm=italic ctermfg=243
 
-highlight CursorLine        ctermbg=237
-highlight Visual            ctermbg=237
+" highlight CursorLine        ctermbg=237
+" highlight Visual            ctermbg=237
 
 highlight! link doxygenComment  CustomDoxyComment
 highlight! link doxygenBrief    CustomDoxyComment
