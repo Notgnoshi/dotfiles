@@ -41,7 +41,7 @@ export LD_LIBRARY_PATH
 export MANPAGER
 export MANWIDTH
 export EDITOR=vim
-export BAT_THEME=base16
+export BAT_THEME=gruvbox-light
 # Path to my vimwiki clone
 export VIMWIKI_PATH="$HOME/Documents/notes/"
 # Fix less not rendering control characters with git-log on the Opp lab machines.
