@@ -600,6 +600,7 @@ let g:vimwiki_list = [wiki]
 let g:vimwiki_folding = 'syntax'
 let g:vimwiki_table_mappings = 0
 let g:vimwiki_key_mappings = { 'table_mappings': 0, }
+let g:vimwiki_conceallevel = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Load all plugins now.
