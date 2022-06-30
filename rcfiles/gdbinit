@@ -25,6 +25,7 @@ set history save on
 set history size unlimited
 # Remove duplicates in the last 20 entries.
 set history remove-duplicates 20
+set disassembly-flavor intel
 
 # Add STL pretty-printers
 python
