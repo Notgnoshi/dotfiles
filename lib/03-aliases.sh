@@ -21,6 +21,7 @@ alias arem='sudo apt-get autoremove'
 
 alias wiki='vim $VIMWIKI_PATH/index.wiki'
 alias todo='vim $VIMWIKI_PATH/todo/todo.wiki'
+alias readelf='readelf --wide'
 
 function man() {
     # Export the variables in a subshell to avoid polluting
