@@ -426,6 +426,7 @@ let g:ale_python_pydocstyle_options = '--add-ignore=D100'
 " 120 is too much for javascript, but just about right for HTML, which is the
 " more common use-case for me.
 let g:ale_javascript_prettier_options = '--print-width 120 --prose-wrap always --tab-width 4 --html-whitespace-sensitivity css'
+let g:ale_sh_shfmt_options = '--indent 4'
 
 let g:ale_cpp_clangd_options = '
             \ --background-index
