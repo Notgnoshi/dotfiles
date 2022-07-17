@@ -301,37 +301,36 @@ import argparse
 import logging
 import sys
 
-try:
-    import argcomplete
-    HAS_ARGCOMPLETE = True
-except ImportError:
-    HAS_ARGCOMPLETE = False
-
-logger = logging.getLogger(__file__)
+LOG_LEVELS = {
+    "CRITICAL": logging.CRITICAL,
+    "ERROR": logging.ERROR,
+    "WARNING": logging.WARNING,
+    "INFO": logging.INFO,
+    "DEBUG": logging.DEBUG,
+}
+DEFAULT_LEVEL = "INFO"
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-
-    parser.add_argument("--log-level", "-l", default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], help="Set the log level")
-
+	parser.add_argument("--log-level", "-l", type=str, default=DEFAULT_LEVEL, choices=LOG_LEVELS.keys(), help=f"Set the logging output level. Defaults to {DEFAULT_LEVEL}.",)
     ${2:group = parser.add_argument_group()
-    group.add_argument("--input", "-i", type=argparse.FileType("r"), default=sys.stdin, help="${3:Script input. Defaults to stdin.}")
-    group.add_argument("--output", "-o", type=argparse.FileType("w"), default=sys.stdout, help="${4:Script output. Defaults to stdout.}")}
-${5}
-
-    # If possible, try to register parser with bash-completion.
-    if HAS_ARGCOMPLETE:
-        argcomplete.autocomplete(parser)
+    group.add_argument("--input", "-i", type=argparse.FileType("r"), default=sys.stdin, help="${3:Script input. Defaults to stdin.}",)
+    group.add_argument("--output", "-o", type=argparse.FileType("w"), default=sys.stdout, help="${4:Script output. Defaults to stdout.}",)}
+ 
     return parser.parse_args()
 
 
 def main(args):
-    ${6:pass}
+    pass
 
 
 if __name__ == "__main__":
     args = parse_args()
-    logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s: %(message)s", level=args.log_level, stream=sys.stderr)
+    logging.basicConfig(
+        format="%(asctime)s - %(module)s - %(levelname)s: %(message)s",
+        level=LOG_LEVELS.get(args.log_level),
+        stream=sys.stderr,
+    )
     main(args)
 endsnippet
