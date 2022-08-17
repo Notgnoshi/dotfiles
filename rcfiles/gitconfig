@@ -23,15 +23,13 @@
     # based on the current terminal width.
     #side-by-side = true
 [merge]
-    tool = vimdiff
-    guitool = vscode
-[mergetool "vscode"]
-    cmd = code --wait $MERGED
+    tool = code
+[mergetool "code"]
+    cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
 [diff]
-    tool = vimdiff
-    guitool = vscode
+    tool = code
     submodule=log
-[difftool "vscode"]
+[difftool "code"]
     cmd = code --wait --diff $LOCAL $REMOTE
 [commit]
     # commit -v by default
