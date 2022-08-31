@@ -323,6 +323,12 @@ augroup autoOpenQuickFixAfterMake
     autocmd!
     autocmd QuickFixCmdPost make belowright cwindow
 augroup END
+
+let g:termdebug_wide = 1
+augroup overrideRustGdb
+    autocmd!
+    autocmd FileType rust let g:termdebugger = 'rust-gdb'
+augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
