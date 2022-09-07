@@ -318,10 +318,18 @@ fi
 read -p "${BOLD}${UNDERLINE}Install MS Teams? (y/N)${RESET} " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo "${YELLOW}Installing MS Teams...${RESET}"
-    curl --location "https://go.microsoft.com/fwlink/p/?linkid=2112886&clcid=0x409&culture=en-us&country=us" --output /tmp/teams.deb
-    sudo apt install /tmp/teams.deb
-    echo "${GREEN}Installed MS Teams.${RESET}"
+    # Broke screensharing on Wayland?!
+    # sudo snap install teams-for-linux
+
+    USERNAME="IsmaelMartinez"
+    REPO="teams-for-linux"
+    LATEST_TAG="$(
+        curl --silent "https://api.github.com/repos/$USERNAME/$REPO/releases/latest" |
+            grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")'
+    )"
+    LATEST_VERSION="${LATEST_TAG//v/}"
+    curl --location --output /tmp/teams-for-linux.deb --remote-name "https://github.com/$USERNAME/$REPO/releases/download/$LATEST_TAG/teams-for-linux_${LATEST_VERSION}_amd64.deb"
+    sudo apt install /tmp/teams-for-linux.deb
 fi
 
 read -p "${BOLD}${UNDERLINE}Install Gnome tweaks? (y/N)${RESET} " -n 1 -r
