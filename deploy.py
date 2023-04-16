@@ -13,6 +13,7 @@ MAPPINGS = {
     "rcfiles/gitconfig-work": ".gitconfig-work",
     "rcfiles/gitignore": ".gitignore",
     "rcfiles/inputrc": ".inputrc",
+    "rcfiles/pokerc": ".pokerc",
     "rcfiles/profile": ".profile",
     "rcfiles/pylintrc": ".pylintrc",
     "rcfiles/screenrc": ".screenrc",
