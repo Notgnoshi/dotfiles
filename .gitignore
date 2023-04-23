@@ -3,9 +3,9 @@
 *.spl
 *.tmp
 .netrwhist
-vim/undo
-vim/viminfo
-vim/bundle/vis/doc/tags
+dotfiles/.vim/undo
+dotfiles/.vim/viminfo
+dotfiles/.vim/bundle/vis/doc/tags
 
 # Allow adding work-specific aliases without tracking them.
 lib/10-work.sh
