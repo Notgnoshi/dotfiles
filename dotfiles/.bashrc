@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC1090
 
 # If not running interactively, don't do anything
 case $- in
@@ -21,7 +22,10 @@ DOTFILES_DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)/.."
 DOTFILES_DIR="$(readlink --canonicalize --no-newline "${DOTFILES_DIR}")"
 export DOTFILES_DIR
 
+# Need to be sourced before everything else so that bash-completion works as expected.
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f ~/.cargo/env ] && source ~/.cargo/env
+
 ##################################################################################################
 # Source each of components in alphabetical order.
 # This is where most of the customizations come from.
@@ -29,6 +33,3 @@ export DOTFILES_DIR
 for rcfile in "${DOTFILES_DIR}/bashrc.d/"*.sh; do
     [ -f "$rcfile" ] && source "$rcfile"
 done
-
-# Enable fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash

@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC1090
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
@@ -7,4 +8,4 @@ if [ -n "$BASH_VERSION" ]; then
         . ~/.bashrc
     fi
 fi
-[ -f ~/.cargo/env ] && source ~/.cargo/env || true
+[ -f ~/.cargo/env ] && . ~/.cargo/env
