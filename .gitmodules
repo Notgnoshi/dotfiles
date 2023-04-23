@@ -1,136 +1,138 @@
 [submodule "vim/bundle/colorschemes"]
-	path = vim/bundle/colorschemes
+	path = dotfiles/.vim/bundle/colorschemes
 	url = https://github.com/flazz/vim-colorschemes.git
 	branch = master
 [submodule "vim/bundle/commentary"]
-	path = vim/bundle/commentary
+	path = dotfiles/.vim/bundle/commentary
 	url = https://github.com/tpope/vim-commentary.git
 	branch = master
 [submodule "vim/bundle/fzf"]
-	path = vim/bundle/fzf
+	path = dotfiles/.vim/bundle/fzf
 	url = https://github.com/junegunn/fzf.git
 	branch = master
 [submodule "vim/bundle/ale"]
-	path = vim/bundle/ale
+	path = dotfiles/.vim/bundle/ale
 	url = https://github.com/w0rp/ale.git
 	branch = master
 [submodule "vim/bundle/vim-airline"]
-	path = vim/bundle/vim-airline
+	path = dotfiles/.vim/bundle/vim-airline
 	url = https://github.com/vim-airline/vim-airline.git
 	branch = master
 [submodule "vim/bundle/vim-airline-themes"]
-	path = vim/bundle/vim-airline-themes
+	path = dotfiles/.vim/bundle/vim-airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes.git
 	branch = master
 [submodule "vim/bundle/vim-fugitive"]
-	path = vim/bundle/vim-fugitive
+	path = dotfiles/.vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 	branch = master
 [submodule "vim/bundle/vim-gitgutter"]
-	path = vim/bundle/vim-gitgutter
+	path = dotfiles/.vim/bundle/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
 	branch = master
 [submodule "vim/bundle/vimwiki"]
-	path = vim/bundle/vimwiki
+	path = dotfiles/.vim/bundle/vimwiki
 	url = https://github.com/vimwiki/vimwiki.git
 	branch = dev
 [submodule "vim/bundle/vim-systemd-syntax"]
-	path = vim/bundle/vim-systemd-syntax
+	path = dotfiles/.vim/bundle/vim-systemd-syntax
 	url = https://github.com/Matt-Deacalion/vim-systemd-syntax.git
 	branch = master
 [submodule "vim/bundle/fzf.vim"]
-	path = vim/bundle/fzf.vim
+	path = dotfiles/.vim/bundle/fzf.vim
 	url = https://github.com/junegunn/fzf.vim.git
 	branch = master
 [submodule "vim/bundle/vim-surround"]
-	path = vim/bundle/vim-surround
+	path = dotfiles/.vim/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround.git
 	branch = master
 [submodule "vim/bundle/vim-repeat"]
-	path = vim/bundle/vim-repeat
+	path = dotfiles/.vim/bundle/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
 	branch = master
 [submodule "vim/bundle/vim-signature"]
-	path = vim/bundle/vim-signature
+	path = dotfiles/.vim/bundle/vim-signature
 	url = https://github.com/kshenoy/vim-signature.git
 	branch = master
 [submodule "vim/bundle/ultisnips"]
-	path = vim/bundle/ultisnips
+	path = dotfiles/.vim/bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
 	branch = master
 [submodule "vim/bundle/qmake-syntax-vim"]
-	path = vim/bundle/qmake-syntax-vim
+	path = dotfiles/.vim/bundle/qmake-syntax-vim
 	url = https://github.com/artoj/qmake-syntax-vim.git
 	branch = master
 [submodule "vim/bundle/vim-qml"]
-	path = vim/bundle/vim-qml
+	path = dotfiles/.vim/bundle/vim-qml
 	url = https://github.com/peterhoeg/vim-qml.git
 	branch = master
 [submodule "vim/bundle/CurtineIncSw.vim"]
-	path = vim/bundle/CurtineIncSw.vim
+	path = dotfiles/.vim/bundle/CurtineIncSw.vim
 	url = https://github.com/ericcurtin/CurtineIncSw.vim.git
 	branch = master
 [submodule "vim/bundle/vim-cpp-enhanced-highlight"]
-	path = vim/bundle/vim-cpp-enhanced-highlight
+	path = dotfiles/.vim/bundle/vim-cpp-enhanced-highlight
 	url = https://github.com/octol/vim-cpp-enhanced-highlight.git
 	branch = master
 [submodule "vim/bundle/vim-autoread"]
-	path = vim/bundle/vim-autoread
+	path = dotfiles/.vim/bundle/vim-autoread
 	url = https://github.com/djoshea/vim-autoread
 	branch = master
 [submodule "vim/bundle/vim-toml"]
-	path = vim/bundle/vim-toml
+	path = dotfiles/.vim/bundle/vim-toml
 	url = https://github.com/cespare/vim-toml.git
 	branch = main
 [submodule "vim/bundle/vim-mundo"]
-	path = vim/bundle/vim-mundo
+	path = dotfiles/.vim/bundle/vim-mundo
 	url = https://github.com/simnalamburt/vim-mundo.git
 	branch = master
 [submodule "vim/bundle/vim-eunuch"]
-	path = vim/bundle/vim-eunuch
+	path = dotfiles/.vim/bundle/vim-eunuch
 	url = https://github.com/tpope/vim-eunuch.git
 	branch = master
 [submodule "vim/bundle/vim-manpager"]
-	path = vim/bundle/vim-manpager
+	path = dotfiles/.vim/bundle/vim-manpager
 	url = https://github.com/lambdalisue/vim-manpager.git
 	branch = master
 [submodule "vim/bundle/vim-indent-object"]
-	path = vim/bundle/vim-indent-object
+	path = dotfiles/.vim/bundle/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object.git
 	branch = master
 [submodule "vim/bundle/vis"]
-	path = vim/bundle/vis
+	path = dotfiles/.vim/bundle/vis
 	url = https://github.com/vim-scripts/vis.git
+	ignore = dirty
 	branch = master
 [submodule "vim/bundle/vim-ps1"]
-	path = vim/bundle/vim-ps1
+	path = dotfiles/.vim/bundle/vim-ps1
 	url = https://github.com/PProvost/vim-ps1.git
 	branch = master
 [submodule "vim/bundle/vim-altscreen"]
-	path = vim/bundle/vim-altscreen
+	path = dotfiles/.vim/bundle/vim-altscreen
 	url = https://github.com/fcpg/vim-altscreen.git
+	ignore = dirty
 	branch = master
 [submodule "vim/bundle/vim-bitbake"]
-	path = vim/bundle/vim-bitbake
+	path = dotfiles/.vim/bundle/vim-bitbake
 	url = https://github.com/kergoth/vim-bitbake.git
 	branch = master
 [submodule "vim/bundle/vim-flatbuffers"]
-	path = vim/bundle/vim-flatbuffers
+	path = dotfiles/.vim/bundle/vim-flatbuffers
 	url = https://github.com/zchee/vim-flatbuffers.git
 	branch = master
 [submodule "vim/bundle/rust.vim"]
-	path = vim/bundle/rust.vim
+	path = dotfiles/.vim/bundle/rust.vim
 	url = https://github.com/rust-lang/rust.vim.git
 	branch = master
 [submodule "vim/bundle/vim-localvimrc"]
-	path = vim/bundle/vim-localvimrc
+	path = dotfiles/.vim/bundle/vim-localvimrc
 	url = https://github.com/embear/vim-localvimrc.git
 	branch = master
 [submodule "vim/bundle/vim-textobj-comment"]
-	path = vim/bundle/vim-textobj-comment
+	path = dotfiles/.vim/bundle/vim-textobj-comment
 	url = https://github.com/glts/vim-textobj-comment.git
 	branch = master
 [submodule "vim/bundle/vim-textobj-user"]
-	path = vim/bundle/vim-textobj-user
+	path = dotfiles/.vim/bundle/vim-textobj-user
 	url = https://github.com/kana/vim-textobj-user.git
 	branch = master
