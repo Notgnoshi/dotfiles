@@ -26,8 +26,8 @@ export DOTFILES_DIR
 # Source each of components in alphabetical order.
 # This is where most of the customizations come from.
 ##################################################################################################
-for lib in "${DOTFILES_DIR}/lib/"*.sh; do
-    [ -f "$lib" ] && source "$lib"
+for rcfile in "${DOTFILES_DIR}/bashrc.d/"*.sh; do
+    [ -f "$rcfile" ] && source "$rcfile"
 done
 
 # Enable fzf
