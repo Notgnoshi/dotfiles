@@ -1,0 +1,126 @@
+#!/bin/bash
+# shellcheck disable=SC1090
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DOTFILES_SETUP_SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+export DOTFILES_SETUP_SCRIPT_DIR
+
+source "$DOTFILES_SETUP_SCRIPT_DIR/bashrc.d/010-colors.sh"
+
+usage() {
+    echo "Usage: $0 [--help] [[SETUP_STEP] ...]"
+    echo
+    echo "  --help, -h      Show this help and exit"
+    echo
+    echo "  SETUP_STEP      Optional path(s) to individual setup steps to run"
+    echo "                  By default, all steps in setup.d/ will run in order"
+}
+
+prompt_default_no() {
+    local prompt="$1"
+
+    read -p "${BOLD}${YELLOW}${prompt}${RESET} [y/N]: " -r
+
+    if [[ $REPLY =~ ^[Nn]$ || -z "$REPLY" ]]; then
+        return 1
+    fi
+    return 0
+}
+
+prompt_default_yes() {
+    local prompt="$1"
+
+    read -p "${BOLD}${YELLOW}${prompt}${RESET} [Y/n]: " -r
+
+    if [[ $REPLY =~ ^[Yy]$ || -z "$REPLY" ]]; then
+        return 0
+    fi
+    return 1
+}
+
+github_latest_release_tag() {
+    local repo="$1"
+
+    curl --silent "https://api.github.com/repos/$repo/releases/latest" |
+        grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")'
+}
+
+github_download_release() {
+    local repo="$1"
+    local version="$2"
+    local artifact="$3"
+    local output="${4:-$artifact}"
+
+    curl \
+        --location \
+        --output "$output" \
+        --remote-name "https://github.com/$repo/releases/download/$version/$artifact"
+}
+
+debug() {
+    echo "${BLUE}DEBUG:${RESET} $*"
+}
+
+info() {
+    echo "${GREEN}INFO:${RESET} $*"
+}
+
+error() {
+    echo "${RED}ERROR:${RESET} $*" >&2
+}
+
+main() {
+    local setup_steps=()
+
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+        --help | -h)
+            usage
+            exit 0
+            ;;
+        -*)
+            error "Unknown option: '$1'"
+            exit 1
+            ;;
+        *)
+            setup_steps+=("$1")
+            ;;
+        esac
+        shift
+    done
+
+    # GLOBIGNORE needs to have the same directory prefix as the glob down below
+    local glob_prefix="$DOTFILES_SETUP_SCRIPT_DIR/setup.d"
+    if grep -i ubuntu /etc/os-release &>/dev/null; then
+        debug "Detected Ubuntu"
+        export GLOBIGNORE="$glob_prefix/*fedora*:$glob_prefix/.*"
+    elif grep -i fedora /etc/os-release &>/dev/null; then
+        debug "Detected Fedora"
+        export GLOBIGNORE="$glob_prefix/*ubuntu*:$glob_prefix/.*"
+    else
+        error "Unknown OS detected from /etc/os-release"
+        exit 1
+    fi
+
+    if [[ "${#setup_steps[@]}" -gt 0 ]]; then
+        for setup_step in "${setup_steps[@]}"; do
+            if [[ ! -f "$setup_step" ]]; then
+                error "Step: '$setup_step' doesn't exist..."
+                exit 1
+            fi
+
+            debug "Running: $setup_step ..."
+            source "$setup_step"
+        done
+    else
+        for setup_step in "$glob_prefix"/*; do
+            debug "Running: $setup_step ..."
+            source "$setup_step"
+        done
+    fi
+    info "Finished running setup steps."
+}
+
+main "$@"

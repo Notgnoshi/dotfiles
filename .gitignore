@@ -8,7 +8,7 @@ dotfiles/.vim/viminfo
 dotfiles/.vim/bundle/vis/doc/tags
 
 # Allow adding work-specific aliases without tracking them.
-lib/10-work.sh
+bashrc.d/100-work.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
