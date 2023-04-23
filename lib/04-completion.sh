@@ -36,6 +36,9 @@ if ! shopt -oq posix; then
     #     source "$f"
     # done
 
+    if [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
+        source /usr/share/git-core/contrib/completion/git-prompt.sh
+    fi
     if [ -f /usr/share/bash-completion/completions/docker ]; then
         source /usr/share/bash-completion/completions/docker
         complete -F _docker_cwd docker-cwd
