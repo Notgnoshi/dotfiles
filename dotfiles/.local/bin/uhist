@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import shlex
 from collections import Counter
 from os.path import expanduser
 
@@ -8,6 +9,7 @@ from os.path import expanduser
 MULTI_COMMAND_COMMANDS = {
     "apt",
     "cargo",
+    "dnf",
     "docker",
     "git",
     "ip",
@@ -25,26 +27,44 @@ def get_subcommands(command):
     """Takes the root, or root + subcommand if indicated by MULTI_COMMAND_COMMANDS."""
     if not command:
         return ""
-    root = command[0]
-    if root in MULTI_COMMAND_COMMANDS and len(command) >= 2:
-        root = root + " " + command[1]
-    return root
+
+    # Filter out commands like "CXX=clang++ cmake -B build/"
+    try:
+        parts = shlex.split(command)
+    except ValueError:
+        return ""
+    parts = [p for p in parts if "=" not in p]
+
+    if not parts:
+        return ""
+
+    command = parts[0]
+    if command in MULTI_COMMAND_COMMANDS and len(parts) >= 2:
+        command = command + " " + parts[1]
+    return command
 
 
 def main(n):
     """Analyze and print statistics about ~/.bash_history"""
-    with open(BASH_HISTORY, "r") as history:
-        history = Counter(get_subcommands(c.split()) for c in history)
+    with open(BASH_HISTORY, "r", encoding="utf-8") as history:
+        # Filter out the timestamps
+        history = (l for l in history if not l.startswith("#"))
+        history = Counter(get_subcommands(c) for c in history)
         total = sum(history.values())
 
         for command, count in history.most_common(n):
-            print("\t{}\t{:05.2f}%\t{}".format(count, (count / total) * 100, command))
+            percent = (count / total) * 100
+            print(f"{count}\t{percent:05.2f}%\t{command}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-n", "--number", default=10, type=int, help="The number of most-common items to show",
+        "-n",
+        "--number",
+        default=10,
+        type=int,
+        help="The number of most-common items to show",
     )
 
     args = parser.parse_args()
