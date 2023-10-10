@@ -140,3 +140,7 @@
 	path = stowdir/.tmux/tmux-bash-completion
 	url = git@github.com:imomaliev/tmux-bash-completion.git
 	branch = master
+[submodule "stowdir/.vim/bundle/vim-unimpaired"]
+	path = stowdir/.vim/bundle/vim-unimpaired
+	url = git@github.com:tpope/vim-unimpaired.git
+	branch = master
