@@ -70,3 +70,6 @@ if [[ -n "$__rustc_linker" ]]; then
     unset __rustc_linker_flags
 fi
 unset __rustc_linker
+
+export GITLINT_CONFIG="$HOME/.config/gitlint/gitlint.ini"
+export GITLINT_EXTRA_PATH="$HOME/.config/gitlint/rules/"
