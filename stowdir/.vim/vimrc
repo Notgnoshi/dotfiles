@@ -474,13 +474,13 @@ let g:ale_cpp_clangd_options = '
 let g:ale_cmake_cmake_lint_options = '--config-files .cmake-format.yaml'
 
 let g:ale_rust_analyzer_config = {
-    \ 'cargo': {'loadOutDirsFromCheck': v:true, 'features': 'all'},
+    \ 'cargo': {'features': 'all'},
     \ 'procMacro': {'enable': v:true},
     \ 'check': {'command': 'clippy'},
     \ 'diagnostics': { 'disabled': ['unresolved-proc-macro'] },
 \ }
 
-let g:ale_rust_rustfmt_options = '--config group_imports=StdExternalCrate --config imports_granularity=Module'
+let g:ale_rust_rustfmt_options = '--config group_imports=StdExternalCrate,imports_granularity=Module'
 
 let g:ale_dockerfile_hadolint_use_docker = 'yes'
 
