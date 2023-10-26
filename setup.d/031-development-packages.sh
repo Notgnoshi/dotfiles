@@ -126,7 +126,7 @@ if prompt_default_no "Install/update Rust?"; then
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         # shellcheck disable=SC1090
         [ -f ~/.cargo/env ] && source ~/.cargo/env
-        rustup +nightly component add rust-analyzer-preview
+        rustup component add rust-analyzer
         rustup completions bash >"$DOTFILES_SETUP_SCRIPT_DIR/stowdir/.bash_completion.d/rustup"
         rustup completions bash cargo >"$DOTFILES_SETUP_SCRIPT_DIR/stowdir/.bash_completion.d/cargo"
     fi

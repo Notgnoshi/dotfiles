@@ -473,10 +473,6 @@ let g:ale_cpp_clangd_options = '
 
 let g:ale_cmake_cmake_lint_options = '--config-files .cmake-format.yaml'
 
-" Install with
-"     rustup +nightly component add rust-analyzer-preview
-let g:ale_rust_analyzer_executable = "/home/nots/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer"
-
 let g:ale_rust_analyzer_config = {
     \ 'cargo': {'loadOutDirsFromCheck': v:true, 'features': 'all'},
     \ 'procMacro': {'enable': v:true},
