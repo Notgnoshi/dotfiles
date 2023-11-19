@@ -1,4 +1,8 @@
 #!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o noclobber
 
 hcmnt() {
 
@@ -41,7 +45,7 @@ hcmnt() {
     # INSTALLATION: source this file in your .bashrc
 
     # will not work if HISTTIMEFORMAT is used - use hcmntextra instead
-    export HISTTIMEFORMAT=
+    unset HISTTIMEFORMAT
 
     # HISTTIMEFORMAT still works in a subshell, however, since it gets unset automatically:
 
@@ -166,8 +170,4 @@ hcmnt() {
 
 } # END FUNCTION hcmnt
 
-# set a default (must use -e option to include it)
-export hcmntextra='date "+%Y%m%d %R"' # you must be really careful to get the quoting right
-
-# start using it
-export PROMPT_COMMAND='hcmnt'
+hcmnt "$@"

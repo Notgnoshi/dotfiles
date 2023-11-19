@@ -19,4 +19,7 @@ shopt -s histverify
 # After each command, append, clear, and reload history.
 # This allows sharing history between concurrent sessions.
 # https://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
-PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r;"
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r;hcmnt -el ~/.history_log;"
+
+export hcmntextra='date "+%Y-%m-%d %R"' # you must be really careful to get the quoting right
+export PROMPT_COMMAND
