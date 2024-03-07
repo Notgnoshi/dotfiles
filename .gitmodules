@@ -156,3 +156,7 @@
 	path = stowdir/.vim/bundle/rust.vim
 	url = git@github.com:Notgnoshi/rust.vim.git
 	branch = master
+[submodule "stowdir/.vim/bundle/quick-scope"]
+	path = stowdir/.vim/bundle/quick-scope
+	url = https://github.com/unblevable/quick-scope.git
+	branch = master
