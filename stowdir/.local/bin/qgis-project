@@ -70,10 +70,9 @@ def parse_args():
         help="Open QGIS with the generated project file",
     )
     parser.add_argument(
-        "--group",
-        "-g",
+        "--no-group",
         action="store_true",
-        help="Automatically group things together that are in the same directory",
+        help="Do not automatically group things together that are in the same directory",
     )
     parser.add_argument(
         "--group-depth",
@@ -215,7 +214,7 @@ def main(args):
     elif args.crs:
         crs = args.crs
 
-    success = generate_project(args.layers, args.output, crs, args.group, args.group_depth)
+    success = generate_project(args.layers, args.output, crs, not args.no_group, args.group_depth)
     if not success:
         logging.critical("Failed to generate project. Exiting...")
         qg.exitQgis()
