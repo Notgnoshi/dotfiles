@@ -1,7 +1,7 @@
 #!/bin/bash
 
 (
-    source /opt/dey/1.6.7/environment-setup-cortexa9hf-vfp-neon-dey-linux-gnueabi
+    source /opt/dey/1.6.11/environment-setup-cortexa9hf-vfp-neon-dey-linux-gnueabi
     echo "Paths are relative to the sysroot" >&2
-    xldd --root="/opt/dey/1.6.7/sysroots/cortexa9hf-vfp-neon-dey-linux-gnueabi/" "$@"
+    xldd --root="/opt/dey/1.6.11/sysroots/cortexa9hf-vfp-neon-dey-linux-gnueabi/" "$@"
 )
