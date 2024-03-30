@@ -13,12 +13,20 @@ export PATH="$HOME/.local/bin${PATH:+:${PATH}}"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f ~/.cargo/env ] && source ~/.cargo/env
 
-# TODO: Default session and layouts?
 if [[ -z "$TMUX" ]]; then
-    if ! tmux; then
-        echo "Failed to start tmux"
+    # If there are no existing sessions, make a new one
+    if ! tmux list-sessions >/dev/null 2>&1; then
+        tmux new-session
+    # If there _is_ an existing session, make a new one, but use the first discovered session as a
+    # shared session group. This is the "rogue mode" from https://github.com/zolrath/wemux
+    # Windows are shared (and cursors within a window). But two sessions can be in different windows
+    # at the same time.
+    #
+    # Note that for this to be a pleasant experience, both sessions should use the same size.
+    # Otherwise, when a window gets focused, it will resize both windows.
     else
-        echo "Exiting tmux..."
+        SHARED_SESSION="$(tmux list-sessions -F '#S' | head -1)"
+        tmux new-session -t "$SHARED_SESSION"
     fi
 fi
 
