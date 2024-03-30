@@ -20,9 +20,6 @@ export FZF_CTRL_T_COMMAND="fd --type f"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -n 60'"
 export FZF_CTRL_T_OPTS="--preview 'bat --style changes --color=always --line-range :60 {}'"
 
-# Add ~/.local/bin/ to PATH
-PATH="$HOME/.local/bin${PATH:+:${PATH}}"
-
 # Use vim as my MANPAGER. Has folding, ability to follow links.
 MANPAGER="vim -M +MANPAGER -"
 MANWIDTH=100
@@ -37,7 +34,6 @@ LIBRARY_PATH="$HOME/.local/lib${LIBRARY_PATH:+:${LIBRARY_PATH}}"
 # Setting LIBRARY_PATH is for linking, setting LD_LIBRARY_PATH is for running
 LD_LIBRARY_PATH="$LIBRARY_PATH"
 
-export PATH
 export C_INCLUDE_PATH
 export CPLUS_INCLUDE_PATH
 export LIBRARY_PATH

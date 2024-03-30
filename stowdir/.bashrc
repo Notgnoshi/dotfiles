@@ -7,11 +7,19 @@ case $- in
 *) return ;;
 esac
 
+# Add ~/.local/bin/ to PATH
+export PATH="$HOME/.local/bin${PATH:+:${PATH}}"
+# Need to be sourced before everything else so that bash-completion works as expected.
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.cargo/env ] && source ~/.cargo/env
+
 # TODO: Default session and layouts?
 if [[ -z "$TMUX" ]]; then
-    tmux
-    # Exit before sourcing the rest of my bashrc
-    exit
+    if ! tmux; then
+        echo "Failed to start tmux"
+    else
+        echo "Exiting tmux..."
+    fi
 fi
 
 ##################################################################################################
@@ -28,10 +36,6 @@ done
 DOTFILES_DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)/.."
 DOTFILES_DIR="$(readlink --canonicalize --no-newline "${DOTFILES_DIR}")"
 export DOTFILES_DIR
-
-# Need to be sourced before everything else so that bash-completion works as expected.
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[ -f ~/.cargo/env ] && source ~/.cargo/env
 
 ##################################################################################################
 # Source each of components in alphabetical order.
