@@ -49,30 +49,3 @@ function man() {
         esac
     )
 }
-
-## Add a .git-blame-ignore-revs file if it doesn't exist
-__create_git_blame_ignore_revs() {
-    local repo_dir
-    repo_dir="$(git rev-parse --show-toplevel)"
-    local ignore_file="$repo_dir/.git-blame-ignore-revs"
-    local exclude_file="$repo_dir/.git/info/exclude"
-    if [[ ! -f "$ignore_file" ]]; then
-        touch "$ignore_file"
-        if ! grep --fixed-strings ".git-blame-ignore-revs" "$exclude_file"; then
-            echo ".git-blame-ignore-revs" >>"$exclude_file"
-        fi
-    fi
-}
-
-git() {
-    local subcommand="$1"
-    case "$subcommand" in
-    blame)
-        __create_git_blame_ignore_revs
-        command git "$@"
-        ;;
-    *)
-        command git "$@"
-        ;;
-    esac
-}

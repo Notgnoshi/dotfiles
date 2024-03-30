@@ -73,9 +73,10 @@
 [branch]
     sort = -committerdate
 [blame]
-    # NOTE: I have a Bash override for git-blame that creates this file if it doesn't exist in
-    # bashrc.d/030-aliases.sh
-    ignoreRevsFile = .git-blame-ignore-revs
+    # git-blame fails if this file doesn't exist, and it's too painful to auto-create it if it
+    # doesn't exist (See: https://github.com/Notgnoshi/dotfiles/issues/123). So disable it by
+    # default.
+    # ignoreRevsFile = .git-blame-ignore-revs
     markIgnoredLines = true
     markUnblamableLines = true
 
