@@ -111,7 +111,7 @@
 [submodule "vim/bundle/vim-localvimrc"]
 	path = stowdir/.vim/bundle/vim-localvimrc
 	url = https://github.com/embear/vim-localvimrc.git
-	branch = master
+	branch = main
 [submodule "vim/bundle/vim-textobj-comment"]
 	path = stowdir/.vim/bundle/vim-textobj-comment
 	url = https://github.com/glts/vim-textobj-comment.git
