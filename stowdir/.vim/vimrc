@@ -468,8 +468,6 @@ let g:ale_cpp_clangd_options = '
             \ --clang-tidy
             \'
 
-let g:ale_cmake_cmake_lint_options = '--config-files .cmake-format.yaml'
-
 let g:ale_rust_analyzer_config = {
     \ 'cargo': {'cfgs': ['test'], 'features': 'all'},
     \ 'procMacro': {'enable': v:true},
