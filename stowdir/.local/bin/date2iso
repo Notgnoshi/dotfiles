@@ -1,0 +1,8 @@
+#!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o noclobber
+
+## Convert any UTC date (that date(1) knows how to parse) to an ISO-8601 timestamp
+xargs -I{} date --utc -d "{}" --iso-8601=ns
