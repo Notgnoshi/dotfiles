@@ -1,0 +1,61 @@
+#!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o noclobber
+
+strip-trailing-whitespace() {
+    sed 's/[[:space:]]*$//'
+}
+
+main() {
+    local -r filter_branch_name="sed 's/^[* ]*//' | cut -d ' ' -f1 -"
+    local -r filter_branch="echo {} | $filter_branch_name | head -1"
+    local -r filter_branches="printf '%s\n' {+} | $filter_branch_name"
+    local -r reload="git branch --color=always -vv $*"
+
+    local -r fzf_args=(
+        --preview-label="[ Git Log ]"
+        --preview="$filter_branches | xargs git-gl --no-fzf"
+
+        --header-first
+        --header="<enter>  switch   <ctrl-b> browse   <delete> delete
+<ctrl-f> fetch    <ctrl-p> pull     <ctrl-h> copy"
+
+        # Open the selected branch in a interactive browser to drill deeper
+        --bind="ctrl-b:execute($filter_branch | xargs git-gl)"
+
+        # Copy the selected branch name(s) to clipboard
+        --bind="ctrl-h:execute(
+            $(declare -f strip-trailing-whitespace)
+            $filter_branches | strip-trailing-whitespace | clip
+        )"
+
+        # Switch to the selected branch
+        --bind="enter:become($filter_branch | xargs git switch)"
+
+        # Delete the selected branch(es)
+        --bind="del:execute($filter_branches | xargs git branch --delete --force)+reload($reload)"
+
+        # Fetch
+        --bind="ctrl-f:execute(git fetch)+reload($reload)"
+
+        # Pull selected branch(es), even if they're not checked out
+        --bind="ctrl-p:execute($filter_branches | xargs git-pull-branches)+reload($reload)"
+    )
+
+    if ! git branch --color=always -vv "$@" | fzf \
+        --ansi \
+        --no-sort \
+        --reverse \
+        --exit-0 \
+        --multi \
+        "${fzf_args[@]}" \
+        ; then
+        if [[ $? -eq 130 ]]; then
+            true
+        fi
+    fi
+}
+
+main "$@"

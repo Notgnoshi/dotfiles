@@ -1,0 +1,31 @@
+#!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o noclobber
+
+main() {
+    local branches=("$@")
+    local -r remote="${GIT_REMOTE:-origin}"
+
+    git fetch "$remote"
+
+    local current_branch
+    current_branch="$(git branch --show-current)"
+    # Create a temporary branch right before pulling. If either the pull --rebase or pull --merge
+    # failed, or the stash fails to apply, this can be useful context to help manual intervention.
+    git switch --create "save/$current_branch"
+    git stash
+
+    for branch in "${branches[@]}"; do
+        git switch "$branch"
+        git pull
+    done
+
+    git switch "$current_branch"
+
+    git stash pop
+    git branch --delete "save/$current_branch"
+}
+
+main "$@"
