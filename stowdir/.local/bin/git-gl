@@ -1,96 +1,325 @@
 #!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o noclobber
 
-# Interactively browse git log.
+## Print the (first) selected line
+SINGLE_SELECTION="echo {}"
+## Print all selected lines, one per line
+MULTI_SELECTION="printf '%s\n' {+}"
+
+## Filter the output of git-short-log to just the hashes
+filter-short-hash() {
+    sed -En 's#^[/\*| ]*\s*(\<[a-f0-9]{7,}\>).*#\1#p'
+}
+
+## Expand shortened hashes into full hashes
+expand-full-hash() {
+    xargs git rev-parse | sed 's/[[:space:]]*$//'
+}
+
+strip-trailing-whitespace() {
+    sed 's/[[:space:]]*$//'
+}
+
+git-show-pretty() {
+    git show --submodule --color=always --pretty=fuller "$@"
+}
+
+## A (dumber?) xargs that works with functions
 #
-# Defines multiple keyboard shortcuts:
+# If multiple arguments are passed, the first argument is the name of the function to call, and the
+# rest are passed to xargs
 #
-# <ctrl-c> - exit
-# <ctrl-y> - checkout selected commit
-# <ctrl-h> - copy short hash of selected commit to X11 primary clipboard
-# <ctrl-r> - start an interactive rebase from HEAD to selected commit
-# <ctrl-p> - cherry-pick the selected commit
-# <enter>  - open selected commit in a pager for full viewing pleasure
-#
-# git-gl is a terrible name for this script.
-# At the time, I was just playing around with fzf, and trying to improve my `lg` shortlog alias.
-# I called it 'gl' because I was trying to replace 'lg' with it, and didn't want to remove 'lg' completely.
-# I had every intention of naming it properly, but it's no longer just a shortlog, and I've memorized `git gl`.
-#
-# BUG: There is nothing stopping you from cherry-picking the selected commit on top of itself.
-#      (If you're browsing the current branch, not another one)
-# TODO: There's a lot of boilerplate here, maybe tone down the copy-paste.
-# TODO: Test how interactive rebase works when you are on branch A, and run 'git gl B`.
-fzf-git-browse() {
-    # Ignore tags, and ignore branches prefixed with save/ or trash/
+# TODO: Split out into separate script because this is so useful
+xargs-function() {
+    local function="$1"
+    shift
+
+    export -f "${function?}"
+    xargs "$@" -I% bash -c "$function %"
+}
+
+## Determine if the given string is a valid Git object (revision, reference, etc)
+git-object-exists() {
+    local -r object="$1"
+    git rev-parse -q --verify "$object" >/dev/null
+}
+
+## For the given git-log arguments, determine if it's a git log of the current HEAD or not
+given-branch-is-current-branch() {
+    # We can't predict what, if any, of the git-log arguments are. They're just passed straight to
+    # git-log. Maybe there's formatting, maybe it's '-- /some/file', maybe it's some other branch.
+    # So rather than using rev-parse on HEAD and the branch name (because we don't know what the
+    # branch name is), parse the output of git-log
+    git log --decorate=short --oneline -n 1 --color=never "$@" | grep '[ |\/*]*\<[a-f0-9]\{7,\}\> ([^)]*HEAD' >/dev/null
+}
+
+## Get the default branch for the origin remote
+get-default-branch() {
+    # TODO: Support multiple remotes?
+    local -r remote="${GIT_REMOTE:-origin}"
+
+    set +o errexit
+    local default_branch
+    default_branch="$(git rev-parse --abbrev-ref "$remote/HEAD" 2>/dev/null)"
+    # shellcheck disable=SC2181
+    if [[ $? -eq 0 ]]; then
+        echo "${default_branch#"$remote/"}"
+    fi
+    set -o errexit
+}
+
+## Get the upstream branch for the given reference, if it exists
+get-upstream-branch() {
+    local -r branch="$1"
+    git rev-parse --abbrev-ref --symbolic-full-name --quiet --verify "$branch@{upstream}" 2>/dev/null || true
+}
+
+## Determines if $query is too distant from $base for some definition of "distant" and "too"
+branch-too-distant() {
+    local -r base="$1"
+    local -r query="$2"
+
+    if [[ -z "$base" ]] || [[ -z "$query" ]]; then
+        return 0
+    fi
+
+    local ratio
+    ratio="$(git rev-list --left-right --count "$base...$query")"
+    local behind
+    behind="$(echo "$ratio" | awk '{ print $1 }')"
+    local ahead
+    ahead="$(echo "$ratio" | awk '{ print $2 }')"
+
+    local -r lines="${FZF_PREVIEW_LINES:-${FZF_LINES:-${LINES:-20}}}"
+    local -r limit="$((2 * lines / 3))"
+
+    [[ $behind -gt "$limit" ]] || [[ $ahead -gt "$limit" ]]
+}
+
+## A nicely formatted git log
+git-short-log() {
     git log \
         --graph \
-        --exclude='save/*' \
-        --exclude='trash/*' \
         --color=always \
         --format="%C(auto)%h%d %s %C(dim)%an, %ar" \
         --decorate=short \
-        `#--decorate-refs-exclude='refs/tags/*'` \
-        `# Pass all arguments through to git-log` \
-        "$@" |
+        "$@"
+}
+
+## An interactive decorator around git-short-log
+fzf-git-log() {
+    local fzf_args=(
+        # Show a preview of each commit with 'git show | delta'
+        --preview-label="[ Commit ]"
+        --preview="
+        $(declare -f filter-short-hash git-show-pretty xargs-function)
+        $SINGLE_SELECTION |
+            filter-short-hash |
+            xargs-function git-show-pretty |
+            DELTA_FEATURES='line-numbers' delta --width \$FZF_PREVIEW_COLUMNS
+        "
+
+        # Selecting a commit with <enter> will open it in a pager
+        --bind="enter:execute(
+            $(declare -f filter-short-hash git-show-pretty xargs-function)
+            $MULTI_SELECTION |
+                filter-short-hash |
+                xargs-function git-show-pretty |
+                delta --width \$(tput cols) --paging=always |
+                LESS=R less
+        )"
+
+        # Copy the selected commits hashes to the clipboard
+        --bind="ctrl-h:execute(
+            $(declare -f filter-short-hash expand-full-hash strip-trailing-whitespace)
+            $MULTI_SELECTION |
+                filter-short-hash |
+                expand-full-hash |
+                tr '\n' ' ' |
+                strip-trailing-whitespace |
+                clip
+        )"
+
+        # Copy the selected commit *messages* to the clipboard
+        --bind="ctrl-g:execute(
+            $(declare -f filter-short-hash)
+            $MULTI_SELECTION |
+                filter-short-hash |
+                xargs git show -s --format=%B |
+                clip
+        )"
+
+        # Checkout the selected commit
+        --bind="ctrl-y:become(
+            $(declare -f filter-short-hash)
+            $SINGLE_SELECTION |
+                filter-short-hash |
+                xargs git checkout
+        )"
+    )
+
+    local fzf_header="<ctrl-h> copy hash   <ctrl-g> copy message   <ctrl-y> checkout"
+
+    # Check if the git-log invocation is targeting the current branch, or some other branch.
+    # This lets us enable/disable different functionality like cherry-picking and rebasing.
+    if given-branch-is-current-branch "$@"; then
+        fzf_header="$fzf_header   <ctrl-r> rebase"
+        fzf_args+=(
+            # Interactively rebase the current branch onto the selected commit
+            #
+            # When multile commits are selected, mark each of the selected commits (except for the
+            # rebase target) as commits to be 'edit'ed.
+            --bind="ctrl-r:execute(
+                $(declare -f filter-short-hash)
+
+                if [[ \$FZF_SELECT_COUNT -gt 1 ]]; then
+                    # fzf --multi selection can select in arbitrary order. So we take the selected
+                    # commits, topo-sort them, and grab the last one as the rebase target.
+                    GIT_GL_REBASE_TARGET=\"\$(
+                        $MULTI_SELECTION | filter-short-hash | xargs git rev-list --topo-order --no-walk | tail -1 | xargs git rev-parse --short
+                    )\"
+
+                    # Build a Vim startup command to transform the selected commits 'pick' command
+                    # to 'edit'. But skip the rebase target, because it's less likely that editing
+                    # it automatically is desired.
+                    #
+                    # This doesn't do what you want if there's only one hash selected, so special
+                    # case on FZF_SELECT_COUNT above
+                    GIT_GL_CAPTURE_GROUP=\"\$(
+                        $MULTI_SELECTION | filter-short-hash | grep -v \$GIT_GL_REBASE_TARGET | tr '\n' '|'
+                    )\"
+                    GIT_GL_REPLACEMENT_COMMAND=\"%s/\\v^pick (\${GIT_GL_CAPTURE_GROUP%|})/edit \\1/\"
+                    GIT_EDITOR=\"vim -c \\\"\$GIT_GL_REPLACEMENT_COMMAND\\\"\" git rebase --interactive \$GIT_GL_REBASE_TARGET~
+                else
+                    $SINGLE_SELECTION | filter-short-hash | xargs -oI % git rebase --interactive %~
+                fi
+            )+abort"
+        )
+    else
+        fzf_header="$fzf_header   <ctrl-p> cherry pick"
+        fzf_args+=(
+            # Cherry pick the selected commits (in the order that they were selected)
+            --bind="ctrl-p:execute(
+                $(declare -f filter-short-hash)
+
+                $MULTI_SELECTION |
+                    filter-short-hash |
+                    xargs -o git cherry-pick
+            )+abort"
+        )
+    fi
+
+    if ! git-short-log "$@" |
         fzf \
-            `# Enables selecting content with mouse.` \
-            --no-mouse \
-            --header "<ctrl-y> checkout   <ctrl-h> copy hash   <ctrl-r> rebase   <ctrl-p> cherry pick" \
             --ansi \
             --no-sort \
             --reverse \
             --exit-0 \
-            --preview "echo {} \
-                | grep -o '\<[a-f0-9]\{7,\}\>' \
-                | head -1 \
-                | xargs -I % sh -c 'git show --submodule --color=always --pretty=fuller %' \
-                | DELTA_FEATURES="" delta --features='line-numbers' --width \$FZF_PREVIEW_COLUMNS" \
-            `# Open selected commit in a pager so you can see the whole thing` \
-            --bind "enter:execute( \
-                echo {} \
-                    | grep -o '\<[a-f0-9]\{7,\}\>' \
-                    | head -1 \
-                    | xargs -I % sh -c 'git show --submodule --color=always --pretty=fuller %' \
-                    | delta --width \$(tput cols) --paging=always \
-                    | LESS=R less \
-                )" \
-            `# Checkout the selected commit (y for yank)` \
-            --bind "ctrl-y:execute( \
-                echo {} \
-                    | grep -o '\<[a-f0-9]\{7,\}\>' \
-                    | head -1 \
-                    | xargs -I % sh -c \
-                        'git checkout %' \
-                )+abort" \
-            `# Copy the selected commit's short hash to the clipboard (h for hash)` \
-            --bind "ctrl-h:execute( \
-                echo {} \
-                    | grep -o '\<[a-f0-9]\{7,\}\>' \
-                    | head -1 \
-                    | xargs git rev-parse \
-                    | tr -d '\n' \
-                    | clip \
-                )" \
-            `# Perform an interactive rebase from the current HEAD to the selected commit` \
-            --bind "ctrl-r:execute( \
-                echo {} \
-                    | grep -o '\<[a-f0-9]\{7,\}\>' \
-                    | head -1 \
-                    | tr -d '\n' \
-                    | xargs -oI % git rebase --interactive %~ \
-                )+abort" \
-            `# Cherry pick the selected commit.` \
-            --bind "ctrl-p:execute( \
-                echo {} \
-                    | grep -o '\<[a-f0-9]\{7,\}\>' \
-                    | head -1 \
-                    | tr -d '\n' \
-                    | xargs -oI % git cherry-pick % \
-                )+abort"
-    # Do not register a user exit of fzf as an error.
-    if [ $? -eq 130 ]; then
-        true
+            --multi \
+            --header-first \
+            --header="$fzf_header" \
+            "${fzf_args[@]}"; then
+
+        # fzf returns 130 when user exits with ctrl-c or similar
+        if [[ $? -eq 130 ]]; then
+            true
+        fi
     fi
 }
 
-fzf-git-browse "$@"
+## Interactively browse the git log
+main() {
+    local use_fzf="true"
+    local heuristics="true"
+    local args=()
+
+    for arg in "$@"; do
+        if [[ "$arg" = "--no-fzf" ]]; then
+            use_fzf="false"
+        elif [[ "$arg" = "--no-heuristics" ]]; then
+            heuristics="false"
+        else
+            args+=("$arg")
+        fi
+    done
+
+    # Determine which, if any, of the arguments are git objects
+    local git_refs=()
+    for arg in "${args[@]}"; do
+        if git-object-exists "$arg"; then
+            git_refs+=("$arg")
+        # Branch heuristics don't make sense when looking at the log for a file path
+        elif [[ -e "$arg" ]]; then
+            heuristics="false"
+        fi
+    done
+
+    # If there were no arguments passed, we don't want to override showing 'git log HEAD' by adding
+    # extra branches in there.
+    if [[ "$heuristics" = "true" ]] && [[ ${#git_refs[@]} -eq 0 ]]; then
+        local current_ref
+        current_ref="$(git branch --show-current)"
+        if [[ -n "$current_ref" ]]; then
+            git_refs+=("$current_ref")
+            args+=("$current_ref")
+        else
+            git_refs+=(HEAD)
+            args+=(HEAD)
+        fi
+    fi
+
+    # Use distance heuristics to pick appropriate additional branches to show (upstream branches,
+    # default branch, etc)
+    if [[ "$heuristics" = "true" ]]; then
+        local extra_refs=()
+        local default_branch
+        default_branch="$(get-default-branch)"
+
+        local default_branch_too_distant="false"
+        local default_branch_already_listed="false"
+        for ref in "${git_refs[@]}"; do
+            local upstream
+            upstream="$(get-upstream-branch "$ref")"
+
+            if [[ -n "$upstream" ]]; then
+                if ! branch-too-distant "$ref" "$upstream"; then
+                    extra_refs+=("$upstream")
+                fi
+            fi
+
+            # We only want to show the default branch if it's close enough to _all_ branches given
+            if branch-too-distant "$ref" "$default_branch"; then
+                default_branch_too_distant="true"
+            fi
+
+            if [[ "$ref" = "$default_branch" ]]; then
+                default_branch_already_listed="true"
+            fi
+        done
+
+        if [[ "$default_branch_too_distant" = "false" ]] && [[ "$default_branch_already_listed" = "false" ]]; then
+            if [[ -n "$default_branch" ]]; then
+                extra_refs+=("$default_branch")
+            fi
+
+            local upstream
+            upstream="$(get-upstream-branch "$default_branch")"
+            if [[ -n "$upstream" ]]; then
+                extra_refs+=("$upstream")
+            fi
+        fi
+
+        args+=("${extra_refs[@]}")
+    fi
+
+    if [[ "$use_fzf" = "true" ]]; then
+        fzf-git-log "${args[@]}"
+    else
+        git-short-log "${args[@]}"
+    fi
+}
+
+main "$@"
