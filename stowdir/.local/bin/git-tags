@@ -1,0 +1,94 @@
+#!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o noclobber
+
+## Print the (first) selected line
+SINGLE_SELECTION="echo {}"
+## Print all selected lines, one per line
+MULTI_SELECTION="printf '%s\n' {+}"
+
+## List git tags
+#
+# Example output
+#   v0.0.1  v0.0.1
+#   v0.0.2  Tag annotation here
+list-git-tags() {
+    git tag \
+        -n1 \
+        --list \
+        --sort -taggerdate \
+        --format="%(color:yellow)%(refname:short)%(color:reset)%09%(contents:lines=1)" \
+        "$@"
+}
+
+## Given multiple lines of output from git-tag, extract the tag names
+filter-git-tags() {
+    cut -f1 -
+}
+
+## Given a single line of output from git-tag, extract the tag name
+filter-git-tag() {
+    cut -f1 - | head -1
+}
+
+strip-trailing-whitespace() {
+    sed 's/[[:space:]]*$//'
+}
+
+main() {
+    local -r fzf_args=(
+        --header-first
+        --header="<enter> checkout   <ctrl-f> fetch   <ctrl-h> copy   <delete> delete"
+
+        # Show a preview of the git log starting at each commit
+        --preview-label="[ Git Log ]"
+        --preview="
+            $(declare -f filter-git-tag)
+            $SINGLE_SELECTION | filter-git-tag | xargs git-gl --no-fzf --no-heuristics
+        "
+
+        # Open the selected tag in git-gl for more in-depth exploration
+        --bind="ctrl-b:execute(
+            $(declare -f filter-git-tag)
+            $SINGLE_SELECTION | filter-git-tag | xargs git-gl
+        )"
+
+        # Checkout the single selected tag
+        --bind="enter:execute(
+            $(declare -f filter-git-tag)
+            $SINGLE_SELECTION | filter-git-tag | xargs git checkout
+        )+abort"
+
+        # Copy the selected tags to the clipboard
+        --bind="ctrl-h:execute(
+            $(declare -f filter-git-tags strip-trailing-whitespace)
+            $MULTI_SELECTION | filter-git-tags | strip-trailing-whitespace | clip
+        )"
+
+        # Delete the selected tags
+        --bind="del:execute(
+            $(declare -f filter-git-tags)
+            $MULTI_SELECTION | filter-git-tags | xargs git tag --delete
+        )+reload(
+            $(declare -f list-git-tags)
+            list-git-tags $@
+        )"
+    )
+
+    if ! list-git-tags "$@" | fzf \
+        --ansi \
+        --no-sort \
+        --reverse \
+        --exit-0 \
+        --multi \
+        "${fzf_args[@]}" \
+        ; then
+        if [[ $? -eq 130 ]]; then
+            true
+        fi
+    fi
+}
+
+main "$@"
