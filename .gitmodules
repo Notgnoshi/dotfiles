@@ -160,3 +160,7 @@
 	path = stowdir/.vim/bundle/quick-scope
 	url = https://github.com/unblevable/quick-scope.git
 	branch = master
+[submodule "stowdir/.vim/bundle/vim-plugin-AnsiEsc"]
+	path = stowdir/.vim/bundle/vim-plugin-AnsiEsc
+	url = https://github.com/powerman/vim-plugin-AnsiEsc.git
+	branch = master
