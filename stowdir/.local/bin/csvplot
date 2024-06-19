@@ -4,6 +4,7 @@ import argparse
 import csv
 import logging
 import sys
+import time
 from typing import Optional
 
 import matplotlib.pyplot as plt
@@ -22,7 +23,7 @@ def parse_args():
         "--log-level",
         "-l",
         type=str,
-        default="INFO",
+        default="DEBUG",
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         help="Set the logging output level. Defaults to INFO.",
     )
@@ -131,6 +132,8 @@ def main(args):
     xs = []
     yss = [[] for _ in y_indices]
 
+    logging.debug("Parsing CSV ...")
+    start = time.time()
     row_index = 0
     for row in reader:
         x = row[x_index] if x_index is not None else row_index
@@ -143,17 +146,22 @@ def main(args):
             y = parse_float(y)
             yss[yi].append(y)
 
+    logging.debug("Parsed CSV after %fs", time.time() - start)
+
     plotter = plt.plot if args.kind == "line" else plt.scatter
     for name, ys in zip(y_names, yss):
+        logging.debug("Plotting '%s' ...", name)
         plotter(xs, ys, label=name)
 
+    logging.debug("Configuring plot ...")
     ax = plt.gca()
     if args.xlim is not None:
         ax.set_xlim(args.xlim)
     if args.ylim is not None:
         ax.set_ylim(args.ylim)
     plt.xlabel(x_name)
-    plt.legend()
+    plt.legend(loc="upper right")
+    logging.debug("Showing plot ...")
     plt.show()
 
 
