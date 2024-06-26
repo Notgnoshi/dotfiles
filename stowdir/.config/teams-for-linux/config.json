@@ -1,0 +1,6 @@
+{
+    "closeAppOnCross": true,
+    "disableGlobalShortcuts": [
+        "Ctrl+Shift+C"
+    ]
+}
