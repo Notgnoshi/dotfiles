@@ -1,0 +1,19 @@
+#!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o noclobber
+
+# Filter out anything other than normal files (notably submodules)
+filter_files() {
+    while read -r path; do
+        if [[ -f "$path" ]]; then
+            echo "$path"
+        fi
+    done
+}
+
+# Quickly open modified files in your $EDITOR
+git ls-files "${@:---modified}" |
+    filter_files |
+    xargs --open-tty "${EDITOR:-vim}"
