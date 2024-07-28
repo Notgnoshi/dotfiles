@@ -2,8 +2,8 @@
 
 # go up n levels
 up() {
-    TMP=$PWD
-    LEVELS=${1:-1}
+    local -r TMP=$PWD
+    local -r LEVELS=${1:-1}
     for _ in $(seq "$LEVELS"); do
         cd ..
     done

@@ -25,8 +25,7 @@ if [[ -z "$TMUX" ]]; then
     # Note that for this to be a pleasant experience, both sessions should use the same size.
     # Otherwise, when a window gets focused, it will resize both windows.
     else
-        SHARED_SESSION="$(tmux list-sessions -F '#S' | head -1)"
-        tmux new-session -t "$SHARED_SESSION"
+        tmux new-session -t "$(tmux list-sessions -F '#S' | head -1)"
     fi
 fi
 
@@ -44,6 +43,8 @@ done
 DOTFILES_DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)/.."
 DOTFILES_DIR="$(readlink --canonicalize --no-newline "${DOTFILES_DIR}")"
 export DOTFILES_DIR
+unset -v DIR
+unset -v SOURCE
 
 ##################################################################################################
 # Source each of components in alphabetical order.
@@ -52,3 +53,4 @@ export DOTFILES_DIR
 for rcfile in "${DOTFILES_DIR}/bashrc.d/"*.sh; do
     [ -f "$rcfile" ] && source "$rcfile"
 done
+unset -v rcfile
