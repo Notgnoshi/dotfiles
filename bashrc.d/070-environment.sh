@@ -48,8 +48,7 @@ export VIMWIKI_PATH="$HOME/Documents/notes/"
 export LESS=FRX
 
 # Use parallel make by default
-PROCS=$(($(nproc) - 1))
-export MAKEFLAGS="-j$PROCS"
+export MAKEFLAGS="-j$(($(nproc) - 1))"
 
 __rustc_linker=""
 if command mold --version >/dev/null 2>&1; then

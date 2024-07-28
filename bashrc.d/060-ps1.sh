@@ -10,7 +10,7 @@ PS1="\u@\h \[${GREEN}\]\w"
 # connected.
 ##################################################################################################
 __vpn_connection_status() {
-    OLD_EXIT_STATUS=$?
+    local -r OLD_EXIT_STATUS=$?
 
     if [[ -z "$VPN_GATEWAY" ]]; then
         return $OLD_EXIT_STATUS
@@ -26,7 +26,7 @@ __vpn_connection_status() {
 }
 
 __vpn_running() {
-    OLD_EXIT_STATUS=$?
+    local -r OLD_EXIT_STATUS=$?
     if pgrep openconnect >/dev/null; then
         echo -n "(VPN) "
     fi
@@ -39,7 +39,7 @@ PS1="\[\$(__vpn_connection_status)\]\$(__vpn_running)\[${RESET}\]${PS1}"
 # Indicate that your shell is polluted by a Yocto eSDK toolchain environment
 ##################################################################################################
 __yocto_sysroot_ps1() {
-    OLD_EXIT_STATUS=$?
+    local -r OLD_EXIT_STATUS=$?
     if [[ -n "$OECORE_TARGET_SYSROOT" ]]; then
         echo -n "[$(basename "$OECORE_TARGET_SYSROOT")] "
     fi
@@ -120,8 +120,8 @@ fi
 # List the number of background jobs
 ##################################################################################################
 __list_background_jobs() {
-    OLD_EXIT_STATUS=$?
-    NUM_BACKGROUND_JOBS=$(jobs | wc -l)
+    local -r OLD_EXIT_STATUS=$?
+    local -r NUM_BACKGROUND_JOBS=$(jobs | wc -l)
     if [[ "$NUM_BACKGROUND_JOBS" -gt 0 ]]; then
         echo -n " [$NUM_BACKGROUND_JOBS]"
     fi
