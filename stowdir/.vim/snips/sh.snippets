@@ -58,22 +58,21 @@ set -o pipefail
 set -o nounset
 set -o noclobber
 
-export RED=$(tput setaf 1)
-export GREEN=$(tput setaf 2)
-export YELLOW=$(tput setaf 3)
-export BLUE=$(tput setaf 4)
-export RESET=$(tput sgr0)
+RED="\033[31m"
+GREEN="\033[32m"
+BLUE="\033[34m"
+RESET="\033[0m"
 
 debug() {
-    echo "${BLUE}DEBUG:${RESET} $*"
+    echo -e "${BLUE}DEBUG:${RESET} $*" >&2
 }
 
 info() {
-    echo "${GREEN}INFO:${RESET} $*"
+    echo -e "${GREEN}INFO:${RESET} $*" >&2
 }
 
 error() {
-    echo "${RED}ERROR:${RESET} $*" >&2
+    echo -e "${RED}ERROR:${RESET} $*" >&2
 }
 
 usage() {
