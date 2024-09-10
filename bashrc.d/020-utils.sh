@@ -50,8 +50,51 @@ additions() {
 }
 
 # Remove the given item from your $PATH.
-remove-from-path() {
-    export PATH=$(echo -n "$PATH" | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//')
+remove-path() {
+    local entry="$1"
+    entry="$(readlink -f "$entry")"
+
+    if [[ ":$PATH:" == *":$entry:"* ]]; then
+        local intermediate=":$PATH:"
+        intermediate="${intermediate//:/::}"
+        intermediate="${intermediate//:"$entry:"/}"
+        intermediate="${intermediate//::/:}"
+        intermediate="${intermediate#:}"
+        intermediate="${intermediate%:}"
+        export PATH="$intermediate"
+        echo "$PATH" >&2
+    else
+        echo "'$entry' not found in PATH: '$PATH'" >&2
+        return 1
+    fi
+}
+
+# Append the given item to the end of your $PATH
+append-path() {
+    local entry="$1"
+    entry="$(readlink -f "$entry")"
+
+    if [[ ":$PATH:" == *":$entry:"* ]]; then
+        echo "'$entry' already in PATH: '$PATH'" >&2
+        return 1
+    fi
+
+    export PATH="$PATH:$entry"
+    echo "$PATH" >&2
+}
+
+# Prepend the given item to the beginning of your $PATH
+prepend-path() {
+    local entry="$1"
+    entry="$(readlink -f "$entry")"
+
+    if [[ ":$PATH:" == *":$entry:"* ]]; then
+        echo "'$entry' already in PATH: '$PATH'" >&2
+        return 1
+    fi
+
+    export PATH="$entry:$PATH"
+    echo "$PATH" >&2
 }
 
 # Search for, preview, and open man pages
@@ -63,7 +106,7 @@ fman() {
         xargs -r man
 }
 
-shellquote () {
-  printf '%q' "$(cat)"
-  echo
+shellquote() {
+    printf '%q' "$(cat)"
+    echo
 }
