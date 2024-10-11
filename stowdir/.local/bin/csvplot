@@ -132,6 +132,8 @@ def main(args):
     xs = []
     yss = [[] for _ in y_indices]
 
+    ymin, ymax = args.ylim if args.ylim is not None else (None, None)
+
     logging.debug("Parsing CSV ...")
     start = time.time()
     row_index = 0
@@ -141,10 +143,28 @@ def main(args):
         xs.append(x)
         row_index += 1
 
+        ymin_, ymax_ = None, None
         for yi, ci in enumerate(y_indices):
             y = row[ci]
             y = parse_float(y)
+            if ymin_ is None or y < ymin_:
+                ymin_ = y
+            if ymax_ is None or y > ymax_:
+                ymax_ = y
             yss[yi].append(y)
+
+        # If we're restricting the x axis, also restrict the y axis to the values within that range
+        if args.xlim is not None and args.ylim is None:
+            xmin, xmax = args.xlim
+            if xmin <= x <= xmax:
+                if ymin is None or ymin_ < ymin:
+                    ymin = ymin_
+                if ymax is None or ymax_ > ymax:
+                    ymax = ymax_
+
+    if args.ylim is None and ymin is not None and ymax is not None:
+        args.ylim = (ymin, ymax)
+        logging.debug("Auto-resizing ylim to %s because xlim is set", args.ylim)
 
     logging.debug("Parsed CSV after %fs", time.time() - start)
 
