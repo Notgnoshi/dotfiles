@@ -15,12 +15,14 @@ backend
 backport
 backported
 backporting
+backpressure
 barcode
 bashrc
 BitBake
 bool
 boolean
 breakpoint
+bugfix
 CamelCase
 candump
 candumps
@@ -98,6 +100,8 @@ ignorecase
 init
 initializer
 instantiation
+interrogable
+Interrogable
 IPv4
 ipv6
 iteratively
@@ -119,8 +123,10 @@ LINESTRING
 linestrings
 linters
 llvm
+localhost
 Lol
 lookahead
+loopback
 makefile
 masse
 md
@@ -206,6 +212,7 @@ syslog
 Tartarus
 terraform
 Theming
+threadsafe
 tilings
 Tilix
 timestamp
