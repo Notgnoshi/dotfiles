@@ -10,7 +10,7 @@ jedi
 jedi-language-server
 libtmux
 matplotlib>=3.6.0
-numpy<1.25.0
+numpy
 parsedatetime
 pandas
 pip
