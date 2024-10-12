@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Minecraft
+Comment=Minecraft Launcher
+Exec=.minecraft/launcher/minecraft-launcher
+Icon=minecraft-launcher
+Terminal=false
+Categories=Game;
