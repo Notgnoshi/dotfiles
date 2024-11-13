@@ -430,10 +430,13 @@ let g:ale_fixers = {
             \   'html':     ['prettier'],
             \   'javascript':['prettier'],
             \   'json':     ['jq'],
+            \   'markdown': ['dprint'],
             \   'python':   ['isort', 'black'],
             \   'rust':     ['rustfmt'],
             \   'sh':       ['shfmt'],
             \   'tex':      ['latexindent'],
+            \   'toml':     ['dprint'],
+            \   'vimwiki':  ['dprint'],
             \}
 let g:ale_linters = {
             \   'cmake':    ['cmake_lint'],
