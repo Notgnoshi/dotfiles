@@ -179,6 +179,12 @@ set nojoinspaces
 set title
 " Same as title string set by .bashrc, but with the filename and mode too.
 set titlestring=%{$USER}@%{hostname()}:\ %F\ %m
+set titleold=
+
+augroup NoThanksForFlyingVim
+    autocmd!
+    autocmd VimLeave * set notitle
+augroup END
 
 " Show line numbers
 set number
