@@ -198,7 +198,7 @@ fzf-git-log() {
 
                 $MULTI_SELECTION |
                     filter-short-hash |
-                    xargs -o git cherry-pick
+                    xargs -o git cherry-pick -x
             )+abort"
         )
     fi
