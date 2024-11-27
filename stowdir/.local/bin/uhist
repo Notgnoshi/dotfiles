@@ -6,19 +6,16 @@ from os.path import expanduser
 # Commands like 'git' where 'git add' and 'git rebase' should be treated as
 # distinctly different.
 MULTI_COMMAND_COMMANDS = {
-    "apt",
     "cargo",
-    "dnf",
     "docker",
     "git",
-    "ip",
-    "route",
-    "service",
-    "sudo",
-    "systemctl",
 }
 
-COMMAND_WRAPPERS = ["notify", "time"]
+COMMAND_WRAPPERS = {
+    "notify",
+    "sudo",
+    "time",
+}
 
 BASH_HISTORY = expanduser("~/.bash_history")
 
@@ -29,7 +26,7 @@ def get_subcommands(command):
         return ""
 
     # Strip off the wrapper
-    if command in COMMAND_WRAPPERS and len(command) >= 2:
+    if command[0] in COMMAND_WRAPPERS and len(command) >= 2:
         command = command[1:]
 
     root = command[0]
