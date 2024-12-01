@@ -4,26 +4,26 @@ My personal dotfiles and shell scripts
 
 Customizes a vanilla Fedora or Ubuntu system to my preferences.
 
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Setting up and maintaining a new system](#setting-up-and-maintaining-a-new-system)
-    - [How it works](#how-it-works)
-- [Shell scripts](#shell-scripts)
-- [Shell customizations](#shell-customizations)
-    - [bashrc](#bashrc)
-        - [Keeping myself organized](#keeping-myself-organized)
-        - [PS1 - bashrc.d/060-ps1.sh](#ps1---bashrcd060-ps1sh)
-        - [History - bashrc.d/050-history.sh](#history---bashrcd050-historysh)
-        - [Environment variables - bashrc.d/070-environment.sh](#environment-variables---bashrcd070-environmentsh)
-    - [i <3 fzf](#i-3-fzf)
-        - [A better reverse history search](#a-better-reverse-history-search)
-        - [Finding files](#finding-files)
-        - [Navigating in Vim](#navigating-in-vim)
-        - [Browsing Git commits](#browsing-git-commits)
-    - [tmux](#tmux)
-- [Vim customizations](#vim-customizations)
-    - [ALE](#ale)
-    - [The rest](#the-rest)
+* [Prerequisites](#prerequisites)
+* [Installation](#installation)
+* [Setting up and maintaining a new system](#setting-up-and-maintaining-a-new-system)
+  * [How it works](#how-it-works)
+* [Shell scripts](#shell-scripts)
+* [Shell customizations](#shell-customizations)
+  * [bashrc](#bashrc)
+    * [Keeping myself organized](#keeping-myself-organized)
+    * [PS1 - bashrc.d/060-ps1.sh](#ps1---bashrcd060-ps1sh)
+    * [History - bashrc.d/050-history.sh](#history---bashrcd050-historysh)
+    * [Environment variables - bashrc.d/070-environment.sh](#environment-variables---bashrcd070-environmentsh)
+  * [i <3 fzf](#i-3-fzf)
+    * [A better reverse history search](#a-better-reverse-history-search)
+    * [Finding files](#finding-files)
+    * [Navigating in Vim](#navigating-in-vim)
+    * [Browsing Git commits](#browsing-git-commits)
+  * [tmux](#tmux)
+* [Vim customizations](#vim-customizations)
+  * [ALE](#ale)
+  * [The rest](#the-rest)
 
 ---
 
@@ -63,7 +63,8 @@ and delete the stale symlinks.
 
 I _highly_ recommend Stow, _especially_ over doing it yourself.
 
-Installed applications and system preferences are listed in various scriptlets in [./setup.d/](./setup.d).
+Installed applications and system preferences are listed in various scriptlets in
+[./setup.d/](./setup.d).
 
 All of this is managed through the [setup](./setup) script, which handles Ubuntu/Fedora differences
 using the `-fedora.sh` or `-ubuntu.sh` suffix on the `./setup.d/*.sh` scriptlets when there's
@@ -97,6 +98,7 @@ Here's some of the highlights:
 ## bashrc
 
 ### Keeping myself organized
+
 As my bashrc and setup scripts have grown, I've found the need to break them apart. My `~/.bashrc`
 nowadays is essentially
 
@@ -126,15 +128,16 @@ My PS1 is fairly dynamic and gives several useful at-a-glance status indicators:
 * List the number of background jobs, if there are any
 * Indicate whether I'm connected to the current device over SSH or a serial connection (requires
   this PS1 to be configured on the remote device)
-* Indicate whether this shell's environment has been polluted by a [Yocto
-  SDK](https://docs.yoctoproject.org/sdk-manual/index.html), and which SDK, if it has been
+* Indicate whether this shell's environment has been polluted by a
+  [Yocto SDK](https://docs.yoctoproject.org/sdk-manual/index.html), and which SDK, if it has been
 * Indicate if my work VPN is running, and if it is, whether or not it has a route to the gateway
-    * Requires `VPN_GATEWAY` be set, which I do with `bashrc.d/100-work.sh`, which is `.gitignore`d
+  * Requires `VPN_GATEWAY` be set, which I do with `bashrc.d/100-work.sh`, which is `.gitignore`d
 
 **I highly recommend using `__git_ps1`. I frequently see coworkers getting confused because they
 weren't aware of the state their worktree was in before or after some Git incantation.**
 
 ### History - [bashrc.d/050-history.sh](bashrc.d/050-history.sh)
+
 * Keep an infinite history
 * Keep track of the date and time each command was run on
 * Share the same history between every shell
@@ -143,11 +146,13 @@ weren't aware of the state their worktree was in before or after some Git incant
 history wiped out.
 
 ### Environment variables - [bashrc.d/070-environment.sh](bashrc.d/070-environment.sh)
+
 I refuse to run `sudo make install`.
 
 So I use environment variables to make `~/.local/` act just like `/usr/local/`.
 
 ## i <3 fzf
+
 [fzf](https://github.com/junegunn/fzf) has had a profound impact on my perceived usability of the
 terminal.
 
@@ -162,11 +167,13 @@ to spell something perfectly.
 This combines nicely with a permanent Bash history.
 
 ### Finding files
+
 Outside of Vim, I use `ctrl-t` to open a fuzzy file-finder.
 
 ![](data/fzf-ctrl-t.png)
 
 ### Navigating in Vim
+
 Inside of Vim, I use `:GFiles` and sometimes just `:Files` to do exactly the same thing. I use this
 often enough that I have keybinds for it.
 
@@ -189,16 +196,16 @@ optimized for my workflow.
 
 ![](data/git-gl.png)
 
-It accept any argument that `git log` accepts, and also has [Bash
-completion](stowdir/.bash_completion.d/git-gl.bash-completion) to tab-complete, because that's just
-plain nice.
+It accept any argument that `git log` accepts, and also has
+[Bash completion](stowdir/.bash_completion.d/git-gl.bash-completion) to tab-complete, because that's
+just plain nice.
 
 * Press `enter` to open `git show` for the selected commit, using
   [`delta`](https://github.com/dandavison/delta) as the pager, which provides word diffs, and
   side-by-side diffs if the terminal is wide enough.
 * Press `ctrl-y` to `git checkout` the selected commit
-* Press `ctrl-h` to copy the selected commit's hash to my clipboard (useful for `git commit
-  --fixup=<hash>` commits)
+* Press `ctrl-h` to copy the selected commit's hash to my clipboard (useful for
+  `git commit --fixup=<hash>` commits)
 * Press `ctrl-p` to `git cherry-pick` the selected commit onto your current branch (you probably
   only want to do this if you run `git gl` on a branch other than your current one).
 * Press `ctrl-r` to perform an interactive rebase targetting the selected commit
@@ -212,6 +219,7 @@ from the tip to the root would be less painful?)
 I don't run `git log` or `git rebase` by hand anymore.
 
 ## tmux
+
 I used to use [Tilix](https://github.com/gnunn1/tilix) as my terminal emulator, but it's
 unmaintained, and sometimes crashes. The primary reason I used to use it was to get side-by-side
 terminal panes.
@@ -224,11 +232,13 @@ keybinds `ctrl-{h,j,k,l}` to seamlessly navigate between Vim splits and tmux pan
 # Vim customizations
 
 ## ALE
+
 I use [ALE](https://github.com/dense-analysis/ale) to provide completion, code formatting, and
 linting in Vim. It supports any language I care to use, and provides enough configuration hooks for
 me to use whatever formatter / linter / LSP a project requires.
 
 I mostly use
+
 * rust-analyzer
 * clangd
 * clang-format
@@ -239,6 +249,7 @@ I mostly use
 * gitlint
 
 ALE provides the IDE experience I want:
+
 * Jump to definition
 * Find references
 * Rename
@@ -256,6 +267,7 @@ I don't want a "big green 'go' button", because my experience has shown me that
   developers won't trust the pipeline
 
 ## The rest
+
 I won't list each plugin, but here's the important ones:
 
 * https://github.com/dense-analysis/ale
