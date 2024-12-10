@@ -14,6 +14,9 @@ alias l='ls -CF'
 alias back="cd -"
 alias xo='xdg-open'
 
+# Some things I SSH into don't understand tmux-256color
+alias ssh='TERM=xterm-256color ssh'
+
 alias upd='sudo apt update'
 alias upg='sudo apt upgrade'
 alias acl='sudo apt-get autoclean'
