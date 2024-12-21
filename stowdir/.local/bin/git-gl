@@ -122,7 +122,7 @@ fzf-git-log() {
             $MULTI_SELECTION |
                 filter-short-hash |
                 xargs-function git-show-pretty |
-                delta --width \$(tput cols) --paging=always |
+                delta --width \$FZF_COLUMNS --paging=always |
                 LESS=R less
         )"
 
