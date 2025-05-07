@@ -485,7 +485,7 @@ let g:ale_cpp_clangd_options = '
             \ --pch-storage=memory
             \ --completion-style=bundled
             \ --compute-dead
-            \ --query-driver="/opt/poky/1.5.1/**/i586-poky-linux-*,/opt/dey/1.6.11/**/arm-dey-linux-gnueabi-*,/usr/bin/em++,/home/nots/src/emsdk/upstream/emscripten/em++,/usr/bin/c++"
+            \ --query-driver="/opt/**/*-linux-*,/usr/bin/c++"
             \ -j=4
             \ --clang-tidy
             \'
