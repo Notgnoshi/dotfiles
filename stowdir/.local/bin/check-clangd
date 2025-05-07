@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [[ $# -ne 1 ]]; then
+    echo "usage: $0 <path/to/file.cpp>"
+    exit 1
+fi
+
+CLANGD="${CLANGD:-clangd}"
+FILE="$1"
+
+"$CLANGD" \
+    --completion-style=bundled \
+    --compute-dead \
+    --query-driver="/opt/**/*-linux-*,/usr/bin/c++" \
+    -j=4 \
+    --clang-tidy \
+    --log=verbose \
+    --check="$FILE" |&
+    less
