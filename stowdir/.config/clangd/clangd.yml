@@ -1,2 +1,9 @@
 CompileFlags:
-    Remove: -mthumb-interwork
+    Add:
+        # Requires new clangd. I had good luck installing from GitHub releases into ~/.local/
+        - --driver-mode=g++
+    Remove:
+        # - -march=*
+        # - -mabi=*
+        # - -mcpu=*
+        - -mthumb-interwork
