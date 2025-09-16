@@ -194,3 +194,11 @@ fi # mold
 if prompt_default_no "Install/update hadolint?"; then
     docker pull hadolint/hadolint
 fi
+
+if prompt_default_no "Install/update GEP GDB plugin?"; then
+    pushd "$DOTFILES_SETUP_SCRIPT_DIR/GEP" || exit 1
+    git switch main
+    git pull
+    ./install.sh
+    popd || exit 1
+fi
