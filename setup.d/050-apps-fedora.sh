@@ -48,7 +48,7 @@ if prompt_default_yes "Install unofficial teams-for-linux?"; then
     info "Found latest version: $latest_version"
 
     if command -v teams-for-linux &>/dev/null; then
-        installed_version="v$(teams-for-linux --version | tr -d '\n')"
+        installed_version="v$(teams-for-linux --version | tail -1 | tr -d '\n')"
         debug "Found installed version: $installed_version"
 
         if [[ "$installed_version" != "$latest_version" ]]; then
