@@ -164,3 +164,7 @@
 	path = stowdir/.vim/bundle/vim-plugin-AnsiEsc
 	url = https://github.com/powerman/vim-plugin-AnsiEsc.git
 	branch = master
+[submodule "GEP"]
+	path = GEP
+	url = git@github.com:lebr0nli/GEP.git
+	branch = main
