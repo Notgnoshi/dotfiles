@@ -168,3 +168,7 @@
 	path = GEP
 	url = git@github.com:lebr0nli/GEP.git
 	branch = main
+[submodule "stowdir/.vim/bundle/copilot.vim"]
+	path = stowdir/.vim/bundle/copilot.vim
+	url = git@github.com:github/copilot.vim.git
+	branch = release
