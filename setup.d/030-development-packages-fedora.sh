@@ -97,10 +97,3 @@ if prompt_default_no "Install Docker dive?"; then
         download_and_install_dive "$latest_version"
     fi
 fi
-
-if prompt_default_no "Install prettier?"; then
-    sudo dnf --assumeyes install npm nodejs
-    # shellcheck disable=SC2088
-    npm config set prefix '~/.local/'
-    npm install --global prettier
-fi

@@ -202,3 +202,32 @@ if prompt_default_no "Install/update GEP GDB plugin?"; then
     ./install.sh
     popd || exit 1
 fi
+
+if prompt_default_no "Install nvm?"; then
+    latest_version=$(github_latest_release_tag "nvm-sh/nvm")
+    info "Found latest nvm version: $latest_version"
+    if [[ -d "$HOME/.nvm" ]]; then
+        debug "nvm already installed to ~/.nvm. Updating..."
+        pushd "$HOME/.nvm" || exit 1
+        git switch master
+        git pull
+        popd || exit 1
+    else
+        debug "nvm not found. Installing nvm..."
+        curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$latest_version/install.sh" | bash
+    fi
+
+    # Source nvm so we can use it in following setup steps
+    # shellcheck disable=SC1091
+    \. "$HOME/.nvm/nvm.sh"
+fi
+
+if prompt_default_no "Install nodejs?"; then
+    nvm install 22
+    node -v
+    npm -v
+fi
+
+if prompt_default_no "Install/update prettier?"; then
+    npm install --global prettier
+fi
