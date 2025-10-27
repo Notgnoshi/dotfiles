@@ -514,7 +514,7 @@ let g:ale_cpp_clangd_options = '
             \'
 
 let g:ale_rust_analyzer_config = {
-    \ 'cargo': {'cfgs': ['test'], 'features': []},
+    \ 'cargo': {'cfgs': ['test'], 'features': 'all'},
     \ 'procMacro': {'enable': v:true},
     \ 'check': {'command': 'clippy'},
     \ 'diagnostics': { 'disabled': ['unresolved-proc-macro'] },
