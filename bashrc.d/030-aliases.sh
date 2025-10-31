@@ -22,8 +22,6 @@ alias upg='sudo apt upgrade'
 alias acl='sudo apt-get autoclean'
 alias arem='sudo apt-get autoremove'
 
-alias wiki='vim $VIMWIKI_PATH/index.wiki'
-alias todo='vim $VIMWIKI_PATH/todo/todo.wiki'
 alias readelf='readelf --wide'
 
 # Thin shim for man that provides primitive coloring, and help for builtins
