@@ -42,3 +42,5 @@ if gcc: sys.path.insert(0, gcc[0] + "/python")
 from libstdcxx.v6.printers import register_libstdcxx_printers
 register_libstdcxx_printers(None)
 end
+
+source ~/.config/dotfiles/GEP/gdbinit-gep.py

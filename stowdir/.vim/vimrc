@@ -424,6 +424,29 @@ let g:netrw_list_hide .= ',.*\.swp$'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Copilot settings
+"
+" <C-]> - Dismiss suggestion
+" <M-Right> - Accept next word of suggestion
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+augroup dotenv_detect
+    autocmd!
+    autocmd BufRead,BufNewFile *.env,*.env.*  set filetype=dotenv
+augroup END
+
+" Filetypes to enable Copilot on
+"
+" * Disable Copilot on .env files, because that's where a lot of e.g., API tokens are saved.
+" * Disable Copilot on .txt files, because that's more for random stuff, and is also where I save
+"   some API tokens.
+let g:copilot_filetypes = {
+    \   '*':        v:true,
+    \   'text':     v:false,
+    \   'dotenv':   v:false,
+    \}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALE
 "
 "   <F1> - run all available fixers, in the order specified by g:ale_fixers
@@ -491,7 +514,7 @@ let g:ale_cpp_clangd_options = '
             \'
 
 let g:ale_rust_analyzer_config = {
-    \ 'cargo': {'cfgs': ['test'], 'features': []},
+    \ 'cargo': {'cfgs': ['test'], 'features': 'all'},
     \ 'procMacro': {'enable': v:true},
     \ 'check': {'command': 'clippy'},
     \ 'diagnostics': { 'disabled': ['unresolved-proc-macro'] },
