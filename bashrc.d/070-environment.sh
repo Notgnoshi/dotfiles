@@ -17,8 +17,15 @@ export FZF_DEFAULT_OPTS="--history-size=100000"
 export FZF_DEFAULT_COMMAND="fd --type f --no-ignore"
 # But still make C-t from the shell ignore ignored files.
 export FZF_CTRL_T_COMMAND="fd --type f"
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -n 60'"
 export FZF_CTRL_T_OPTS="--preview 'bat --style changes --color=always --line-range :60 {}'"
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -n 60'"
+# Add a keybind to copy the selected command to the clipboard
+export FZF_CTRL_R_OPTS=" \
+    --header '<C-r> toggle sort   <C-h> copy' \
+    --bind=\"ctrl-h:execute( \
+        echo {} | cut --complement --fields 1 | perl -pe 'chomp if eof' | clip \
+    )\" \
+"
 
 # Use vim as my MANPAGER. Has folding, ability to follow links.
 MANPAGER="vim -M +MANPAGER -"
