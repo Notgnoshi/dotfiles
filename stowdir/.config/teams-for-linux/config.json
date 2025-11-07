@@ -1,7 +1,16 @@
 {
     "alwaysOnSystemIdle": true,
+    "disableGpu": false,
+    "disableNotifications": true,
     "closeAppOnCross": true,
     "disableGlobalShortcuts": [
-        "Ctrl+Shift+C"
-    ]
+        "Ctrl+Shift+C",
+        "Ctrl+Shift+V"
+    ],
+    "mqtt": {
+        "enabled": true,
+        "brokerUrl": "mqtt://localhost:1883",
+        "topicPrefix": "bedlam/teams",
+        "statusTopic": "status"
+    }
 }
