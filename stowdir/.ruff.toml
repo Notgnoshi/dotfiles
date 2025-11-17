@@ -1,0 +1,7 @@
+line-length = 100
+indent-width = 4
+
+# See: https://docs.astral.sh/ruff/rules/
+[lint]
+select = ["C90", "RUF", "PL", "F", "D", "E", "W", "N", "I", "NPY"]
+ignore = ["D203", "D213"]
