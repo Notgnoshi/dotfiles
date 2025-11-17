@@ -76,6 +76,8 @@ highlight! link doxygenSpecialTypeOnelineDesc   SpecialComment
 highlight! link doxygenSpecialOnelineDesc       CustomDoxyComment
 highlight! link doxygenSpecialHeading           SpecialComment
 
+highlight CopilotSuggestion    ctermfg=3  cterm=italic
+
 " Make warnings stand out from info messages
 " I don't know why this isn't the default.
 highlight! link ALEWarning  SpellRare
