@@ -4,7 +4,7 @@
 How to install:
 
     sudo apt install mosquitto mosquitto-clients
-    pip install --user --break-system-packages paho-mqtt busylight-for-humans
+    pip install --user --break-system-packages paho-mqtt busylight-for-humans pyudev
     busylight udev-rules -o 99-busylight.rules
     sudo mv 99-busylight.rules /etc/udev/rules.d/
     sudo udevadm control --reload-rules
@@ -15,6 +15,7 @@ How to install:
 """
 
 import argparse
+import itertools
 import json
 import logging
 import pathlib
@@ -25,6 +26,7 @@ from typing import Dict, Optional
 
 try:
     import paho.mqtt.client as mqtt
+    import pyudev
     from busylight_core import Light, NoLightsFoundError
 except ImportError as e:
     print(f"Failed to import: {e}")
@@ -98,6 +100,12 @@ class BusylightMonitor:
         self.status = "unknown"
         self.light: Optional[Light] = None
 
+        context = pyudev.Context()
+        monitor = pyudev.Monitor.from_netlink(context)
+        monitor.filter_by(subsystem="usb")
+        self.observer = pyudev.MonitorObserver(monitor, callback=self.on_usb_event, name="udev-mon")
+        self.observer.daemon = False
+
     def connect_mqtt(self, config: Dict) -> mqtt.Client:
         """Connect to the MQTT broker with the given configs."""
         client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
@@ -118,6 +126,7 @@ class BusylightMonitor:
         """Start monitoring Teams status."""
         logging.info("Starting ...")
         self.try_connect_light()
+        self.observer.start()
 
     def try_connect_light(self):
         """Try to connect to the first available Busylight."""
@@ -132,9 +141,25 @@ class BusylightMonitor:
     def stop(self):
         """Stop monitoring Teams status."""
         logging.info("Stopping ...")
+        self.observer.stop()
         if self.light:
             logging.info("OFF")
             self.light.off()
+
+    def on_usb_event(self, device: pyudev.Device):
+        """Handle USB device events."""
+        vendor = device.get("ID_VENDOR_ID", "unknown")
+        product = device.get("ID_MODEL_ID", "unknown")
+        logging.debug("USB event: %s vendor: %s device: %s", device.action, vendor, product)
+
+        if device.action == "add" and vendor != "unknown" and product != "unknown":
+            vendor = int(vendor, 16)
+            product = int(product, 16)
+            for hardware in itertools.chain.from_iterable(Light.available_hardware().values()):
+                if hardware.vendor_id == vendor and hardware.product_id == product:
+                    logging.info("Detected Busylight device added: %04x:%04x", vendor, product)
+                    self.try_connect_light()
+                    break
 
     def on_connect(self, client, userdata, flags, reason_code, properties):
         """MQTT handler for successful connection to the broker."""
