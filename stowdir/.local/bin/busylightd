@@ -1,0 +1,247 @@
+#!/usr/bin/python3
+"""Daemon for controlling Busylight devices.
+
+How to install:
+
+    sudo apt install mosquitto mosquitto-clients
+    pip install --user --break-system-packages paho-mqtt busylight-for-humans pyudev
+    busylight udev-rules -o 99-busylight.rules
+    sudo mv 99-busylight.rules /etc/udev/rules.d/
+    sudo udevadm control --reload-rules
+    systemctl --user daemon-reload
+    systemctl --user start busylight
+    systemctl --user status busylight
+    journalctl --user -fu busylight
+"""
+
+import argparse
+import itertools
+import json
+import logging
+import pathlib
+import sys
+import time
+import urllib.parse
+from typing import Dict, Optional
+
+try:
+    import paho.mqtt.client as mqtt
+    import pyudev
+    from busylight_core import Light, NoLightsFoundError
+except ImportError as e:
+    print(f"Failed to import: {e}")
+    sys.exit(0)
+
+
+def parse_args():
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "--log-level",
+        "-l",
+        type=str,
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="Set the logging output level. Defaults to INFO.",
+    )
+
+    return parser.parse_args()
+
+
+def read_teams_for_linux_config() -> Optional[Dict]:
+    """Read teams-for-linux's config file."""
+    path = pathlib.Path.home() / ".config" / "teams-for-linux" / "config.json"
+    if not path.exists():
+        logging.error("Could not find teams-for-linux config at %s", path)
+        return None
+    with path.open("r", encoding="utf-8") as f:
+        try:
+            config = json.load(f)
+            return config
+        except json.JSONDecodeError as e:
+            logging.error("Failed to parse teams-for-linux config: %s", e)
+            return None
+
+
+def extract_mqtt_config(config: Dict) -> Optional[Dict]:
+    """Extract the MQTT configs from teams-for-linux's config."""
+    config = config.get("mqtt")
+    if not config:
+        logging.error("No MQTT configuration found in teams-for-linux config")
+        return None
+    if not config.get("enabled", False):
+        logging.error("MQTT is not enabled in teams-for-linux config")
+        return None
+
+    broker = config.get("brokerUrl", "mqtt://localhost:1883")
+    username = config.get("username")
+    password = config.get("password")
+    teams_client = config.get("clientId", "teams-for-linux")
+    topic_prefix = config.get("topicPrefix", "teams")
+    status_topic = config.get("statusTopic", "status")
+    status_topic = f"{topic_prefix}/{status_topic}"
+
+    return {
+        "broker": broker,
+        "username": username,
+        "password": password,
+        "teams_client": teams_client,
+        "status_topic": status_topic,
+    }
+
+
+class BusylightMonitor:
+    """Monitor Teams status and update Busylight accordingly."""
+
+    def __init__(self, mqtt_config: Dict):
+        self.client: mqtt.Client = self.connect_mqtt(mqtt_config)
+        self.status = "unknown"
+        self.light: Optional[Light] = None
+
+        context = pyudev.Context()
+        monitor = pyudev.Monitor.from_netlink(context)
+        monitor.filter_by(subsystem="usb")
+        self.observer = pyudev.MonitorObserver(monitor, callback=self.on_usb_event, name="udev-mon")
+        self.observer.daemon = False
+
+    def connect_mqtt(self, config: Dict) -> mqtt.Client:
+        """Connect to the MQTT broker with the given configs."""
+        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        client.on_connect = self.on_connect
+        client.on_connect_fail = self.on_connect_fail
+        client.on_message = self.on_message
+        if config.get("username"):
+            client.username_pw_set(config["username"], config.get("password"))
+
+        url = urllib.parse.urlparse(config["broker"])
+        client.connect(url.hostname, url.port or 1883)
+        client.subscribe(config["status_topic"])
+
+        client.loop_start()
+        return client
+
+    def start(self):
+        """Start monitoring Teams status."""
+        logging.info("Starting ...")
+        self.try_connect_light()
+        self.observer.start()
+
+    def try_connect_light(self):
+        """Try to connect to the first available Busylight."""
+        try:
+            self.light = Light.first_light()
+            logging.info("Found light: %s", self.light)
+            self.update_light_status()
+        except NoLightsFoundError:
+            logging.warning("No light device found")
+            self.light = None
+
+    def stop(self):
+        """Stop monitoring Teams status."""
+        logging.info("Stopping ...")
+        self.observer.stop()
+        if self.light:
+            logging.info("OFF")
+            self.light.off()
+
+    def on_usb_event(self, device: pyudev.Device):
+        """Handle USB device events."""
+        vendor = device.get("ID_VENDOR_ID", "unknown")
+        product = device.get("ID_MODEL_ID", "unknown")
+        logging.debug("USB event: %s vendor: %s device: %s", device.action, vendor, product)
+
+        if device.action == "add" and vendor != "unknown" and product != "unknown":
+            vendor = int(vendor, 16)
+            product = int(product, 16)
+            for hardware in itertools.chain.from_iterable(Light.available_hardware().values()):
+                if hardware.vendor_id == vendor and hardware.product_id == product:
+                    logging.info("Detected Busylight device added: %04x:%04x", vendor, product)
+                    self.try_connect_light()
+                    break
+
+    def on_connect(self, client, userdata, flags, reason_code, properties):
+        """MQTT handler for successful connection to the broker."""
+        logging.info("Connected to MQTT broker: %s", reason_code.getName())
+
+    def on_connect_fail(self, client, userdata):
+        """MQTT handler for failed connection to the broker."""
+        logging.error("Failed to connect to MQTT broker")
+
+    def on_message(self, client, userdata, msg):
+        """MQTT message handler."""
+        msg = json.loads(msg.payload)
+        logging.debug("msg: %s", msg)
+        status = msg.get("status", "unknown")
+        self.on_status_change(status)
+
+    def on_status_change(self, new_status: str):
+        """Handle a change in the Teams status."""
+        logging.info("Status changed: %s -> %s", self.status, new_status)
+        self.status = new_status
+        self.update_light_status()
+
+    def update_light_status(self):
+        """Update the Busylight status based on the last known Teams status."""
+        if self.light is None:
+            logging.warning("No light available to update status")
+            return
+
+        # https://ismaelmartinez.github.io/teams-for-linux/mqtt-integration#status-values
+        if self.status == "available":
+            logging.info("GREEN")
+            self.light.on((0, 255, 0))
+        elif self.status == "busy":  # Also in a call
+            logging.info("RED")
+            self.light.on((255, 0, 0))
+        elif self.status == "do_not_disturb":  # Also presenting
+            # Don't flash because it's too distracting; so purple instead
+            logging.info("PURPLE")
+            self.light.on((255, 0, 255))
+        elif self.status in ("away", "be_right_back"):
+            logging.info("YELLOW")
+            self.light.on((255, 255, 0))
+        else:
+            logging.info("OFF")
+            self.light.off()
+
+
+def main(args):
+    """Run the main daemon runloop."""
+    config = read_teams_for_linux_config()
+    if not config:
+        sys.exit(1)
+    logging.debug("Read teams-for-linux config: %s", config)
+    config = extract_mqtt_config(config)
+    if not config:
+        sys.exit(1)
+    logging.debug("MQTT config: %s", config)
+
+    monitor = BusylightMonitor(config)
+    monitor.start()
+
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        monitor.stop()
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    fmt = "%(asctime)s %(module)s %(levelname)s: %(message)s"
+    logging.basicConfig(
+        format=fmt,
+        datefmt="%Y-%m-%dT%H:%M:%S%z",
+        level=args.log_level,
+        stream=sys.stderr,
+    )
+    # Color log output if possible, because I'm a sucker
+    try:
+        import coloredlogs
+
+        coloredlogs.install(fmt=fmt, level=args.log_level, datefmt="%Y-%m-%dT%H:%M:%S%z")
+    except ImportError:
+        pass
+    main(args)

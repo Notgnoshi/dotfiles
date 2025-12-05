@@ -1,0 +1,15 @@
+[Unit]
+Description=Monitor teams-for-linux for MQTT status changes and set Busylight accordingly
+After=default.target
+
+[Service]
+Type=simple
+# Has to be an absolute path :(
+# Shebang can't be #!/usr/bin/env; has to be #!/usr/bin/python3
+ExecStart=/home/nots/.local/bin/busylightd --log-level DEBUG
+KillSignal=SIGINT
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=default.target
