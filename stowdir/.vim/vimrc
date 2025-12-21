@@ -547,10 +547,7 @@ nmap <F2> <Plug>(ale_rename_symbol)
 imap <F2> <C-\><C-O>:ALERename<CR>
 
 " Find references to the symbol under the cursor.
-" TODO: Use FZF to select and preview (with syntax highlighting!)
-" See https://github.com/dense-analysis/ale/issues/2252
-" TODO: Use ALERepeatSelection to re-open results (Maybe find a way to keep
-" the window open until it's closed manually?)
+let g:ale_references_use_fzf = 1
 nnoremap <silent> <Plug>(ale_find_references_quickfix) :ALEFindReferences -quickfix<CR>
 nmap <F3> <Plug>(ale_find_references_quickfix)
 imap <F3> <C-\><C-O>:ALEFindReferences -quickfix<CR>
