@@ -64,7 +64,7 @@ if prompt_default_yes "Install/update fancy shell tools?"; then
         popd || exit 1
     }
 
-    if prompt_default_yes "Install/update qsv from GitHub"; then
+    if prompt_default_no "Install/update qsv from GitHub"; then
         latest_version=$(github_latest_release_tag "jqnatividad/qsv")
         info "Found latest version: $latest_version"
 
