@@ -7,8 +7,8 @@ stowdir/.vim/undo
 stowdir/.vim/viminfo
 stowdir/.vim/bundle/vis/doc/tags
 
-# Allow adding work-specific aliases without tracking them.
-bashrc.d/100-work.sh
+# Allow adding work or host specific tweaks without tracking them.
+bashrc.d/1*.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
