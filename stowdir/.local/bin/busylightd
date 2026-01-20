@@ -96,7 +96,6 @@ class BusylightMonitor:
     """Monitor Teams status and update Busylight accordingly."""
 
     def __init__(self, mqtt_config: Dict):
-        self.client: mqtt.Client = self.connect_mqtt(mqtt_config)
         self.status = "unknown"
         self.light: Optional[Light] = None
 
@@ -105,6 +104,8 @@ class BusylightMonitor:
         monitor.filter_by(subsystem="usb")
         self.observer = pyudev.MonitorObserver(monitor, callback=self.on_usb_event, name="udev-mon")
         self.observer.daemon = False
+
+        self.client: mqtt.Client = self.connect_mqtt(mqtt_config)
 
     def connect_mqtt(self, config: Dict) -> mqtt.Client:
         """Connect to the MQTT broker with the given configs."""
