@@ -17,11 +17,9 @@ COMMAND_WRAPPERS = {
     "time",
 }
 
-BASH_HISTORY = expanduser("~/.bash_history")
-
 
 def get_subcommands(command):
-    """Takes the root, or root + subcommand if indicated by MULTI_COMMAND_COMMANDS."""
+    """Take the root, or root + subcommand if indicated by MULTI_COMMAND_COMMANDS."""
     if not command:
         return ""
 
@@ -37,9 +35,10 @@ def get_subcommands(command):
     return root
 
 
-def main(n):
-    """Analyze and print statistics about ~/.bash_history"""
-    with open(BASH_HISTORY, "r") as history:
+def main(file, n):
+    """Analyze and print statistics about ~/.bash_history."""
+    file = expanduser(file)
+    with open(file, "r") as history:
         history = Counter(get_subcommands(c.split()) for c in history)
         total = sum(history.values())
 
@@ -50,6 +49,9 @@ def main(n):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "input", nargs="?", default="~/.bash_history", help="The bash history file to analyze"
+    )
+    parser.add_argument(
         "-n",
         "--number",
         default=10,
@@ -58,4 +60,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    main(args.number)
+    main(args.input, args.number)
