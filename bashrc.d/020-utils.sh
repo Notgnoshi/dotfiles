@@ -110,3 +110,8 @@ shellquote() {
     printf '%q' "$(cat)"
     echo
 }
+
+# Work around https://github.com/github/copilot-cli/issues/501
+copilot() {
+    HISTFILE=/dev/null command copilot "$@"
+}
