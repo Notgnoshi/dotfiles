@@ -28,6 +28,9 @@ check_dependencies() {
         # sudo apt install wl-clipboard
         required_utils+=(wl-copy wl-paste)
         ;;
+    sshclip)
+        required_utils+=(socat)
+        ;;
     *)
         echo "Unrecognized XDG_SESSION_TYPE='$XDG_SESSION_TYPE'" >&2
         exit 1
@@ -86,6 +89,20 @@ paste_wayland() {
     wl-paste --no-newline "${extra_args[@]}"
 }
 
+copy_sshclip() {
+    local sock="${SSHCLIP_SOCK:-/tmp/sshclip.sock}"
+    if ! socat - "UNIX-CONNECT:$sock" 2>/dev/null; then
+        echo "Failed to connect to sshclip socket at $sock" >&2
+        echo "The socket may be stale from a previous session. Remove it" >&2
+        return 1
+    fi
+}
+
+paste_sshclip() {
+    echo "Paste is not supported via sshclip" >&2
+    exit 1
+}
+
 copy() {
     local clipboard="$1"
     case "$XDG_SESSION_TYPE" in
@@ -94,6 +111,9 @@ copy() {
         ;;
     wayland)
         copy_wayland "$1"
+        ;;
+    sshclip)
+        copy_sshclip "$1"
         ;;
     *)
         echo "Unrecognized XDG_SESSION_TYPE='$XDG_SESSION_TYPE'" >&2
@@ -110,6 +130,9 @@ paste() {
         ;;
     wayland)
         paste_wayland "$1"
+        ;;
+    sshclip)
+        paste_sshclip "$1"
         ;;
     *)
         echo "Unrecognized XDG_SESSION_TYPE='$XDG_SESSION_TYPE'" >&2
@@ -141,6 +164,16 @@ main() {
         esac
         shift
     done
+
+    # Detect sshclip when no display server is available
+    if [[ "${XDG_SESSION_TYPE:-}" != x11 && "${XDG_SESSION_TYPE:-}" != wayland ]]; then
+        if [[ -S "${SSHCLIP_SOCK:-/tmp/sshclip.sock}" ]]; then
+            XDG_SESSION_TYPE="sshclip"
+        else
+            echo "No display server detected and no sshclip socket found" >&2
+            exit 1
+        fi
+    fi
 
     check_dependencies
 
