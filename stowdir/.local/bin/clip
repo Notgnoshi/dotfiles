@@ -5,12 +5,14 @@ set -o nounset
 # set -o noclobber
 
 usage() {
-    echo "Usage: $0 [--primary]"
+    echo "Usage: $0 [--primary] [--copy|--paste]"
     echo
     echo "Copy/paste to/from the system clipboard. Supports both X11 and Wayland via xclip/wl-clipboard"
     echo
     echo "  -h, --help          Show this help and exit"
     echo "  --primary           Operate on the PRIMARY clipboard instead of the default clipboard"
+    echo "  --copy              Force copy mode (read from stdin into clipboard)"
+    echo "  --paste             Force paste mode (write clipboard to stdout)"
     echo
     echo "The intended operation (copy or paste) will be automatically detected based on whether"
     echo "you're redirecting output to/from this script."
@@ -156,6 +158,12 @@ main() {
         --primary)
             clipboard="primary"
             ;;
+        --copy)
+            do_copy="true"
+            ;;
+        --paste)
+            do_paste="true"
+            ;;
         *)
             echo "Unexpected argument '$1'" >&2
             usage >&2
@@ -177,18 +185,21 @@ main() {
 
     check_dependencies
 
-    # If stdout is not attached to a TTY, that means we're redirecting it, so we should paste
-    # whatever is in the clipboard.
-    if [[ ! -t 1 ]]; then
-        do_paste="true"
-    fi
-    if [[ ! -t 0 ]]; then
-        do_copy="true"
-    fi
-    # If we're not redirecting at all, then we're just running the script and dumping the clipboard
-    # to the terminal.
+    # Auto-detect if neither --copy nor --paste was explicitly specified
     if [[ "$do_copy" == "false" && "$do_paste" == "false" ]]; then
-        do_paste="true"
+        # If stdout is not attached to a TTY, that means we're redirecting it, so we should paste
+        # whatever is in the clipboard.
+        if [[ ! -t 1 ]]; then
+            do_paste="true"
+        fi
+        if [[ ! -t 0 ]]; then
+            do_copy="true"
+        fi
+        # If we're not redirecting at all, then we're just running the script and dumping the clipboard
+        # to the terminal.
+        if [[ "$do_copy" == "false" && "$do_paste" == "false" ]]; then
+            do_paste="true"
+        fi
     fi
 
     if [[ "$do_paste" == "true" ]]; then
