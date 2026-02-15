@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# The Fedora vim package doesn't include the clipboard features I want, so use gvim instead
-if command -v gvim >/dev/null 2>&1; then
-    exec gvim -v "$@"
-else
-    exec /usr/bin/vim -v "$@"
-fi
