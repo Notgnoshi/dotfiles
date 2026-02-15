@@ -159,13 +159,13 @@ main() {
     fi
 
     if [[ "$do_paste" == "true" ]]; then
-        paste "$clipboard" /dev/stdout
+        paste "$clipboard"
     fi
     # TODO: wl-copy hangs if its output (there is none) is being piped
     #       echo "foo" | clip >/tmp/clip.txt  # This works
     #       echo "foo" | clip | cat  # This "works" and then hangs
     if [[ "$do_copy" == "true" ]]; then
-        copy "$clipboard" /dev/stdin
+        copy "$clipboard"
     fi
 }
 
