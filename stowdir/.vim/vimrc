@@ -593,7 +593,7 @@ imap <c-x><c-f> <plug>(fzf-complete-path)
 noremap <silent> <C-F><C-B> :Buffers<CR>
 " Consistent with <C-T> readline keybind
 noremap <silent> <C-F><C-T> :Files<CR>
-noremap <silent> <C-F><C-G> :GFiles<CR>
+noremap <silent> <C-F><C-G> :GFiles --cached --others --exclude-standard<CR>
 " Consistent with <C-R> readline keybind
 noremap <silent> <C-F><C-R> :History:<CR>
 " Mnemonic: find
