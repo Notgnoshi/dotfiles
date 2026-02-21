@@ -49,41 +49,4 @@ if prompt_default_yes "Install/update fancy shell tools?"; then
             download_and_install_delta "$latest_version"
         fi
     fi
-
-    download_and_install_qsv() {
-        local version="$1"
-        local artifact="qsv-$version-x86_64-unknown-linux-gnu.zip"
-        pushd /tmp || exit
-        debug "downloading $artifact ..."
-        github_download_release "jqnatividad/qsv" "$version" "$artifact"
-        debug "unpacking $artifact ..."
-        unzip -d qsv "$artifact"
-        debug "installing ..."
-        cp qsv/qsv ~/.local/bin/
-
-        popd || exit 1
-    }
-
-    if prompt_default_yes "Install/update qsv from GitHub"; then
-        latest_version=$(github_latest_release_tag "jqnatividad/qsv")
-        info "Found latest version: $latest_version"
-
-        if command -v qsv &>/dev/null; then
-            installed_version=$(qsv --version | sed -En 's/^qsv ([0-9]+\.[0-9]+\.[0-9]+).*$/\1/p')
-            debug "Found installed version: $installed_version"
-            if [[ "$installed_version" != "$latest_version" ]]; then
-                info "Updating qsv ..."
-                download_and_install_qsv "$latest_version"
-            else
-                info "qsv $latest_version already installed"
-                if prompt_default_no "Reinstall qsv?"; then
-                    info "Reinstalling qsv ..."
-                    download_and_install_qsv "$latest_version"
-                fi
-            fi
-        else
-            info "Installing qsv for the first time..."
-            download_and_install_qsv "$latest_version"
-        fi
-    fi
 fi

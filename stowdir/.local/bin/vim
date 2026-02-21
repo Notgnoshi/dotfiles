@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# The Fedora vim package doesn't include the clipboard features I want, so use gvim instead
-exec gvim -v "$@"

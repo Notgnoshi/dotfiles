@@ -1,0 +1,70 @@
+#!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o noclobber
+
+SSHCLIP_SOCK="${SSHCLIP_SOCK:-/tmp/sshclip.sock}"
+SSHCLIP_PUSH_ENV="/tmp/sshclip-push.env"    # local; caches how to login to the remote for clip
+SSHCLIP_PASTE_FILE="/tmp/sshclip-paste.dat" # remote; clip --paste reads from this file
+
+usage() {
+    echo "Usage: $0 [ssh-args...]"
+    echo
+    echo "Start an SSH session with clipboard forwarding."
+    echo "On the remote, 'clip' will send copied data back to the local clipboard."
+    echo "Local 'clip' copies are also pushed to the remote for 'clip --paste'."
+    echo
+    echo "Environment:"
+    echo "  SSHCLIP_SOCK  Remote socket path (default: /tmp/sshclip.sock)"
+}
+
+main() {
+    if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+        usage
+        exit
+    fi
+
+    if [[ $# -eq 0 ]]; then
+        usage >&2
+        exit 1
+    fi
+
+    if ! command -v socat &>/dev/null; then
+        echo "error: socat is not installed" >&2
+        exit 1
+    fi
+
+    LOCAL_SOCK="/tmp/sshclip-local-$$.sock"
+    LISTENER_PID=
+
+    cleanup() {
+        [[ -n "$LISTENER_PID" ]] && kill "$LISTENER_PID" 2>/dev/null
+        wait "$LISTENER_PID" 2>/dev/null || true
+        rm -f "$LOCAL_SOCK" "$SSHCLIP_PUSH_ENV"
+    }
+    trap cleanup EXIT
+
+    # Resolve the SSH target so clip can push clipboard data to the remote
+    local ssh_user ssh_hostname ssh_port
+    ssh_user=$(ssh -G "$@" | awk '/^user / { print $2; exit }')
+    ssh_hostname=$(ssh -G "$@" | awk '/^hostname / { print $2; exit }')
+    ssh_port=$(ssh -G "$@" | awk '/^port / { print $2; exit }')
+    printf '%s\n' "$ssh_user" "$ssh_hostname" "$ssh_port" >"$SSHCLIP_PUSH_ENV"
+    chmod 600 "$SSHCLIP_PUSH_ENV"
+
+    # Copy listener: accept connections from remote, buffer data, copy to local clipboard
+    # setpriv --pdeathsig=TERM: kernel sends SIGTERM to socat when parent process dies
+    setpriv --pdeathsig=TERM -- \
+        socat "UNIX-LISTEN:$LOCAL_SOCK,fork,mode=0600,unlink-early" \
+        SYSTEM:'tmp=$(mktemp); cat > "$tmp"; clip < "$tmp" >/dev/null; rm -f "$tmp"' &
+    LISTENER_PID=$!
+
+    # StreamLocalBindUnlink is a server-side sshd_config option for -R forwards;
+    # the client-side option only affects -L. Pre-clean stale socket and paste file.
+    ssh "$@" "rm -f '$SSHCLIP_SOCK' '$SSHCLIP_PASTE_FILE'" 2>/dev/null || true
+
+    ssh -R "$SSHCLIP_SOCK:$LOCAL_SOCK" "$@"
+}
+
+main "$@"

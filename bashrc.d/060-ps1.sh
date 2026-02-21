@@ -89,6 +89,8 @@ fi
 
 ##################################################################################################
 # Add the __git_ps1 from /usr/share/git-core/contrib/completion/git-prompt.sh
+#
+# This moved to /usr/lib/git-core/git-sh-prompt in recent systems.
 ##################################################################################################
 function_exists() {
     declare -f -F "$1" >/dev/null

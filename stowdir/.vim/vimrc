@@ -593,7 +593,7 @@ imap <c-x><c-f> <plug>(fzf-complete-path)
 noremap <silent> <C-F><C-B> :Buffers<CR>
 " Consistent with <C-T> readline keybind
 noremap <silent> <C-F><C-T> :Files<CR>
-noremap <silent> <C-F><C-G> :GFiles<CR>
+noremap <silent> <C-F><C-G> :GFiles --cached --others --exclude-standard<CR>
 " Consistent with <C-R> readline keybind
 noremap <silent> <C-F><C-R> :History:<CR>
 " Mnemonic: find
@@ -684,14 +684,14 @@ nnoremap <CR> :nohl<CR><CR>
 vnoremap < <gv
 vnoremap > >gv
 
-" These keybinds require a Vim built with the +clipboard feature.
-" On Ubuntu, the vim-gtk package provides such a Vim.
-inoremap <C-S-p> <ESC>"+Pa
-inoremap <C-y> <ESC>"+yy
-vnoremap <C-y> "+y
-vnoremap <C-S-p> "+P
-nnoremap <C-S-p> "+P
-nnoremap <C-y> "+yy
+" These keybinds use the `clip` script for system clipboard integration.
+" `clip` supports X11, Wayland, and local<->remote sshclip.
+inoremap <silent> <C-S-p> <C-R>=system('clip --paste')<CR>
+inoremap <silent> <C-y> <Esc>"cyy:call system('clip --copy', @c)<CR>
+vnoremap <silent> <C-y> "cy:call system('clip --copy', @c)<CR>
+vnoremap <silent> <C-S-p> :<C-U>let @c=system('clip --paste')<CR>gv"cP
+nnoremap <silent> <C-S-p> :let @c=system('clip --paste')<CR>"cP
+nnoremap <silent> <C-y> "cyy:call system('clip --copy', @c)<CR>
 
 " Map <space> to fold.
 nnoremap <space> za

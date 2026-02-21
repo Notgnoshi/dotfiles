@@ -5,12 +5,14 @@ set -o nounset
 # set -o noclobber
 
 usage() {
-    echo "Usage: $0 [--primary]"
+    echo "Usage: $0 [--primary] [--copy|--paste]"
     echo
     echo "Copy/paste to/from the system clipboard. Supports both X11 and Wayland via xclip/wl-clipboard"
     echo
     echo "  -h, --help          Show this help and exit"
     echo "  --primary           Operate on the PRIMARY clipboard instead of the default clipboard"
+    echo "  --copy              Force copy mode (read from stdin into clipboard)"
+    echo "  --paste             Force paste mode (write clipboard to stdout)"
     echo
     echo "The intended operation (copy or paste) will be automatically detected based on whether"
     echo "you're redirecting output to/from this script."
@@ -27,6 +29,9 @@ check_dependencies() {
     wayland)
         # sudo apt install wl-clipboard
         required_utils+=(wl-copy wl-paste)
+        ;;
+    sshclip)
+        required_utils+=(socat)
         ;;
     *)
         echo "Unrecognized XDG_SESSION_TYPE='$XDG_SESSION_TYPE'" >&2
@@ -86,20 +91,65 @@ paste_wayland() {
     wl-paste --no-newline "${extra_args[@]}"
 }
 
+copy_sshclip() {
+    local sock="${SSHCLIP_SOCK:-/tmp/sshclip.sock}"
+    if ! socat - "UNIX-CONNECT:$sock" 2>/dev/null; then
+        echo "Failed to connect to sshclip socket at $sock" >&2
+        echo "The socket may be stale from a previous session. Remove it" >&2
+        return 1
+    fi
+}
+
+paste_sshclip() {
+    local paste_file="/tmp/sshclip-paste.dat"
+    if [[ -f "$paste_file" ]]; then
+        cat "$paste_file"
+    else
+        echo "No clipboard data available" >&2
+        return 1
+    fi
+}
+
+push_to_remote() {
+    local env_file="/tmp/sshclip-push.env"
+    local tmp="$1"
+    if [[ -f "$env_file" ]] && [[ "$XDG_SESSION_TYPE" != sshclip ]]; then
+        local user host port
+        {
+            read -r user
+            read -r host
+            read -r port
+        } <"$env_file"
+        ssh -p "$port" "$user@$host" "cat > /tmp/sshclip-paste.dat" <"$tmp" 2>/dev/null || true
+    fi
+}
+
 copy() {
     local clipboard="$1"
+
+    # Buffer stdin so we can feed both the clipboard backend and the push socket
+    local tmp
+    tmp=$(mktemp)
+    trap "rm -f '$tmp'" RETURN
+    cat >"$tmp"
+
     case "$XDG_SESSION_TYPE" in
     x11)
-        copy_x11 "$1"
+        copy_x11 "$clipboard" <"$tmp"
         ;;
     wayland)
-        copy_wayland "$1"
+        copy_wayland "$clipboard" <"$tmp"
+        ;;
+    sshclip)
+        copy_sshclip "$clipboard" <"$tmp"
         ;;
     *)
         echo "Unrecognized XDG_SESSION_TYPE='$XDG_SESSION_TYPE'" >&2
         exit 1
         ;;
     esac
+
+    push_to_remote "$tmp"
 }
 
 paste() {
@@ -110,6 +160,9 @@ paste() {
         ;;
     wayland)
         paste_wayland "$1"
+        ;;
+    sshclip)
+        paste_sshclip "$1"
         ;;
     *)
         echo "Unrecognized XDG_SESSION_TYPE='$XDG_SESSION_TYPE'" >&2
@@ -133,6 +186,12 @@ main() {
         --primary)
             clipboard="primary"
             ;;
+        --copy)
+            do_copy="true"
+            ;;
+        --paste)
+            do_paste="true"
+            ;;
         *)
             echo "Unexpected argument '$1'" >&2
             usage >&2
@@ -142,30 +201,43 @@ main() {
         shift
     done
 
+    # Detect sshclip when no display server is available
+    if [[ "${XDG_SESSION_TYPE:-}" != x11 && "${XDG_SESSION_TYPE:-}" != wayland ]]; then
+        if [[ -S "${SSHCLIP_SOCK:-/tmp/sshclip.sock}" ]]; then
+            XDG_SESSION_TYPE="sshclip"
+        else
+            echo "No display server detected and no sshclip socket found" >&2
+            exit 1
+        fi
+    fi
+
     check_dependencies
 
-    # If stdout is not attached to a TTY, that means we're redirecting it, so we should paste
-    # whatever is in the clipboard.
-    if [[ ! -t 1 ]]; then
-        do_paste="true"
-    fi
-    if [[ ! -t 0 ]]; then
-        do_copy="true"
-    fi
-    # If we're not redirecting at all, then we're just running the script and dumping the clipboard
-    # to the terminal.
+    # Auto-detect if neither --copy nor --paste was explicitly specified
     if [[ "$do_copy" == "false" && "$do_paste" == "false" ]]; then
-        do_paste="true"
+        # If stdout is not attached to a TTY, that means we're redirecting it, so we should paste
+        # whatever is in the clipboard.
+        if [[ ! -t 1 ]]; then
+            do_paste="true"
+        fi
+        if [[ ! -t 0 ]]; then
+            do_copy="true"
+        fi
+        # If we're not redirecting at all, then we're just running the script and dumping the clipboard
+        # to the terminal.
+        if [[ "$do_copy" == "false" && "$do_paste" == "false" ]]; then
+            do_paste="true"
+        fi
     fi
 
     if [[ "$do_paste" == "true" ]]; then
-        paste "$clipboard" /dev/stdout
+        paste "$clipboard"
     fi
     # TODO: wl-copy hangs if its output (there is none) is being piped
     #       echo "foo" | clip >/tmp/clip.txt  # This works
     #       echo "foo" | clip | cat  # This "works" and then hangs
     if [[ "$do_copy" == "true" ]]; then
-        copy "$clipboard" /dev/stdin
+        copy "$clipboard"
     fi
 }
 
