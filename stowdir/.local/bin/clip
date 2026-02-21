@@ -101,27 +101,55 @@ copy_sshclip() {
 }
 
 paste_sshclip() {
-    echo "Paste is not supported via sshclip" >&2
-    exit 1
+    local paste_file="/tmp/sshclip-paste.dat"
+    if [[ -f "$paste_file" ]]; then
+        cat "$paste_file"
+    else
+        echo "No clipboard data available" >&2
+        return 1
+    fi
+}
+
+push_to_remote() {
+    local env_file="/tmp/sshclip-push.env"
+    local tmp="$1"
+    if [[ -f "$env_file" ]] && [[ "$XDG_SESSION_TYPE" != sshclip ]]; then
+        local user host port
+        {
+            read -r user
+            read -r host
+            read -r port
+        } <"$env_file"
+        ssh -p "$port" "$user@$host" "cat > /tmp/sshclip-paste.dat" <"$tmp" 2>/dev/null || true
+    fi
 }
 
 copy() {
     local clipboard="$1"
+
+    # Buffer stdin so we can feed both the clipboard backend and the push socket
+    local tmp
+    tmp=$(mktemp)
+    trap "rm -f '$tmp'" RETURN
+    cat >"$tmp"
+
     case "$XDG_SESSION_TYPE" in
     x11)
-        copy_x11 "$1"
+        copy_x11 "$clipboard" <"$tmp"
         ;;
     wayland)
-        copy_wayland "$1"
+        copy_wayland "$clipboard" <"$tmp"
         ;;
     sshclip)
-        copy_sshclip "$1"
+        copy_sshclip "$clipboard" <"$tmp"
         ;;
     *)
         echo "Unrecognized XDG_SESSION_TYPE='$XDG_SESSION_TYPE'" >&2
         exit 1
         ;;
     esac
+
+    push_to_remote "$tmp"
 }
 
 paste() {
