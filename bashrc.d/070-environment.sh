@@ -53,8 +53,9 @@ export BAT_THEME=base16
 export LESS=FRX
 
 # Use parallel make by default
-export MAKEFLAGS="-j$(($(nproc) - 1))"
-export CMAKE_BUILD_PARALLEL_LEVEL="$(($(nproc) - 1))"
+export MAKEFLAGS="-j$(($(nproc) - 2))"
+export CMAKE_BUILD_PARALLEL_LEVEL="$(($(nproc) - 2))"
+export CMAKE_COLOR_DIAGNOSTICS=ON
 
 __rustc_linker=""
 if command mold --version >/dev/null 2>&1; then
