@@ -82,6 +82,7 @@ def extract_mqtt_config(config: Dict) -> Optional[Dict]:
     topic_prefix = config.get("topicPrefix", "teams")
     status_topic = config.get("statusTopic", "status")
     status_topic = f"{topic_prefix}/{status_topic}"
+    in_call_topic = f"{topic_prefix}/in-call"
 
     return {
         "broker": broker,
@@ -89,6 +90,7 @@ def extract_mqtt_config(config: Dict) -> Optional[Dict]:
         "password": password,
         "teams_client": teams_client,
         "status_topic": status_topic,
+        "in_call_topic": in_call_topic,
     }
 
 
@@ -97,6 +99,7 @@ class BusylightMonitor:
 
     def __init__(self, mqtt_config: Dict):
         self.status = "unknown"
+        self.in_call = False
         self.light: Optional[Light] = None
 
         context = pyudev.Context()
@@ -116,9 +119,13 @@ class BusylightMonitor:
         if config.get("username"):
             client.username_pw_set(config["username"], config.get("password"))
 
+        self.status_topic = config["status_topic"]
+        self.in_call_topic = config["in_call_topic"]
+
         url = urllib.parse.urlparse(config["broker"])
         client.connect(url.hostname, url.port or 1883)
         client.subscribe(config["status_topic"])
+        client.subscribe(config["in_call_topic"])
 
         client.loop_start()
         return client
@@ -172,9 +179,14 @@ class BusylightMonitor:
 
     def on_message(self, client, userdata, msg):
         """MQTT message handler."""
-        msg = json.loads(msg.payload)
-        logging.debug("msg: %s", msg)
-        status = msg.get("status", "unknown")
+        logging.debug("topic: %s msg: %s", msg.topic, msg.payload)
+        if msg.topic == self.in_call_topic:
+            self.in_call = msg.payload.decode().strip().lower() == "true"
+            logging.info("In-call changed: %s", self.in_call)
+            self.update_light_status()
+            return
+        payload = json.loads(msg.payload)
+        status = payload.get("status", "unknown")
         self.on_status_change(status)
 
     def on_status_change(self, new_status: str):
@@ -190,19 +202,20 @@ class BusylightMonitor:
             return
 
         # https://ismaelmartinez.github.io/teams-for-linux/mqtt-integration#status-values
-        if self.status == "available":
-            logging.info("GREEN")
-            self.light.on((0, 255, 0))
-        elif self.status == "busy":  # Also in a call
+        if self.in_call or self.status == "do_not_disturb":
             logging.info("RED")
             self.light.on((255, 0, 0))
-        elif self.status == "do_not_disturb":  # Also presenting
-            # Don't flash because it's too distracting; so purple instead
-            logging.info("PURPLE")
-            self.light.on((255, 0, 255))
+        elif self.status == "available":
+            logging.info("GREEN")
+            self.light.on((0, 255, 0))
+        elif self.status == "busy":
+            # I want in-call or do-not-disturb to *actually* mean don't disturb me. So it's
+            # important to color differently from busy
+            logging.info("ORANGE")
+            self.light.on((255, 50, 0))
         elif self.status in ("away", "be_right_back"):
             logging.info("YELLOW")
-            self.light.on((255, 255, 0))
+            self.light.on((255, 200, 0))
         else:
             logging.info("OFF")
             self.light.off()
