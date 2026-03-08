@@ -43,7 +43,7 @@ prompt_default_yes() {
 github_latest_release_tag() {
     local repo="$1"
 
-    curl --silent "https://api.github.com/repos/$repo/releases/latest" |
+    curl --silent --fail "https://api.github.com/repos/$repo/releases/latest" |
         grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")'
 }
 
