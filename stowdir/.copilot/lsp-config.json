@@ -1,0 +1,15 @@
+{
+    "lspServers": {
+        "rust-analyzer": {
+            "command": "rust-analyzer",
+            "args": [],
+            "fileExtensions": {
+                "rs": "rust"
+            },
+            "root_markers": [
+                "Cargo.toml",
+                "Cargo.lock"
+            ]
+        }
+    }
+}
