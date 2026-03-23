@@ -1,6 +1,5 @@
 {
     "alwaysOnSystemIdle": true,
-    "disableGpu": false,
     "disableNotifications": true,
     "closeAppOnCross": true,
     "disableGlobalShortcuts": [
@@ -12,5 +11,18 @@
         "brokerUrl": "mqtt://localhost:1883",
         "topicPrefix": "bedlam/teams",
         "statusTopic": "status"
-    }
+    },
+    "disableGpu": false,
+    "electronCLIFlags": [
+        [
+            "use-gl",
+            "angle"
+        ],
+        [
+            "enable-features",
+            "UseOzonePlatform,AcceleratedVideoDecodeLinuxZeroCopyGL,AcceleratedVideoDecodeLinuxGL,AcceleratedVideoEncoder,VaapiIgnoreDriverChecks,WebRTCPipeWireCapturer"
+        ],
+        "ignore-gpu-blocklist",
+        "disable-gpu-driver-bug-workaround"
+    ]
 }
