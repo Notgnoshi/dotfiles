@@ -42,7 +42,7 @@ main() {
         --style=full
         --list-border=none
         --header-first
-        --header="<enter> checkout   <ctrl-f> fetch   <ctrl-h> copy   <delete> delete"
+        --header="<enter> checkout   <ctrl-b> browse   <ctrl-h> copy   <delete> delete"
 
         # Show a preview of the git log starting at each commit
         --preview-label="[ Git Log ]"
