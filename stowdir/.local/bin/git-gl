@@ -92,8 +92,15 @@ branch-too-distant() {
 
 ## A nicely formatted git log
 git-short-log() {
+    # --graph and --reverse are mutually exclusive, so if the user is trying to --reverse, then
+    # don't pass --graph.
+    local graph="--graph"
+    if [[ "$*" = *--reverse* ]]; then
+        graph=""
+    fi
+
     git log \
-        --graph \
+        $graph \
         --color=always \
         --format="%C(auto)%h%d %s %C(dim)%an, %ar" \
         --decorate=short \
