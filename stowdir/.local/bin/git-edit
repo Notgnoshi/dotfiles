@@ -14,6 +14,6 @@ filter_files() {
 }
 
 # Quickly open modified files in your $EDITOR
-git ls-files "${@:---modified}" |
+git ls-files --modified |
     filter_files |
-    xargs --open-tty "${EDITOR:-vim}"
+    xargs --open-tty "${EDITOR:-vim}" "$@"
