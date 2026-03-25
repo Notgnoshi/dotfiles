@@ -8,6 +8,29 @@ strip-trailing-whitespace() {
     sed 's/[[:space:]]*$//'
 }
 
+## Delete branches, switching away from the current branch first if needed
+delete-branches() {
+    local branches
+    branches="$(cat)"
+    local current
+    current="$(git branch --show-current)"
+
+    if [[ -n "$current" ]] && echo "$branches" | grep -qxF "$current"; then
+        local remote="${GIT_REMOTE:-origin}"
+        local default_branch
+        default_branch="$(git rev-parse --abbrev-ref "$remote/HEAD" 2>/dev/null)"
+        default_branch="${default_branch#"$remote/"}"
+        if [[ -n "$default_branch" ]]; then
+            git switch "$default_branch"
+        else
+            echo "Cannot delete checked-out branch: no default branch found" >&2
+            return 1
+        fi
+    fi
+
+    echo "$branches" | xargs git branch --delete --force
+}
+
 main() {
     local -r filter_branch_name="sed 's/^[* ]*//' | cut -d ' ' -f1 -"
     local -r filter_branch="echo {} | $filter_branch_name | head -1"
@@ -36,8 +59,11 @@ main() {
         # Switch to the selected branch
         --bind="enter:become($filter_branch | sed 's|^origin/||' | xargs git switch)"
 
-        # Delete the selected branch(es)
-        --bind="del:execute($filter_branches | xargs git branch --delete --force)+reload($reload)"
+        # Delete the selected branch(es), switching to default branch if needed
+        --bind="del:execute(
+            $(declare -f delete-branches)
+            $filter_branches | delete-branches
+        )+reload($reload)"
 
         # Fetch
         --bind="ctrl-f:execute(git fetch)+reload($reload)"
