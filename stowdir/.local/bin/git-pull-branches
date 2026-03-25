@@ -5,16 +5,16 @@ set -o nounset
 set -o noclobber
 
 main() {
-    local branches=("$@")
+    local -r branches=("$@")
     local -r remote="${GIT_REMOTE:-origin}"
 
     git fetch "$remote"
 
-    local current_branch
-    current_branch="$(git branch --show-current)"
-    # Create a temporary branch right before pulling. If either the pull --rebase or pull --merge
-    # failed, or the stash fails to apply, this can be useful context to help manual intervention.
-    git switch --create "save/$current_branch"
+    local -r current_branch="$(git branch --show-current)"
+    # Handle the case where we're on a detached HEAD, in which case we want to return to the current
+    # revision rather than the current branch.
+    local -r saved_ref="${current_branch:-$(git rev-parse HEAD)}"
+
     local stashed="true"
     if git stash | grep "No local changes to save" >/dev/null; then
         stashed="false"
@@ -22,15 +22,14 @@ main() {
 
     for branch in "${branches[@]}"; do
         git switch "$branch"
-        git pull
+        git pull --rebase
     done
 
-    git switch "$current_branch"
+    git checkout "$saved_ref"
 
     if [[ "$stashed" = "true" ]]; then
         git stash pop
     fi
-    git branch --delete "save/$current_branch"
 }
 
 main "$@"
