@@ -192,10 +192,10 @@ fzf-git-log() {
             )+abort"
         )
     else
-        fzf_header="$fzf_header   <C-p> cherry pick"
+        fzf_header="$fzf_header   <C-x> cherry pick"
         fzf_args+=(
             # Cherry pick the selected commits (in the order that they were selected)
-            --bind="ctrl-p:execute(
+            --bind="ctrl-x:execute(
                 $(declare -f filter-short-hash)
 
                 $MULTI_SELECTION |
