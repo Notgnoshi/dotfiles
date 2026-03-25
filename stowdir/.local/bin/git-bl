@@ -45,7 +45,7 @@ main() {
 
         --header-first
         --header="<enter>  switch   <ctrl-b> browse   <delete> delete
-<ctrl-f> fetch    <ctrl-p> pull     <ctrl-h> copy"
+<ctrl-f> fetch    <ctrl-l> pull     <ctrl-h> copy"
 
         # Open the selected branch in a interactive browser to drill deeper
         --bind="ctrl-b:execute($filter_branch | xargs git-gl)"
@@ -69,7 +69,7 @@ main() {
         --bind="ctrl-f:execute(git fetch)+reload($reload)"
 
         # Pull selected branch(es), even if they're not checked out
-        --bind="ctrl-p:execute($filter_branches | xargs git-pull-branches)+reload($reload)"
+        --bind="ctrl-l:execute($filter_branches | xargs git-pull-branches)+reload($reload)"
     )
 
     if ! git branch --color=always -vv "$@" | fzf \
