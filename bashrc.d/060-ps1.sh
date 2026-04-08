@@ -99,6 +99,13 @@ function_exists() {
 
 # See https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh for more details.
 #
+# These GIT_PS1_* variables can be overridden per-repo with git config to disable expensive checks
+# in large repositories:
+#
+#   git config bash.showDirtyState false       # skips git diff
+#   git config bash.showUntrackedFiles false   # skips git ls-files (biggest win in large repos)
+#   git config bash.showUpstream false         # skips ahead/behind calculation
+
 # Adds '*' and '+' for unstaged and staged changes
 export GIT_PS1_SHOWDIRTYSTATE=1
 # When in a detached head state, attempt to find the branch HEAD is on.
