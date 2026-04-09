@@ -30,6 +30,29 @@
     "clangd-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
   },
+  "permissions": {
+    "allow": [
+      "Bash(cargo build:*)",
+      "Bash(cargo check:*)",
+      "Bash(cargo clippy:*)",
+      "Bash(cargo fmt:*)",
+      "Bash(cargo nextest:*)",
+      "Bash(cargo test:*)",
+      "Bash(cargo tree:*)",
+      "Bash(dprint check:*)",
+      "Bash(dprint fmt:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Read(~/.cargo/registry/src/**)",
+      "WebFetch(domain:crates.io)",
+      "WebFetch(domain:docs.rs)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:rust-lang.github.io)"
+    ]
+  },
   "effortLevel": "high",
   "skipAutoPermissionPrompt": true,
   "statusLine": {
