@@ -62,7 +62,7 @@ main() {
 
     # StreamLocalBindUnlink is a server-side sshd_config option for -R forwards;
     # the client-side option only affects -L. Pre-clean stale socket and paste file.
-    ssh "$@" "rm -f '$SSHCLIP_SOCK' '$SSHCLIP_PASTE_FILE'" 2>/dev/null || true
+    ssh "$@" "rm -f '$SSHCLIP_SOCK' '$SSHCLIP_PASTE_FILE'" || true
 
     ssh -R "$SSHCLIP_SOCK:$LOCAL_SOCK" "$@"
 }
