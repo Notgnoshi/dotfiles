@@ -56,6 +56,7 @@ export LESS=FRX
 export MAKEFLAGS="-j$(($(nproc) - 2))"
 export CMAKE_BUILD_PARALLEL_LEVEL="$(($(nproc) - 2))"
 export CMAKE_COLOR_DIAGNOSTICS=ON
+export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 __rustc_linker=""
 if command mold --version >/dev/null 2>&1; then
