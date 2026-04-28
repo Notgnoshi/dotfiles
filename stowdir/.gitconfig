@@ -69,6 +69,7 @@
 [fetch]
     prune = true
     parallel = 0
+    writeCommitGraph = true
 [rerere]
     enabled = true
 [branch]
@@ -88,9 +89,11 @@
 [includeIf "gitdir:~/work/"]
     path = .gitconfig-work
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
 [submodule]
-	fetchJobs = 0
+    fetchJobs = 0
+[gc]
+    writeCommitGraph = true
