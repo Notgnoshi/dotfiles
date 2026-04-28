@@ -57,7 +57,7 @@ get-default-branch() {
     default_branch="$(git rev-parse --abbrev-ref "$remote/HEAD" 2>/dev/null)"
     # shellcheck disable=SC2181
     if [[ $? -eq 0 ]]; then
-        echo "${default_branch#"$remote/"}"
+        echo "refs/remotes/${default_branch}"
     fi
     set -o errexit
 }
