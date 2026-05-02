@@ -41,4 +41,14 @@ return {
             end, { nargs = "*" })
         end,
     },
+    {
+        "debugloop/telescope-undo.nvim",
+        dependencies = "nvim-telescope/telescope.nvim",
+        keys = {
+            { "<c-f><c-u>", "<cmd>Telescope undo<cr>", desc = "Telescope undo history" },
+        },
+        config = function()
+            require("telescope").load_extension("undo")
+        end,
+    },
 }
