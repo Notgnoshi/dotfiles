@@ -18,11 +18,7 @@ if [[ -z "$TMUX" ]]; then
     # when its parent session closes so it should never be the target.
     target="$(tmux list-sessions -F '#S' -f '#{?#{==:#S,scratch},0,1}' 2>/dev/null | head -1)"
     if [[ -n "$target" ]]; then
-        # If there _is_ an existing session, make a new one, but use the first discovered session as
-        # a shared session group. This is the "rogue mode" from https://github.com/zolrath/wemux
-        # Windows are shared (and cursors within a window). But two sessions can be in different
-        # windows at the same time.
-        tmux new-session -t "$target"
+        tmux attach-session -t "$target"
     else
         tmux new-session
     fi
