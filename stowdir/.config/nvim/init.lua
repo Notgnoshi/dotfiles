@@ -1,3 +1,11 @@
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+-- Auto-load every lua/config/*.lua module in alphabetical order
+for _, path in ipairs(vim.api.nvim_get_runtime_file("lua/config/*.lua", true)) do
+    require("config." .. path:match("lua/config/(.+)%.lua$"))
+end
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
@@ -19,9 +27,6 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
 require("lazy").setup({
     spec = {},
     checker = { enabled = true },
