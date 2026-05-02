@@ -27,27 +27,21 @@ export FZF_CTRL_R_OPTS=" \
     )\" \
 "
 
-# Use vim as my MANPAGER. Has folding, ability to follow links.
-MANPAGER="vim -M +MANPAGER -"
-MANWIDTH=100
+# Use nvim as my MANPAGER. Has folding, ability to follow links.
+export MANPAGER='nvim +Man!'
+export MANWIDTH=100
 
 # Add local header files to gcc include path
-C_INCLUDE_PATH="$HOME/.local/include${C_INCLUDE_PATH:+:${C_INCLUDE_PATH}}"
-CPLUS_INCLUDE_PATH="$HOME/.local/include${CPLUS_INCLUDE_PATH:+:${CPLUS_INCLUDE_PATH}}"
+export C_INCLUDE_PATH="$HOME/.local/include${C_INCLUDE_PATH:+:${C_INCLUDE_PATH}}"
+export CPLUS_INCLUDE_PATH="$HOME/.local/include${CPLUS_INCLUDE_PATH:+:${CPLUS_INCLUDE_PATH}}"
 
 # Add local libraries to library path.
-LIBRARY_PATH="$HOME/.local/lib${LIBRARY_PATH:+:${LIBRARY_PATH}}"
+export LIBRARY_PATH="$HOME/.local/lib${LIBRARY_PATH:+:${LIBRARY_PATH}}"
 
 # Setting LIBRARY_PATH is for linking, setting LD_LIBRARY_PATH is for running
-LD_LIBRARY_PATH="$LIBRARY_PATH"
+export LD_LIBRARY_PATH="$LIBRARY_PATH"
 
-export C_INCLUDE_PATH
-export CPLUS_INCLUDE_PATH
-export LIBRARY_PATH
-export LD_LIBRARY_PATH
-export MANPAGER
-export MANWIDTH
-export EDITOR=vim
+export EDITOR=nvim
 export BAT_THEME=base16
 # Fix less not rendering control characters with git-log on the Opp lab machines.
 export LESS=FRX
