@@ -1,0 +1,21 @@
+vim.opt.path:append("**")
+
+vim.opt.wildignore:append({
+    ".git/*",
+    "*/node_modules/*",
+    "*/target/*",
+    "*/build/*",
+    "*.class",
+    "*.png",
+    "*.gif",
+    "*.pdf",
+    "*.exe",
+    "*.o",
+    "*.so",
+    "*.jar",
+    "*.war",
+    "*.ear",
+    "*.dll",
+    "*.swp",
+    "*.zip",
+})
