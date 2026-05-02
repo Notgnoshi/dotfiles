@@ -1,4 +1,4 @@
-vim.g.mapleader = " "
+vim.g.mapleader = "\\"
 vim.g.maplocalleader = "\\"
 
 -- Auto-load every lua/config/*.lua module in alphabetical order
