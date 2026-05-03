@@ -9,6 +9,7 @@ return {
             require("nvim-treesitter.configs").setup({
                 ensure_installed = {
                     "bash",
+                    "bitbake",
                     "c",
                     "cmake",
                     "cpp",
@@ -23,6 +24,7 @@ return {
                     "lua",
                     "markdown",
                     "markdown_inline",
+                    "proto",
                     "python",
                     "rust",
                     "toml",
