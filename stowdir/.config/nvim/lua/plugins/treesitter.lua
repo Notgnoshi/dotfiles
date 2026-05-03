@@ -4,6 +4,7 @@ return {
         branch = "master",
         build = ":TSUpdate",
         event = { "BufReadPost", "BufNewFile" },
+        dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
         config = function()
             require("nvim-treesitter.configs").setup({
                 ensure_installed = {
@@ -19,7 +20,6 @@ return {
                     "html",
                     "javascript",
                     "json",
-                    "latex",
                     "lua",
                     "markdown",
                     "markdown_inline",
@@ -30,10 +30,55 @@ return {
                     "typescript",
                     "vim",
                     "vimdoc",
+                    "xml",
                     "yaml",
                 },
                 highlight = { enable = true },
                 indent = { enable = true },
+                textobjects = {
+                    select = {
+                        enable = true,
+                        lookahead = true,
+                        keymaps = {
+                            ["ac"] = "@comment.outer",
+                            ["ic"] = "@comment.outer",
+                            ["af"] = "@function.outer",
+                            ["if"] = "@function.inner",
+                            ["aC"] = "@class.outer",
+                            ["iC"] = "@class.inner",
+                            ["aa"] = "@parameter.outer",
+                            ["ia"] = "@parameter.inner",
+                            ["ao"] = "@conditional.outer",
+                            ["io"] = "@conditional.inner",
+                            ["al"] = "@loop.outer",
+                            ["il"] = "@loop.inner",
+                        },
+                    },
+                    move = {
+                        enable = true,
+                        set_jumps = true,
+                        goto_next_start = {
+                            ["]m"] = "@function.outer",
+                            ["]]"] = "@class.outer",
+                            ["]a"] = "@parameter.inner",
+                            ["]l"] = "@loop.outer",
+                        },
+                        goto_next_end = {
+                            ["]M"] = "@function.outer",
+                            ["]["] = "@class.outer",
+                        },
+                        goto_previous_start = {
+                            ["[m"] = "@function.outer",
+                            ["[["] = "@class.outer",
+                            ["[a"] = "@parameter.inner",
+                            ["[l"] = "@loop.outer",
+                        },
+                        goto_previous_end = {
+                            ["[M"] = "@function.outer",
+                            ["[]"] = "@class.outer",
+                        },
+                    },
+                },
             })
         end,
     },
