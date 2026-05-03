@@ -2,6 +2,7 @@
   "blink.cmp": { "branch": "main", "commit": "78336bc89ee5365633bcf754d93df01678b5c08f" },
   "conform.nvim": { "branch": "master", "commit": "dca1a190aa85f9065979ef35802fb77131911106" },
   "copilot.lua": { "branch": "master", "commit": "78c638293f0ea6a2245eca46e9933ee271792d7e" },
+  "flash.nvim": { "branch": "main", "commit": "fcea7ff883235d9024dc41e638f164a450c14ca2" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "lualine.nvim": { "branch": "master", "commit": "131a558e13f9f28b15cd235557150ccb23f89286" },
   "mason-lspconfig.nvim": { "branch": "main", "commit": "0c2823e0418f3d9230ff8b201c976e84de1cb401" },
