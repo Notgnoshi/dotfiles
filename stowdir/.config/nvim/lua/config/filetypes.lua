@@ -43,5 +43,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
     group = group,
     pattern = "rust",
-    callback = function() vim.g.termdebugger = "rust-gdb" end,
+    callback = function()
+        vim.g.termdebugger = "rust-gdb"
+    end,
 })

@@ -12,5 +12,7 @@ vim.opt.shada = "!,'500,/5000,:5000,<500,s1000,h"
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("history_disable_for_git", { clear = true }),
     pattern = { "gitcommit", "gitrebase" },
-    callback = function() vim.opt_local.shada = "" end,
+    callback = function()
+        vim.opt_local.shada = ""
+    end,
 })

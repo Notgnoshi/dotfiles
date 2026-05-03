@@ -13,7 +13,9 @@ vim.opt.showmatch = true
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("editing_gitcommit", { clear = true }),
     pattern = "gitcommit",
-    callback = function() vim.opt_local.colorcolumn = "72" end,
+    callback = function()
+        vim.opt_local.colorcolumn = "72"
+    end,
 })
 
 -- Reselect visual block after indent.

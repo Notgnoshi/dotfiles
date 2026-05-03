@@ -13,8 +13,10 @@ vim.keymap.set({ "n", "i" }, "<F7>", "<cmd>setlocal spell! spell?<cr>")
 local function setup_spellfile()
     for _, add in ipairs(vim.fn.glob(spell_dir .. "/*.add", true, true)) do
         local spl = add .. ".spl"
-        if vim.fn.filereadable(add) == 1
-            and (vim.fn.filereadable(spl) == 0 or vim.fn.getftime(add) > vim.fn.getftime(spl)) then
+        if
+            vim.fn.filereadable(add) == 1
+            and (vim.fn.filereadable(spl) == 0 or vim.fn.getftime(add) > vim.fn.getftime(spl))
+        then
             vim.cmd("silent mkspell! " .. vim.fn.fnameescape(add))
         end
     end
