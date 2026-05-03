@@ -14,7 +14,7 @@ fi
 if prompt_default_no "Install Pointfree font?"; then
     # https://docs.fedoraproject.org/en-US/quick-docs/fonts/
     mkdir -p ~/.local/share/fonts
-    curl --location --output /tmp/pointfree.zip "https://dl.dafont.com/dl/?f=pointfree"
+    curl --fail --show-error --location --output /tmp/pointfree.zip "https://dl.dafont.com/dl/?f=pointfree"
     unzip -d /tmp/ /tmp/pointfree.zip
     mkdir -p ~/.local/share/fonts/
     mv /tmp/pointfree.ttf ~/.local/share/fonts/

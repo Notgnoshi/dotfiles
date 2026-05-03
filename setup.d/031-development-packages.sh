@@ -3,7 +3,7 @@ if prompt_default_no "Install Python development packages?"; then
     if prompt_default_no "Install Pip?"; then
         if ! command -v pip &>/dev/null; then
             info "Pip not installed. Installing..."
-            curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+            curl --fail --show-error https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
             python3 /tmp/get-pip.py --user
         else
             info "Pip $(pip --version | grep -o '(.*)') already installed"
@@ -214,7 +214,7 @@ if prompt_default_no "Install nvm?"; then
         popd || exit 1
     else
         debug "nvm not found. Installing nvm..."
-        curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$latest_version/install.sh" | bash
+        curl --fail --show-error -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$latest_version/install.sh" | bash
     fi
 
     # Source nvm so we can use it in following setup steps

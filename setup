@@ -42,9 +42,20 @@ prompt_default_yes() {
 
 github_latest_release_tag() {
     local repo="$1"
+    local response
+    local tag
 
-    curl --silent --fail "https://api.github.com/repos/$repo/releases/latest" |
-        grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")'
+    if ! response=$(curl --silent --show-error --fail "https://api.github.com/repos/$repo/releases/latest" 2>&1); then
+        error "Failed to fetch latest release for $repo: $response"
+        return 1
+    fi
+
+    if ! tag=$(printf '%s' "$response" | grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")'); then
+        error "Could not parse tag_name from GitHub response for $repo"
+        return 1
+    fi
+
+    printf '%s\n' "$tag"
 }
 
 github_download_release() {
@@ -52,11 +63,17 @@ github_download_release() {
     local version="$2"
     local artifact="$3"
     local output="${4:-$artifact}"
+    local url="https://github.com/$repo/releases/download/$version/$artifact"
 
-    curl \
+    if ! curl \
+        --fail \
+        --show-error \
         --location \
         --output "$output" \
-        --remote-name "https://github.com/$repo/releases/download/$version/$artifact"
+        --remote-name "$url"; then
+        error "Failed to download release artifact $artifact from $repo ($url)"
+        return 1
+    fi
 }
 
 debug() {

@@ -11,7 +11,7 @@ fi
 if [[ ! -f /tmp/driver.tar.bz2 ]]; then
     debug "Downloading driver ..."
     pushd /tmp/
-    curl --location "$SYSWORXX_SOCKETCAN_DRIVER_DOWNLOAD_LINK" --output /tmp/driver.tar.bz2
+    curl --fail --show-error --location "$SYSWORXX_SOCKETCAN_DRIVER_DOWNLOAD_LINK" --output /tmp/driver.tar.bz2
     tar -xjvf /tmp/driver.tar.bz2
     popd
 fi
