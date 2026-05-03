@@ -15,20 +15,6 @@ if prompt_default_no "Install Python development packages?"; then
         info "${YELLOW}Modifying $(which pylint) to use environment python instead of system python..."
         sed -i 's|/usr/bin/python3|/usr/bin/env python3|' "$(which pylint)"
     fi
-
-    if prompt_default_yes "Install/update colout?"; then
-        mkdir -p "$HOME/src/"
-        if [[ -d "$HOME/src/colout/" ]]; then
-            pushd "$HOME/src/colout/" || exit 1
-            git pull
-        else
-            git clone https://github.com/nojhan/colout.git "$HOME/src/colout/"
-            pushd "$HOME/src/colout/" || exit 1
-            python setup.py install --user
-        fi
-
-        popd || exit 1
-    fi
 fi # Python
 
 download_and_install_shellcheck() {
