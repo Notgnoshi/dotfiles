@@ -49,7 +49,11 @@ return {
             { "<c-f><c-m>", "<cmd>Telescope marks<cr>", desc = "Telescope marks" },
         },
         config = function()
-            require("telescope").setup({})
+            require("telescope").setup({
+                pickers = {
+                    colorscheme = { enable_preview = true },
+                },
+            })
             require("telescope").load_extension("fzf")
 
             vim.api.nvim_create_user_command("Rg", function(opts)
