@@ -19,6 +19,7 @@ return {
                     "gitcommit",
                     "gitignore",
                     "html",
+                    "htmldjango",
                     "javascript",
                     "json",
                     "lua",
