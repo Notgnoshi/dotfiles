@@ -1,5 +1,9 @@
 return {
     {
+        "williamboman/mason.nvim",
+        opts = {},
+    },
+    {
         "neovim/nvim-lspconfig",
         dependencies = {
             "williamboman/mason.nvim",
@@ -7,7 +11,6 @@ return {
         },
         event = { "BufReadPost", "BufNewFile" },
         config = function()
-            require("mason").setup()
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "basedpyright",
