@@ -9,7 +9,7 @@ return {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
         },
-        event = { "BufReadPost", "BufNewFile" },
+        event = "VeryLazy",
         config = function()
             require("mason-lspconfig").setup({
                 ensure_installed = {
