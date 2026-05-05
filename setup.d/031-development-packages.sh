@@ -136,6 +136,7 @@ if prompt_default_no "Install/update Rust?"; then
             dump_syms \
             minidump-stackwalk \
             rustfilt \
+            tree-sitter-cli \
             ;
     fi
 fi # Rust
