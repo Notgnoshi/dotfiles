@@ -23,6 +23,7 @@ alias acl='sudo apt-get autoclean'
 alias arem='sudo apt-get autoremove'
 
 alias readelf='readelf --wide'
+alias xxd='xxd -R always'
 
 # Thin shim for man that provides primitive coloring, and help for builtins
 man() {
