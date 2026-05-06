@@ -42,7 +42,7 @@ export LIBRARY_PATH="$HOME/.local/lib${LIBRARY_PATH:+:${LIBRARY_PATH}}"
 export LD_LIBRARY_PATH="$LIBRARY_PATH"
 
 export EDITOR=nvim
-export BAT_THEME=base16
+export BAT_THEME=gruvbox-light
 # Fix less not rendering control characters with git-log on the Opp lab machines.
 export LESS=FRX
 

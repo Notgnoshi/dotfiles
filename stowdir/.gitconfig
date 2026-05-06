@@ -18,7 +18,8 @@
     diffFilter = delta --color-only
 [delta]
     line-numbers = true
-    syntax-theme = base16
+    syntax-theme = gruvbox-light
+    light = true
     # side-by-side diffs are nice, but utilize __delta_side_by_side_width to enable/disable them
     # based on the current terminal width.
     #side-by-side = true
