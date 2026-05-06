@@ -11,17 +11,6 @@ return {
         },
         event = "VeryLazy",
         config = function()
-            require("mason-lspconfig").setup({
-                ensure_installed = {
-                    "basedpyright",
-                    "bashls",
-                    "clangd",
-                    "lua_ls",
-                    "neocmake",
-                    "ruff",
-                },
-            })
-
             vim.lsp.config("clangd", {
                 cmd = {
                     "clangd",
@@ -57,6 +46,17 @@ return {
                     },
                 },
             })
+            require("mason-lspconfig").setup({
+                ensure_installed = {
+                    "basedpyright",
+                    "bashls",
+                    "clangd",
+                    "lua_ls",
+                    "neocmake",
+                    "ruff",
+                },
+            })
+
             vim.lsp.enable({
                 "basedpyright",
                 "bashls",
