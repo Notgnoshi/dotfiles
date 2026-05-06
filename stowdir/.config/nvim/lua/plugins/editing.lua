@@ -27,6 +27,10 @@ return {
         opts = {},
     },
     {
+        "mrcjkb/nvim-lastplace",
+        event = "BufReadPre",
+    },
+    {
         "christoomey/vim-tmux-navigator",
         cmd = {
             "TmuxNavigateLeft",
