@@ -2,7 +2,7 @@
     name = Austin Gill
     email = Notgnoshi@gmail.com
 [core]
-    editor = vim
+    editor = nvim
     fileMode = false
     eol = lf
     autocrlf = input

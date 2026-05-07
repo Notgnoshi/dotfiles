@@ -11,17 +11,17 @@ if prompt_default_no "Install base GUI packages?"; then
 fi
 
 if prompt_default_no "Install VS Code?"; then
-    curl --location https://go.microsoft.com/fwlink/?LinkID=760868 --output /tmp/code.deb
+    curl --fail --show-error --location https://go.microsoft.com/fwlink/?LinkID=760868 --output /tmp/code.deb
     sudo apt install /tmp/code.deb
 fi
 
 if prompt_default_no "Install Discord?"; then
-    curl --location "https://discordapp.com/api/download?platform=linux&format=deb" --output /tmp/discord.deb
+    curl --fail --show-error --location "https://discordapp.com/api/download?platform=linux&format=deb" --output /tmp/discord.deb
     sudo apt install /tmp/discord.deb
 fi
 
 if prompt_default_no "Install Spotify?"; then
-    curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
+    curl --fail -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
     echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
     sudo apt update
     sudo apt install spotify-client

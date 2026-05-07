@@ -1,0 +1,57 @@
+snippet set "Safety settings"
+	set -o errexit
+	set -o pipefail
+	set -o nounset
+	set -o noclobber
+
+snippet script "Bash script template"
+	#!/bin/bash
+	set -o errexit
+	set -o pipefail
+	set -o nounset
+	set -o noclobber
+
+	RED="\\033[31m"
+	GREEN="\\033[32m"
+	BLUE="\\033[34m"
+	RESET="\\033[0m"
+
+	debug() {
+	    echo -e "\${BLUE}DEBUG:\${RESET} \$*" >&2
+	}
+
+	info() {
+	    echo -e "\${GREEN}INFO:\${RESET} \$*" >&2
+	}
+
+	error() {
+	    echo -e "\${RED}ERROR:\${RESET} \$*" >&2
+	}
+
+	usage() {
+	    echo "Usage: \$0 [--help]"
+	    echo
+	    echo "  --help, -h      Show this help and exit"
+	}
+
+	main() {
+	    while [[ \$# -gt 0 ]]; do
+	        case "\$1" in
+	        --help | -h)
+	            usage
+	            exit 0
+	            ;;
+	        -*)
+	            error "Unexpected option: '\$1'"
+	            exit 1
+	            ;;
+	        *)
+	            error "Unexpected positional argument: '\$1'"
+	            exit 1
+	            ;;
+	        esac
+	        shift
+	    done
+	}
+
+	main "\$@"

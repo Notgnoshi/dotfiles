@@ -1,0 +1,9 @@
+#!/bin/bash
+if command -v nvim &>/dev/null; then
+    exec nvim "$@"
+elif [[ -x /usr/bin/vim ]]; then
+    exec /usr/bin/vim "$@"
+else
+    echo "vim shim: neither nvim nor /usr/bin/vim is installed" >&2
+    exit 1
+fi

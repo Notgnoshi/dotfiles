@@ -1,0 +1,15 @@
+#!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o noclobber
+
+path="${1:-$PWD}"
+
+if [[ "$path" = "$HOME" ]]; then
+    echo "~"
+elif root=$(git -C "$path" rev-parse --show-toplevel 2>/dev/null); then
+    basename "$root"
+else
+    basename "$path"
+fi

@@ -3,7 +3,7 @@ if prompt_default_no "Install Python development packages?"; then
     if prompt_default_no "Install Pip?"; then
         if ! command -v pip &>/dev/null; then
             info "Pip not installed. Installing..."
-            curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+            curl --fail --show-error https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
             python3 /tmp/get-pip.py --user
         else
             info "Pip $(pip --version | grep -o '(.*)') already installed"
@@ -14,20 +14,6 @@ if prompt_default_no "Install Python development packages?"; then
         pip install --break-system-packages --upgrade --user --requirement "$DOTFILES_SETUP_SCRIPT_DIR/requirements.txt"
         info "${YELLOW}Modifying $(which pylint) to use environment python instead of system python..."
         sed -i 's|/usr/bin/python3|/usr/bin/env python3|' "$(which pylint)"
-    fi
-
-    if prompt_default_yes "Install/update colout?"; then
-        mkdir -p "$HOME/src/"
-        if [[ -d "$HOME/src/colout/" ]]; then
-            pushd "$HOME/src/colout/" || exit 1
-            git pull
-        else
-            git clone https://github.com/nojhan/colout.git "$HOME/src/colout/"
-            pushd "$HOME/src/colout/" || exit 1
-            python setup.py install --user
-        fi
-
-        popd || exit 1
     fi
 fi # Python
 
@@ -150,6 +136,7 @@ if prompt_default_no "Install/update Rust?"; then
             dump_syms \
             minidump-stackwalk \
             rustfilt \
+            tree-sitter-cli \
             ;
     fi
 fi # Rust
@@ -214,7 +201,7 @@ if prompt_default_no "Install nvm?"; then
         popd || exit 1
     else
         debug "nvm not found. Installing nvm..."
-        curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$latest_version/install.sh" | bash
+        curl --fail --show-error -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$latest_version/install.sh" | bash
     fi
 
     # Source nvm so we can use it in following setup steps

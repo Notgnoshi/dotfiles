@@ -1,0 +1,38 @@
+snippet script "Boilerplate for a new script"
+	#!/usr/bin/env python3
+	"""${1:Script docstring.}"""
+	import argparse
+	import logging
+	import sys
+
+	def parse_args():
+	    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+	    parser.add_argument("--log-level", "-l", type=str, default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], help="Set the logging output level. Defaults to INFO.",)
+	    ${2:group = parser.add_argument_group()
+	    group.add_argument("--input", "-i", type=argparse.FileType("r"), default=sys.stdin, help="${3:Script input. Defaults to stdin.}",)
+	    group.add_argument("--output", "-o", type=argparse.FileType("w"), default=sys.stdout, help="${4:Script output. Defaults to stdout.}",)}
+
+	    return parser.parse_args()
+
+
+	def main(args):
+	    pass
+
+
+	if __name__ == "__main__":
+	    args = parse_args()
+	    fmt = "%(asctime)s %(module)s %(levelname)s: %(message)s"
+	    logging.basicConfig(
+	        format=fmt,
+	        datefmt="%Y-%m-%dT%H:%M:%S%z",
+	        level=args.log_level,
+	        stream=sys.stderr,
+	    )
+	    # Color log output if possible, because I'm a sucker
+	    try:
+	        import coloredlogs
+
+	        coloredlogs.install(fmt=fmt, level=args.log_level, datefmt="%Y-%m-%dT%H:%M:%S%z")
+	    except ImportError:
+	        pass
+	    main(args)
