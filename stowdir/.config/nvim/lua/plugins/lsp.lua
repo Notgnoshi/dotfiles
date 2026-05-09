@@ -51,6 +51,7 @@ return {
                     "basedpyright",
                     "bashls",
                     "clangd",
+                    "jdtls",
                     "lua_ls",
                     "neocmake",
                     "ruff",
@@ -61,6 +62,7 @@ return {
                 "basedpyright",
                 "bashls",
                 "clangd",
+                "jdtls",
                 "lua_ls",
                 "neocmake",
                 "ruff",
@@ -91,6 +93,19 @@ return {
                     local client = vim.lsp.get_client_by_id(args.data.client_id)
                     if client and client.name == "clangd" then
                         map({ "n", "i" }, "<F4>", "<cmd>LspClangdSwitchSourceHeader<cr>", "Switch source/header")
+                    end
+                    if client and client.name == "jdtls" then
+                        map({ "n", "i" }, "<F1>", function()
+                            client:request("workspace/executeCommand", {
+                                command = "java.edit.organizeImports",
+                                arguments = { vim.uri_from_bufnr(buf) },
+                            }, function(err, edit)
+                                if not err and edit then
+                                    vim.lsp.util.apply_workspace_edit(edit, client.offset_encoding or "utf-16")
+                                end
+                                vim.lsp.buf.format({ async = false, bufnr = buf })
+                            end, buf)
+                        end, "Organize imports + format")
                     end
                 end,
             })
