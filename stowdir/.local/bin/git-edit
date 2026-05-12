@@ -13,7 +13,7 @@ filter_files() {
     done
 }
 
-# Quickly open modified files in your $EDITOR
-git ls-files --modified |
+# Quickly open modified and untracked (non-ignored) files in your $EDITOR
+git ls-files --modified --others --exclude-standard |
     filter_files |
     xargs --open-tty "${EDITOR:-vim}" "$@"
