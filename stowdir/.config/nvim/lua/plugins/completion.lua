@@ -18,6 +18,8 @@ return {
                     "snippet_forward",
                     "fallback",
                 },
+                ["<C-p>"] = { "select_prev", "fallback" },
+                ["<C-y>"] = { "select_and_accept", "fallback" },
             },
             sources = {
                 default = { "buffer", "lsp", "path", "snippets" },
