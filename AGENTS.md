@@ -9,4 +9,5 @@ The most important things to know about the stowdir is:
 * The scripts in `stowdir/.local/bin/`
 * The `stowdir/.bashrc` file, which sources files from `bashrc.d/`
 * The `stowdir/.vim/vimrc` vim config file
+* The `stowdir/.config/nvim/` directory is where my neovim configs are
 * The `stowdir/.tmux.conf` tmux config file

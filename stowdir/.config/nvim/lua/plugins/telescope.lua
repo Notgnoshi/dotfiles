@@ -7,7 +7,32 @@ return {
         },
         cmd = { "Telescope", "Rg" },
         keys = {
-            { "<c-f><c-b>", "<cmd>Telescope buffers<cr>", desc = "Telescope buffers" },
+            {
+                "<c-f><c-b>",
+                function()
+                    -- Sort by bufnr to match :bnext / ]b traversal order, and preselect the next
+                    -- buffer ]b would jump to (with wrap-around).
+                    local current = vim.api.nvim_get_current_buf()
+                    local listed = vim.tbl_filter(function(b)
+                        return vim.fn.buflisted(b) == 1
+                    end, vim.api.nvim_list_bufs())
+                    table.sort(listed)
+                    local idx = 1
+                    for i, b in ipairs(listed) do
+                        if b == current then
+                            idx = (i % #listed) + 1
+                            break
+                        end
+                    end
+                    require("telescope.builtin").buffers({
+                        sort_buffers = function(a, b)
+                            return a < b
+                        end,
+                        default_selection_index = idx,
+                    })
+                end,
+                desc = "Telescope buffers",
+            },
             {
                 "<c-f><c-t>",
                 function()
