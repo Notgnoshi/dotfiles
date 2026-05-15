@@ -9,9 +9,6 @@ esac
 
 # Add ~/.local/bin/ to PATH
 export PATH="$HOME/.local/bin${PATH:+:${PATH}}"
-# Need to be sourced before everything else so that bash-completion works as expected.
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[ -f ~/.cargo/env ] && source ~/.cargo/env
 
 if [[ -z "$TMUX" ]]; then
     # Find the first non-scratch session, if any. The scratch session is ephemeral and gets killed
@@ -50,6 +47,8 @@ for rcfile in "${DOTFILES_DIR}/bashrc.d/"*.sh; do
     [ -f "$rcfile" ] && source "$rcfile"
 done
 unset -v rcfile
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.cargo/env ] && source ~/.cargo/env
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
