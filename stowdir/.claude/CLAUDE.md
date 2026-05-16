@@ -87,3 +87,10 @@ Design, planning, and implementation sessions are different modes - don't mix th
 
 * Never commit, push, or create PRs unless explicitly asked. Committing is an act of approval that
   only I can perform.
+
+## Hallucinations
+
+I _NEVER_ want you to _EVER_ invent a version number or API method. I _ALWAYS_ expect you to refer
+to documentation and third-party examples. You can rely on your training for methodology, general
+understanding, and formulating hypotheses, but I expect research and evidence-based reasoning for
+knowledge work.
