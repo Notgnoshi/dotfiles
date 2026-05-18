@@ -58,7 +58,7 @@
     "superpowers@claude-plugins-official": true
   },
   "effortLevel": "high",
-  "skipAutoPermissionPrompt": true,
   "editorMode": "vim",
-  "remoteControlAtStartup": true
+  "remoteControlAtStartup": true,
+  "skipAutoPermissionPrompt": true
 }
