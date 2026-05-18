@@ -4,12 +4,75 @@ set -o pipefail
 set -o nounset
 set -o noclobber
 
-path="${1:-$PWD}"
+PANE_PATH="${1:-$PWD}"
+PANE_TTY="${2:-}"
 
-if [[ "$path" = "$HOME" ]]; then
-    echo "~"
-elif root=$(git -C "$path" rev-parse --show-toplevel 2>/dev/null); then
-    basename "$root"
-else
-    basename "$path"
-fi
+# Foreground command basenames whose argv is rendered as the window name instead of the path
+CMDS=(ssh sshclip)
+# If argv[0] is one of these, argv[1] is treated as the effective command (i.e. for shell scripts).
+SHELLS=(bash sh dash zsh fish ksh)
+
+# basename, also stripping a leading dash so "-bash" (login shell) becomes "bash"
+basename_clean() {
+    local s="${1##*/}"
+    echo "${s#-}"
+}
+
+in_list() {
+    local needle="$1"
+    shift
+    local item
+    for item in "$@"; do
+        [[ "$needle" = "$item" ]] && return 0
+    done
+    return 1
+}
+
+render_cmds() {
+    local -r tty="$1"
+    [[ -n "$tty" ]] || return 0
+
+    local tpgid
+    tpgid=$(ps -o tpgid= -t "${tty#/dev/}" 2>/dev/null | awk 'NR==1 {print $1; exit}' || true)
+    [[ "${tpgid:-0}" -gt 0 && -r "/proc/$tpgid/cmdline" ]] || return 0
+
+    local -a argv
+    mapfile -d '' -t argv <"/proc/$tpgid/cmdline"
+    ((${#argv[@]} > 0)) || return 0
+
+    # Match argv[0]; if argv[0] is a shell wrapper, also try argv[1] (the script).
+    local idx=0
+    local name
+    name=$(basename_clean "${argv[0]}")
+    if ! in_list "$name" "${CMDS[@]}"; then
+        if ((${#argv[@]} > 1)) && in_list "$name" "${SHELLS[@]}"; then
+            name=$(basename_clean "${argv[1]}")
+            in_list "$name" "${CMDS[@]}" || return 0
+            idx=1
+        else
+            return 0
+        fi
+    fi
+
+    if ((${#argv[@]} > idx + 1)); then
+        echo "$name ${argv[*]:idx+1}"
+    else
+        echo "$name"
+    fi
+    exit 0
+}
+
+render_path() {
+    local -r path="$1"
+    local root
+    if [[ "$path" = "$HOME" ]]; then
+        echo "~"
+    elif root=$(git -C "$path" rev-parse --show-toplevel 2>/dev/null); then
+        basename "$root"
+    else
+        basename "$path"
+    fi
+}
+
+render_cmds "$PANE_TTY" # exits if the command should be rendered. Falls back to render_path if not
+render_path "$PANE_PATH"
