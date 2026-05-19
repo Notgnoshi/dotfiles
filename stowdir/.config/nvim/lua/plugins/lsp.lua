@@ -51,7 +51,7 @@ return {
                     "--header-insertion=iwyu",
                     "--pch-storage=memory",
                     "--completion-style=bundled",
-                    "--query-driver=/opt/**/*-linux-*,/usr/bin/c++,/usr/bin/cc,/usr/bin/gcc,/usr/bin/g++",
+                    "--query-driver=/tmp/**/*-linux-*,/opt/**/*-linux-*,/usr/bin/c++,/usr/bin/cc,/usr/bin/gcc,/usr/bin/g++",
                     "-j=4",
                     "--clang-tidy",
                 },
