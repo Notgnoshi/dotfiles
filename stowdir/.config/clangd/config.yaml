@@ -7,3 +7,8 @@ CompileFlags:
         # - -mabi=*
         # - -mcpu=*
         - -mthumb-interwork
+
+# Run all clang-tidy checks, except for https://github.com/clangd/clangd/issues/2665
+Diagnostics:
+    ClangTidy:
+        FastCheckFilter: None
