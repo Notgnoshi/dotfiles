@@ -4,7 +4,7 @@ if prompt_default_no "Install Python development packages?"; then
         if ! command -v pip &>/dev/null; then
             info "Pip not installed. Installing..."
             curl --fail --show-error https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
-            python3 /tmp/get-pip.py --user
+            python3 /tmp/get-pip.py --user --break-system-packages
         else
             info "Pip $(pip --version | grep -o '(.*)') already installed"
         fi
@@ -137,6 +137,7 @@ if prompt_default_no "Install/update Rust?"; then
             minidump-stackwalk \
             rustfilt \
             tree-sitter-cli \
+            wild-linker \
             ;
     fi
 fi # Rust
