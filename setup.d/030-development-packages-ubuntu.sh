@@ -11,7 +11,6 @@ if prompt_default_no "Install native software development packages?"; then
         debuginfod
         doxygen
         elfutils
-        freeglut3-dev
         g++
         gcc
         gdb
@@ -19,9 +18,7 @@ if prompt_default_no "Install native software development packages?"; then
         gdbserver
         git-extras
         graphviz
-        libhidapi-dev
         iwyu
-        kcachegrind
         libasan6
         libboost-all-dev
         libssl-dev
@@ -30,13 +27,12 @@ if prompt_default_no "Install native software development packages?"; then
         lld
         lldb
         make
-        meld
+        ninja-build
         optipng
         pandoc
         pkg-config
         python3-dev
         sqlite3
-        sqlitebrowser
         valgrind
     )
 
