@@ -45,6 +45,12 @@ return {
                     },
                 },
                 ruff_format = { prepend_args = { "--line-length=100" } },
+                rustfmt = {
+                    prepend_args = {
+                        "--config",
+                        "group_imports=StdExternalCrate,imports_granularity=Module",
+                    },
+                },
                 shfmt = { prepend_args = { "--indent", "4" } },
             },
         },
