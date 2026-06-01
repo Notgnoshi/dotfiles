@@ -24,7 +24,7 @@ return {
                 json = { "jq" },
                 lua = { "stylua" },
                 markdown = { "dprint" },
-                python = { "ruff_format" },
+                python = { "ruff_organize_imports", "ruff_format" },
                 rust = { "rustfmt" },
                 sh = { "shfmt" },
                 toml = { "dprint" },
