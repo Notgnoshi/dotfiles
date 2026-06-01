@@ -44,7 +44,6 @@ return {
                         "css",
                     },
                 },
-                ruff_format = { prepend_args = { "--line-length=100" } },
                 rustfmt = {
                     prepend_args = {
                         "--config",
