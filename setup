@@ -50,7 +50,7 @@ github_latest_release_tag() {
         return 1
     fi
 
-    if ! tag=$(printf '%s' "$response" | grep --only-matching --perl-regexp '"tag_name": "\K(.*)(?=")'); then
+    if ! tag=$(printf '%s' "$response" | grep --only-matching --perl-regexp '"tag_name":\s*"\K[^"]+'); then
         error "Could not parse tag_name from GitHub response for $repo"
         return 1
     fi
