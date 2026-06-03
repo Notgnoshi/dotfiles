@@ -94,3 +94,7 @@ I _NEVER_ want you to _EVER_ invent a version number or API method. I _ALWAYS_ e
 to documentation and third-party examples. You can rely on your training for methodology, general
 understanding, and formulating hypotheses, but I expect research and evidence-based reasoning for
 knowledge work.
+
+IMPORTANT: When interactively giving me HTTP hyperlinks in the claude cli interface, NEVER render
+them as markdown links. ALWAYS print the raw full URL in plaintext. The markdown rendering
+suppresses the actual URL and makes it impossible for me to open it.
