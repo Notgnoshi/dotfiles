@@ -54,7 +54,7 @@ return {
                 "<c-f><c-g>",
                 function()
                     require("telescope.builtin").find_files({
-                        find_command = { "fd", "--type", "f", "--hidden" },
+                        find_command = { "fd", "--type", "f", "--hidden", "--exclude", ".git" },
                     })
                 end,
                 desc = "Telescope find VCS files",
