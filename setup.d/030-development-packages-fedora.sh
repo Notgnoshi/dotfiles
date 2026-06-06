@@ -11,14 +11,12 @@ if prompt_default_no "Install native software development packages?"; then
         doxygen
         elfutils
         elfutils-debuginfod
-        freeglut-devel
         g++
         gcc
         gdb
         gdb-gdbserver
         git-extras
         graphviz
-        hidapi-devel
         iwyu
         kcachegrind
         libasan
@@ -34,7 +32,6 @@ if prompt_default_no "Install native software development packages?"; then
         pkg-config
         python3-devel
         sqlite3
-        sqlitebrowser
         valgrind
         zeromq
         zeromq-devel

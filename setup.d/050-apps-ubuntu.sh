@@ -44,7 +44,7 @@ download_and_install_teams() {
     popd || exit 1
 }
 
-if prompt_default_yes "Install unofficial teams-for-linux?"; then
+if prompt_default_no "Install unofficial teams-for-linux?"; then
     latest_version=$(github_latest_release_tag "IsmaelMartinez/teams-for-linux")
     info "Found latest version: $latest_version"
 
