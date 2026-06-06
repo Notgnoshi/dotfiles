@@ -49,7 +49,7 @@ __FZF_ARGS=(
         $(declare -f preview-image)
         echo {} | preview-image
     "
-    --header="<enter> run   <del> delete   <ctrl-p> pull   <ctrl-y> copy
+    --header="<enter> run   <del> delete   <ctrl-l> pull   <ctrl-y> copy
 
 "
 
@@ -66,7 +66,7 @@ __FZF_ARGS=(
     )+reload($(declare -f list-images); list-images)"
 
     # Pull
-    --bind="ctrl-p:become(
+    --bind="ctrl-l:become(
         $(declare -f filter-repository-tag)
         $MULTI_SELECTION | filter-repository-tag | xargs --max-lines=1 docker pull
     )"
