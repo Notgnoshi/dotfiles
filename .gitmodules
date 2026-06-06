@@ -10,3 +10,7 @@
 	path = GEP
 	url = git@github.com:lebr0nli/GEP.git
 	branch = main
+[submodule "thirdparty/fzf"]
+	path = thirdparty/fzf
+	url = https://github.com/junegunn/fzf.git
+	branch = master
