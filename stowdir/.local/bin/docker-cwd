@@ -19,17 +19,24 @@ else
     echo "docker-cwd: no SSH_AUTH_SOCK agent available" >&2
 fi
 
+rust_args=()
+for var in CARGO_HOME RUSTUP_HOME; do
+    dir="${!var}"
+    if [[ -d "$dir" ]]; then
+        rust_args+=(--mount "type=bind,src=$dir,dst=$dir" --env "$var=$dir")
+    else
+        echo "docker-cwd: $var ($dir) not found, not mounted" >&2
+    fi
+done
+
 docker run \
     --rm \
     -it \
-    --mount "type=bind,src=$CARGO_HOME,dst=$CARGO_HOME" \
-    --mount "type=bind,src=$RUSTUP_HOME,dst=$RUSTUP_HOME" \
     --mount "type=bind,src=$PWD,dst=$PWD" \
     --mount "type=bind,src=/tmp/docker-cwd-passwd,dst=/etc/passwd,ro" \
+    "${rust_args[@]}" \
     "${ssh_args[@]}" \
     --env "GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no" \
-    --env "CARGO_HOME=$CARGO_HOME" \
-    --env "RUSTUP_HOME=$RUSTUP_HOME" \
     --user "$(id -u):$(id -g)" \
     --workdir "$PWD" \
     "$@"
