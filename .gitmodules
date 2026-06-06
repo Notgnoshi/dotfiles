@@ -7,7 +7,7 @@
 	url = git@github.com:imomaliev/tmux-bash-completion.git
 	branch = master
 [submodule "GEP"]
-	path = GEP
+	path = thirdparty/GEP
 	url = git@github.com:lebr0nli/GEP.git
 	branch = main
 [submodule "thirdparty/fzf"]

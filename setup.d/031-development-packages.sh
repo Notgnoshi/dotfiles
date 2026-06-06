@@ -184,7 +184,7 @@ if prompt_default_no "Install/update hadolint?"; then
 fi
 
 if prompt_default_no "Install/update GEP GDB plugin?"; then
-    pushd "$DOTFILES_SETUP_SCRIPT_DIR/GEP" || exit 1
+    pushd "$DOTFILES_SETUP_SCRIPT_DIR/thirdparty/GEP" || exit 1
     git switch main
     git pull
     ./install.sh
