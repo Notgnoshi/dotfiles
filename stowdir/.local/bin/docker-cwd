@@ -8,6 +8,17 @@ CARGO_HOME="${CARGO_HOME:-$HOME/.cargo/}"
 RUSTUP_HOME="${RUSTUP_HOME:-$HOME/.rustup/}"
 
 echo "$USER::$(id -u):$(id -g)::$HOME:" >/tmp/docker-cwd-passwd
+
+ssh_args=()
+if [[ -S "${SSH_AUTH_SOCK:-}" ]]; then
+    ssh_args+=(
+        --mount "type=bind,src=$SSH_AUTH_SOCK,dst=$SSH_AUTH_SOCK"
+        --env "SSH_AUTH_SOCK=$SSH_AUTH_SOCK"
+    )
+else
+    echo "docker-cwd: no SSH_AUTH_SOCK agent available" >&2
+fi
+
 docker run \
     --rm \
     -it \
@@ -15,8 +26,7 @@ docker run \
     --mount "type=bind,src=$RUSTUP_HOME,dst=$RUSTUP_HOME" \
     --mount "type=bind,src=$PWD,dst=$PWD" \
     --mount "type=bind,src=/tmp/docker-cwd-passwd,dst=/etc/passwd,ro" \
-    --mount "type=bind,src=$SSH_AUTH_SOCK,dst=$SSH_AUTH_SOCK" \
-    --env "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" \
+    "${ssh_args[@]}" \
     --env "GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no" \
     --env "CARGO_HOME=$CARGO_HOME" \
     --env "RUSTUP_HOME=$RUSTUP_HOME" \
