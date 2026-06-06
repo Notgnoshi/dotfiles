@@ -32,12 +32,23 @@ filter-repository-tag() {
     awk '{ print $1 ":" $2 }'
 }
 
+preview-image() {
+    id=$(filter-image-hash)
+    docker history --human --format '{{.Size}}\t{{.CreatedBy}}' "$id" | awk -F'\t' '{
+        instr = $2; sub(/ .*/, "", instr)
+        printf "\033[90m%-8s\033[0m \033[36m%s\033[0m %s\n", $1, instr, substr($2, length(instr) + 2)
+    }'
+}
+
 __FZF_LIST_IMAGES="list-images"
 __FZF_ARGS=(
-    # TODO: What's a useful preview?
-    # --preview-label="[ Image ]"
-    # --preview="echo preview"
-    # --preview-window="top,30%"
+    --preview-label="[ docker history ]"
+    --preview-window="right,55%"
+    --preview="
+        $(declare -f filter-image-hash)
+        $(declare -f preview-image)
+        echo {} | preview-image
+    "
     --header="<enter> run   <del> delete   <ctrl-p> pull   <ctrl-y> copy
 
 "
