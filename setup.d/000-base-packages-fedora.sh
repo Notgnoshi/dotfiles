@@ -26,14 +26,12 @@ if prompt_default_no "Install base system packages?"; then
         openssh-server
         openssl
         poke
-        poke-vim
         pv
         screen
         screenfetch
         stow
         traceroute
         tree
-        vim-X11
         wl-clipboard
     )
 

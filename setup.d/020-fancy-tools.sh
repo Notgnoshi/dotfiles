@@ -1,7 +1,7 @@
 #!/bin/bash
 if prompt_default_yes "Install/update fancy shell tools?"; then
     if prompt_default_yes "Install/update fzf from GitHub?"; then
-        pushd "$DOTFILES_SETUP_SCRIPT_DIR/stowdir/.vim/bundle/fzf/" || exit 1
+        pushd "$DOTFILES_SETUP_SCRIPT_DIR/thirdparty/fzf/" || exit 1
         git switch master
         git pull
         ./install --all

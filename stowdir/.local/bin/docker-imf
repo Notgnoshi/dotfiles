@@ -9,6 +9,21 @@ SINGLE_SELECTION="echo {}"
 ## Print all selected lines, one per line
 MULTI_SELECTION="printf '%s\n' {+}"
 
+# Aligned, colored: repository (cyan), tag (yellow), image id (grey). Padding and
+# color are applied together so column widths don't count the ANSI bytes; fzf
+# --ansi strips the color back out before the binds' awk filters see the line.
+list-images() {
+    docker images --format '{{.Repository}} {{.Tag}} {{.ID}}' | awk '
+        { repo[NR]=$1; tag[NR]=$2; id[NR]=$3
+          if (length($1) > rw) rw = length($1)
+          if (length($2) > tw) tw = length($2) }
+        END {
+          for (i = 1; i <= NR; i++)
+            printf "\033[36m%-*s\033[0m  \033[33m%-*s\033[0m  \033[90m%s\033[0m\n", \
+                   rw, repo[i], tw, tag[i], id[i]
+        }'
+}
+
 filter-image-hash() {
     awk '{ print $3 }'
 }
@@ -17,16 +32,26 @@ filter-repository-tag() {
     awk '{ print $1 ":" $2 }'
 }
 
-__FZF_LIST_IMAGES="docker images"
+preview-image() {
+    id=$(filter-image-hash)
+    docker history --human --format '{{.Size}}\t{{.CreatedBy}}' "$id" | awk -F'\t' '{
+        instr = $2; sub(/ .*/, "", instr)
+        printf "\033[90m%-8s\033[0m \033[36m%s\033[0m %s\n", $1, instr, substr($2, length(instr) + 2)
+    }'
+}
+
+__FZF_LIST_IMAGES="list-images"
 __FZF_ARGS=(
-    # TODO: What's a useful preview?
-    # --preview-label="[ Image ]"
-    # --preview="echo preview"
-    # --preview-window="top,30%"
-    --header="<enter> run   <del> delete   <ctrl-p> pull   <ctrl-y> copy
+    --preview-label="[ docker history ]"
+    --preview-window="right,55%"
+    --preview="
+        $(declare -f filter-image-hash)
+        $(declare -f preview-image)
+        echo {} | preview-image
+    "
+    --header="<enter> run   <del> delete   <ctrl-l> pull   <ctrl-y> copy
 
 "
-    --header-lines=1
 
     # Run the image in docker-cwd
     --bind="enter:become(
@@ -38,10 +63,10 @@ __FZF_ARGS=(
     --bind="del:execute(
         $(declare -f filter-image-hash)
         $MULTI_SELECTION | filter-image-hash | xargs docker rmi
-    )+reload($__FZF_LIST_IMAGES)"
+    )+reload($(declare -f list-images); list-images)"
 
     # Pull
-    --bind="ctrl-p:become(
+    --bind="ctrl-l:become(
         $(declare -f filter-repository-tag)
         $MULTI_SELECTION | filter-repository-tag | xargs --max-lines=1 docker pull
     )"
@@ -51,11 +76,6 @@ __FZF_ARGS=(
         $(declare -f filter-repository-tag)
         $MULTI_SELECTION | filter-repository-tag | clip
     )"
-
-    # Retag
-    # TODO: How to input the new name?
-    # --bind="ctrl-t:execute(
-    # )+reload($__FZF_LIST_IMAGES)"
 )
 
 if ! $__FZF_LIST_IMAGES | fzf \

@@ -42,21 +42,3 @@ if prompt_default_no "Configure system settings?"; then
     gsettings set org.gnome.mutter dynamic-workspaces false
     gsettings set org.gnome.mutter workspaces-only-on-primary false
 fi
-
-if prompt_default_no "Install/update HeadsetControl?"; then
-    if [[ -d ~/src/HeadsetControl/ ]]; then
-        pushd ~/src/HeadsetControl/ || exit 1
-        git pull
-    else
-        git clone https://github.com/Sapd/HeadsetControl.git ~/src/HeadsetControl/
-        pushd ~/src/HeadsetControl/ || exit 1
-    fi
-
-    cmake -B ./build/
-    cmake --build ./build/
-    pushd ./build/ || exit 1
-    sudo make install
-    sudo udevadm control --reload-rules && sudo udevadm trigger
-    popd || exit 1
-    popd || exit 1
-fi

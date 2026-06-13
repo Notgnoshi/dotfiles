@@ -23,7 +23,4 @@ elif prompt_default_no "Undeploy dotfiles?"; then
     if [[ -L "$HOME/.gitignore" ]]; then
         rm "$HOME/.gitignore"
     fi
-    if command -v pip &>/dev/null; then
-        pip uninstall csvutils
-    fi
 fi

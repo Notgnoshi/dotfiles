@@ -79,6 +79,24 @@ return {
                     },
                 },
             })
+            vim.lsp.config("basedpyright", {
+                settings = {
+                    basedpyright = {
+                        analysis = {
+                            diagnosticSeverityOverrides = {
+                                reportAny = false,
+                                reportExplicitAny = false,
+                                reportUnknownArgumentType = false,
+                                reportUnknownLambdaType = false,
+                                reportUnknownMemberType = false,
+                                reportUnknownParameterType = false,
+                                reportUnknownVariableType = false,
+                                reportUnusedCallResult = false,
+                            },
+                        },
+                    },
+                },
+            })
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "basedpyright",

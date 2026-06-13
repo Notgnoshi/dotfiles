@@ -13,11 +13,6 @@ shopt -s checkwinsize
 
 # fzf settings
 export FZF_DEFAULT_OPTS="--history-size=100000"
-# Don't ignore files in Vim with C-f-f. You can get git ls-files with C-f-g.
-export FZF_DEFAULT_COMMAND="fd --type f --no-ignore"
-# But still make C-t from the shell ignore ignored files.
-export FZF_CTRL_T_COMMAND="fd --type f --hidden --exclude .git"
-export FZF_CTRL_T_OPTS="--preview 'bat --style changes --color=always --line-range :60 {}'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -n 60'"
 # Add a keybind to copy the selected command to the clipboard
 export FZF_CTRL_R_OPTS=" \
@@ -26,6 +21,16 @@ export FZF_CTRL_R_OPTS=" \
         echo {} | cut --complement --fields 1 | perl -pe 'chomp if eof' | clip \
     )\" \
 "
+
+# C-g and C-t match the C-f-g and C-f-t neovim keybinds. C-g searches git-tracked files, and C-t
+# searches everything.
+export FZF_CTRL_T_COMMAND="fd --type f --no-ignore --hidden --exclude .git"
+export FZF_CTRL_T_OPTS="--preview 'bat --style changes --color=always --line-range :60 {}'"
+__fzf_git_files_widget() {
+    local FZF_CTRL_T_COMMAND="fd --type f --hidden --exclude .git"
+    fzf-file-widget
+}
+bind -x '"\C-g": __fzf_git_files_widget'
 
 # Use nvim as my MANPAGER. Has folding, ability to follow links.
 export MANPAGER='nvim +Man!'
