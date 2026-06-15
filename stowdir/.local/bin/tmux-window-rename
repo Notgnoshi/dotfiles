@@ -1,25 +1,25 @@
 #!/bin/bash
+# Rename a tmux window after its active pane's foreground command or path.
 set -o errexit
 set -o pipefail
 set -o nounset
-set -o noclobber
-
-PANE_PATH="${1:-$PWD}"
-PANE_TTY="${2:-}"
 
 # Foreground command basenames whose argv is rendered as the window name instead of the path
 CMDS=(ssh sshclip)
 # If argv[0] is one of these, argv[1] is treated as the effective command (i.e. for shell scripts).
 SHELLS=(bash sh dash zsh fish ksh)
+# Maximum rendered name length
+MAX_LEN=25
 
-# basename, also stripping a leading dash so "-bash" (login shell) becomes "bash"
+# basename that also strips a leading dash so "-bash" becomes "bash"
 basename_clean() {
-    local s="${1##*/}"
+    local -r s="${1##*/}"
     echo "${s#-}"
 }
 
+# Check if $1 is in ${@:2}
 in_list() {
-    local needle="$1"
+    local -r needle="$1"
     shift
     local item
     for item in "$@"; do
@@ -28,6 +28,7 @@ in_list() {
     return 1
 }
 
+# Print the name of one of the ${CMDS[@]} if it's the active cmdline for the tty
 render_cmds() {
     local -r tty="$1"
     [[ -n "$tty" ]] || return 0
@@ -59,9 +60,9 @@ render_cmds() {
     else
         echo "$name"
     fi
-    exit 0
 }
 
+# Print a short form of the given path
 render_path() {
     local -r path="$1"
     local root
@@ -74,5 +75,18 @@ render_path() {
     fi
 }
 
-render_cmds "$PANE_TTY" # exits if the command should be rendered. Falls back to render_path if not
-render_path "$PANE_PATH"
+window_id="${1:-}"
+if [[ -z "$window_id" ]]; then
+    exit 0
+fi
+
+IFS=$'\t' read -r PANE_PATH PANE_TTY \
+    < <(tmux display-message -p -t "$window_id" $'#{pane_current_path}\t#{pane_tty}')
+
+# First check if we should render the current command, otherwise fallback on the CWD
+name=$(render_cmds "$PANE_TTY")
+if [[ -z "$name" ]]; then
+    name=$(render_path "$PANE_PATH")
+fi
+
+tmux rename-window -t "$window_id" "${name:0:MAX_LEN}"
