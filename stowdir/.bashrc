@@ -43,12 +43,12 @@ unset -v SOURCE
 # Source each of components in alphabetical order.
 # This is where most of the customizations come from.
 ##################################################################################################
+[ -f ~/.cargo/env ] && source ~/.cargo/env
 for rcfile in "${DOTFILES_DIR}/bashrc.d/"*.sh; do
     [ -f "$rcfile" ] && source "$rcfile"
 done
 unset -v rcfile
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[ -f ~/.cargo/env ] && source ~/.cargo/env
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
