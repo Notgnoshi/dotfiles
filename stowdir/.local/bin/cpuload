@@ -20,6 +20,7 @@ EOF
 trap killgroup SIGINT
 killgroup() {
     echo "Done."
+    kill $(jobs -p) 2>/dev/null
     exit 0
 }
 
