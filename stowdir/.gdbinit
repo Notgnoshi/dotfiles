@@ -43,4 +43,4 @@ from libstdcxx.v6.printers import register_libstdcxx_printers
 register_libstdcxx_printers(None)
 end
 
-source ~/.config/dotfiles/GEP/gdbinit-gep.py
+source ~/.config/dotfiles/thirdparty/GEP/gdbinit-gep.py

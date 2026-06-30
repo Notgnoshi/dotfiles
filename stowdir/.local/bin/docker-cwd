@@ -4,6 +4,25 @@ set -o pipefail
 set -o nounset
 #set -o noclobber
 
+prompt_default_no() {
+    local -r prompt="$1"
+    read -p "$prompt [y/N]: " -r
+
+    if [[ $REPLY =~ ^[Nn]$ || -z "$REPLY" ]]; then
+        return 1
+    fi
+    return 0
+}
+
+if [[ "$PWD" = "$HOME" ]]; then
+    if prompt_default_no "You're mounting $HOME in a Docker container, is that intended?"; then
+        :
+    else
+        exit 1
+    fi
+
+fi
+
 CARGO_HOME="${CARGO_HOME:-$HOME/.cargo/}"
 RUSTUP_HOME="${RUSTUP_HOME:-$HOME/.rustup/}"
 
