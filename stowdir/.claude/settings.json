@@ -58,6 +58,7 @@
     "superpowers@claude-plugins-official": true
   },
   "effortLevel": "high",
+  "tui": "fullscreen",
   "editorMode": "vim",
   "remoteControlAtStartup": true,
   "skipAutoPermissionPrompt": true
