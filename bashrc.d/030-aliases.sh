@@ -24,6 +24,7 @@ alias arem='sudo apt-get autoremove'
 
 alias readelf='readelf --wide'
 alias xxd='xxd -R always'
+alias nv=nvim
 
 # Thin shim for man that provides primitive coloring, and help for builtins
 man() {
