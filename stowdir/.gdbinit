@@ -28,7 +28,7 @@ set history size unlimited
 set history remove-duplicates 20
 set disassembly-flavor intel
 
-set debuginfod enabled on
+set debuginfod enabled off
 
 # Add STL pretty-printers
 python
