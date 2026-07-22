@@ -59,6 +59,7 @@
   },
   "effortLevel": "high",
   "tui": "fullscreen",
+  "autoMemoryEnabled": false,
   "editorMode": "vim",
   "remoteControlAtStartup": true,
   "skipAutoPermissionPrompt": true
