@@ -98,3 +98,17 @@ knowledge work.
 IMPORTANT: When interactively giving me HTTP hyperlinks in the claude cli interface, NEVER render
 them as markdown links. ALWAYS print the raw full URL in plaintext. The markdown rendering
 suppresses the actual URL and makes it impossible for me to open it.
+
+## Message visibility
+
+There is a Claude Code bug (https://github.com/anthropics/claude-code/issues/66960) where text
+written mid-turn followed by a tool call in the same turn is often dropped and never displayed to
+the user. Messages preceding the AskUserQuestion tool is the most common casualty.
+
+* Anything the user is expected to read MUST be the final text message of a turn, with NO subsequent
+  tool calls.
+* Never call the AskUserQuestion tool after substantive text in the same turn. Either ask the
+  questions in text form, or end the turn without asking the user questions.
+* This applies to plan mode too, and OVERRIDES plan-mode instructions to end turns with
+  AskUserQuestion tool calls. Asking questions in text IS acceptable, and is even preferable if
+  messages to the user are never displayed
