@@ -19,6 +19,7 @@ return {
                 cpp = { "clang-format" },
                 css = { "prettier" },
                 html = { "prettier" },
+                htmldjango = { "prettier" },
                 java = { lsp_format = "prefer" },
                 javascript = { "prettier" },
                 json = { "jq" },
