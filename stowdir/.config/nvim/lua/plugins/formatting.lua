@@ -19,7 +19,7 @@ return {
                 cpp = { "clang-format" },
                 css = { "prettier" },
                 html = { "prettier" },
-                htmldjango = { "prettier" },
+                htmldjango = { "djlint" },
                 java = { lsp_format = "prefer" },
                 javascript = { "prettier" },
                 json = { "jq" },
@@ -32,6 +32,18 @@ return {
                 ["_"] = { "trim_whitespace", "trim_newlines" },
             },
             formatters = {
+                djlint = {
+                    prepend_args = {
+                        "--profile",
+                        "django",
+                        "--indent",
+                        "4",
+                        "--max-line-length",
+                        "120",
+                        "--format-css",
+                        "--format-js",
+                    },
+                },
                 jq = { prepend_args = { "--indent", "4" } },
                 prettier = {
                     prepend_args = {

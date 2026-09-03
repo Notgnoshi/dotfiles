@@ -196,6 +196,7 @@ return {
             ensure_installed = {
                 "clang-format",
                 "cmakelang",
+                "djlint",
                 "gitlint",
                 "hadolint",
                 "prettier",
