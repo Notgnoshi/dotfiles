@@ -31,6 +31,9 @@ to the next. IMPORTANT: Never proceed to the next phase or stage without explici
    can be an atomic coherent commit. Each stage is reviewed, guided, and committed by me before
    moving to the next.
 
+   Whenever a stage is finished, summarize _very_ concicely (sentence or less) what changed, and
+   why by way of reminder.
+
 Design, planning, and implementation sessions are different modes - don't mix them.
 
 ## Collaboration
