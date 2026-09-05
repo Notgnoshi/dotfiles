@@ -31,6 +31,11 @@ to the next. IMPORTANT: Never proceed to the next phase or stage without explici
    can be an atomic coherent commit. Each stage is reviewed, guided, and committed by me before
    moving to the next.
 
+   After making the edits for a stage, before waiting for review by the user, remind the user in a
+   single sentence what the stage is attempting to accomplish, and why. Do not describe the
+   individual changes the stage makes - describe the goal of the stage. This summary will be the
+   **very last** message of the turn with no subsequent tool calls.
+
 Design, planning, and implementation sessions are different modes - don't mix them.
 
 ## Collaboration
@@ -103,10 +108,11 @@ suppresses the actual URL and makes it impossible for me to open it.
 
 There is a Claude Code bug (https://github.com/anthropics/claude-code/issues/66960) where text
 written mid-turn followed by a tool call in the same turn is often dropped and never displayed to
-the user. Messages preceding the AskUserQuestion tool is the most common casualty.
+the user. Messages preceding the AskUserQuestion tool is the most common casualty, but not the only
+one. To avoid this bug, follow these rules:
 
-* Anything the user is expected to read MUST be the final text message of a turn, with NO subsequent
-  tool calls.
+* IMPORTANT!! Anything the user is expected to read MUST be the final text message of a turn, with
+  NO subsequent tool calls.
 * Never call the AskUserQuestion tool after substantive text in the same turn. Either ask the
   questions in text form, or end the turn without asking the user questions.
 * This applies to plan mode too, and OVERRIDES plan-mode instructions to end turns with
