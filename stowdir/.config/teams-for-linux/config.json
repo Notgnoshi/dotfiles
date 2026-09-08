@@ -2,10 +2,12 @@
     "alwaysOnSystemIdle": true,
     "disableNotifications": true,
     "closeAppOnCross": true,
-    "disableGlobalShortcuts": [
-        "Ctrl+Shift+C",
-        "Ctrl+Shift+V"
-    ],
+    "shortcuts": {
+        "disableWhileFocused": [
+            "Ctrl+Shift+C",
+            "Ctrl+Shift+V"
+        ]
+    },
     "mqtt": {
         "enabled": true,
         "brokerUrl": "mqtt://localhost:1883",
