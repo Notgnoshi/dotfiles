@@ -60,6 +60,7 @@
     "clangd-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
   },
+  "outputStyle": "Concise",
   "effortLevel": "high",
   "tui": "fullscreen",
   "autoMemoryEnabled": false,
