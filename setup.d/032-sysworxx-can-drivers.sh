@@ -41,7 +41,7 @@ dkms status
 if ! prompt_default_no "Add blanket udev rule for a USB CANmodule1?"; then
     return
 fi
-sudo cp "$DOTFILES_SETUP_SCRIPT_DIR/udev/99-sysworxx-can-probe.rules" /etc/udev/rules.d/
+sudo cp "$DOTFILES_SETUP_SCRIPT_DIR/data/99-sysworxx-can-probe.rules" /etc/udev/rules.d/
 sudo udevadm control --reload
 
 # Useful information for troubleshooting:
