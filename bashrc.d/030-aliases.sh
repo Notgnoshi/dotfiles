@@ -16,6 +16,8 @@ alias xo='xdg-open'
 
 # Some things I SSH into don't understand tmux-256color
 alias ssh='TERM=xterm-256color ssh'
+# Requires the server to AcceptEnv DOTFILES_DISABLE_TMUX
+alias ssh-no-tmux='ssh -o SetEnv=DOTFILES_DISABLE_TMUX=1'
 
 alias upd='sudo apt update'
 alias upg='sudo apt upgrade'

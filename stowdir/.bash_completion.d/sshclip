@@ -1,7 +1,0 @@
-_sshclip() {
-    _completion_loader ssh
-    complete -F _ssh sshclip
-    _ssh "$@"
-}
-
-complete -F _sshclip sshclip

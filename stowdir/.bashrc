@@ -10,7 +10,7 @@ esac
 # Add ~/.local/bin/ to PATH
 export PATH="$HOME/.local/bin${PATH:+:${PATH}}"
 
-if [[ -z "$TMUX" ]]; then
+if [[ -z "$TMUX" && -z "$DOTFILES_DISABLE_TMUX" ]]; then
     # Find the first non-scratch session, if any. The scratch session is ephemeral and gets killed
     # when its parent session closes so it should never be the target.
     target="$(tmux list-sessions -F '#S' -f '#{?#{==:#S,scratch},0,1}' 2>/dev/null | head -1)"

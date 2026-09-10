@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# The completion function was renamed from _ssh to _comp_cmd_ssh in bash-completion 2.12 :(
+if declare -F _comp_load >/dev/null; then
+    _comp_load ssh
+elif declare -F _completion_loader >/dev/null; then
+    _completion_loader ssh
+fi
+
+ssh_spec="$(complete -p ssh 2>/dev/null)"
+[ -n "$ssh_spec" ] && eval "${ssh_spec% ssh} sshclip ssh-no-tmux"
+unset -v ssh_spec
