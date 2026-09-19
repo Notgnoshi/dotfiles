@@ -1,42 +1,64 @@
-These are preferences, not absolutes. If there's a good reason to break a rule, that's okay, but
-surface it and discuss before doing so.
+## Vocabulary
+
+There are two different kinds of documents that both get called "design documents". Do not conflate
+them.
+
+* A **spec** is the superpowers brainstorming artifact. It always lives in
+  `docs/superpowers/specs/*.md`. When a superpowers skill says "design doc" or "spec", it means this
+  file. Create the directory if it does not exist. Specs are not committed.
+* A **plan** is the superpowers writing-plans artifact, in `docs/superpowers/plans/*.md`. Plans are
+  not committed.
+* A **design document** is a file under `docs/design/`. These are human-curated, checked-into the
+  project, and aspirational. They are an input to brainstorming, never an output. NEVER create,
+  edit, move, or delete anything under `docs/design/` unless explicitly asked, even if the spec
+  disagrees with the design document.
 
 ## Workflow
 
-I work in three phases. Each phase involves iteration and back-and-forth conversation before moving
-to the next. IMPORTANT: Never proceed to the next phase or stage without explicit approval!
+### Brainstorming
 
-1. **Design** -- Iterate on design documents through conversation. Explore the problem space, goals,
-   architecture, UX, tradeoffs. This may span multiple sessions and produce multiple design
-   documents. This is NOT planning or implementation.
+* Every design session produces a written spec. The brainstorming skill's bounded paths say "no spec
+  file, no plan document". Ignore that, I want written specs for all design sessions, unless it's
+  truly small enough not to need it, in which case I will make the decision.
+* The spec is a design: goals, architecture, interfaces, tradeoffs. It is not a task list.
+* Write the spec, but do not commit it.
 
-   DESIGN IS MY RESPONSIBILITY - not yours. Your role is to help me explore the design space,
-   surface tradeoffs, and ask clarifying questions. The design phase may or may not result in design
-   documents as an artifact. If the feature is small enough, the design may be ephemeral.
+If there's design or planning friction, that's an indication that perhaps the problem is too large,
+and we need to take a step back and break it down differently.
 
-   DO NOT author design documents. I will author them, and you will review and provide feedback.
-2. **Implementation Planning** -- Iterate on the specific software design: types, functions,
-   patterns, module structure, testing strategy.
+### Planning
 
-   If the code being designed is a CLI tool, I often prefer to start the plan with the CLI
-   arguments, and start the implementation by implementing the argument parsing, then iterating from
-   there.
+Use the writing-plans skill to plan, but plan commit-by-commit interactively. The plan document is
+produced incrementally:
 
-   YOU MAY author implementation plan documents, but only once the design is finalized.
-   Implementation plan documents are ephemeral. They are not to be referenced from the code, or from
-   design documents. They will not be checked into VCS. DO NOT put plan documents in the same
-   directory as design documents. Prefer a sibling `plans/` directory.
-3. **Implementation** -- Strong preference to start from a plan document unless the changes are
-   small and well-scoped. Strong preference to split implementation into stages, where each stage
-   can be an atomic coherent commit. Each stage is reviewed, guided, and committed by me before
-   moving to the next.
+0. Present proposed commit breakdown for approval
+1. Discuss one commit's design interactively: API shape, implementation details, tradeoffs.
+2. Once approved, append it as a task to the plan document. Do not add later commits to the plan
+   before they are approved
+3. Proceed to the next commit
+4. Run the writing-plans self-review only after the last commit is approved
 
-   After making the edits for a stage, before waiting for review by the user, remind the user in a
-   single sentence what the stage is attempting to accomplish, and why. Do not describe the
-   individual changes the stage makes - describe the goal of the stage. This summary will be the
-   **very last** message of the turn with no subsequent tool calls.
+Commits should be standalone, relatively small, atomic, and independently reviewable. They should
+follow commit best practices from e.g., the Git or Linux projects. Suggested commit subject lines
+are useful.
 
-Design, planning, and implementation sessions are different modes - don't mix them.
+Each commit is intended to stand alone, and be independently reviewable, so DO NOT add comments or
+e.g., `#[allow(dead_code)]` artifacts that refer to future stages or commits.
+
+### Implementation
+
+Default to subagent-driven-development. DO NOT proceed with implementation unless instructed to
+explicitly.
+
+1. Make the changes for a commit
+2. Prompt me for review and revision. Provide a suggested commit message
+3. I will review
+   1. I may prompt you for more changes
+   2. I may make manual changes
+4. I will commit, and then prompt you to proceed to the next commit
+5. ONLY after I have committed will you proceed to implement the next commit
+
+I will author all commits unless I say otherwise.
 
 ## Collaboration
 
@@ -61,15 +83,21 @@ Design, planning, and implementation sessions are different modes - don't mix th
 * To a degree, every line of code is a liability; earn its place. Verbosity is a smell, as is tons
   and tons of comments.
 * Comments should strive to explain _why_, not _what_ -- and only when the why isn't obvious.
+* Avoid chain-of-thought, self-justification, or self-aggrandizing comments. Write comments for the
+  future maintainer as an audience, not merely your own self-reasoning. Use complete sentences.
 * When renaming identifiers, check ALL occurrences -- code blocks, comments, docstrings, not just
   executable code.
+* EVERYTHING has a tradeoff. When presenting choices, include discussion of the choice impacts and
+  tradeoffs.
 
 ## Testing Philosophy
 
 * Prefer high-value tests over high coverage.
 * Tests must fail if there's a bug, and be simple enough to understand.
 * Strong assertions (assert_eq over loose checks).
-* Tests are code that needs maintenance -- consider value vs. cost.
+* Tests are code that needs maintenance -- consider value vs. cost. Large amounts of test code are a
+  maintenance burden. Complex test code is a maintenance burden. Tests that assert trivial behavior
+  is a maintenance burden.
 * Right split between unit and integration tests: public API behavior in integration tests, edge
   cases in unit tests.
 * Good test fixtures and harnesses.
@@ -80,18 +108,24 @@ Design, planning, and implementation sessions are different modes - don't mix th
   consideration deals with Unicode (e.g., Unicode strings in test assertions are fine).
 * Prefer mermaid for diagrams, with a fallback on ascii art if necessary.
 * No emoji.
+* Use complete sentences, and avoid self-aggrandizing or chain-of-thought style prose. Keep it
+  concise and stick to the facts unless you're asked for an analysis.
+
+IMPORTANT: When interactively giving me HTTP hyperlinks in the claude cli interface, NEVER render
+them as markdown links. ALWAYS print the raw full URL in plaintext. The markdown rendering
+suppresses the actual URL and makes it impossible for me to open it.
 
 ## Documentation
 
 * Do not cross-reference ephemeral documents (plans, reviews, brainstorms) from persistent
-  documents. Inline the relevant content instead.
-* Design documents describe _what_ and _why_, not step-by-step implementation instructions. Do not
-  treat them as implementation plans.
+  checked-in documents. Inline the relevant content instead.
+* Design documents (`docs/design/`) are aspirational; they describe _the goal_ and _why_. They are
+  NOT step-by-step implementation instructions. They are NOT a re-iteration of what the code does in
+  prose. Do not treat them as implementation plans, and do not edit them unless explicitly asked.
 
 ## Git
 
-* Never commit, push, or create PRs unless explicitly asked. Committing is an act of approval that
-  only I can perform.
+* Never commit, push, or create PRs unless explicitly asked.
 
 ## Hallucinations
 
@@ -99,10 +133,6 @@ I _NEVER_ want you to _EVER_ invent a version number or API method. I _ALWAYS_ e
 to documentation and third-party examples. You can rely on your training for methodology, general
 understanding, and formulating hypotheses, but I expect research and evidence-based reasoning for
 knowledge work.
-
-IMPORTANT: When interactively giving me HTTP hyperlinks in the claude cli interface, NEVER render
-them as markdown links. ALWAYS print the raw full URL in plaintext. The markdown rendering
-suppresses the actual URL and makes it impossible for me to open it.
 
 ## Message visibility
 
