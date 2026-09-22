@@ -5,7 +5,7 @@ set -o pipefail
 set -o nounset
 
 # Foreground command basenames whose argv is rendered as the window name instead of the path
-CMDS=(ssh sshclip)
+CMDS=(ssh sshclip ravenssh)
 # If argv[0] is one of these, argv[1] is treated as the effective command (i.e. for shell scripts).
 SHELLS=(bash sh dash zsh fish ksh)
 # Maximum rendered name length
