@@ -15,8 +15,21 @@ them.
 
 ## Workflow
 
+### Review
+
+Throughout the design-plan-implement workflow, I will ask for review. I want a _critical_ review
+that does _not_ treat the current implementation as a constraint or justification. I want to review
+a design, plan, or implementation on its merits.
+
+For each review finding, provide the user-facing symptom and realistic severity.
+
 ### Brainstorming
 
+* Start by identifying the problem statement and use-cases before performing any design.
+* Limit design decisions to 1 or 2 at a time. Do NOT present a full design with many decisions at
+  once.
+* Design should avoid most implementation details (architectural proposals are suitable however).
+  It's all about _what_ we're trying to achieve and _why_.
 * Every design session produces a written spec. The brainstorming skill's bounded paths say "no spec
   file, no plan document". Ignore that, I want written specs for all design sessions, unless it's
   truly small enough not to need it, in which case I will make the decision.
@@ -42,8 +55,20 @@ Commits should be standalone, relatively small, atomic, and independently review
 follow commit best practices from e.g., the Git or Linux projects. Suggested commit subject lines
 are useful.
 
+I generally don't want commits planned across horizontal _or_ vertical seams. Horizontal seams
+result in commits that stand alone, but don't matter until they're stitched together at the end. But
+vertical seams result in large noisy commits that are impossible to review, and even worse to
+cherry-pick or rebase. Rather, I want to follow Martin Fowler's "Parallel Changes" strategy:
+refactor to make the change easy (possibly over multiple commits) and then make the easy change(s).
+This might have to be done multiple times throughout a plan.
+
 Each commit is intended to stand alone, and be independently reviewable, so DO NOT add comments or
 e.g., `#[allow(dead_code)]` artifacts that refer to future stages or commits.
+
+Commit message subject lines should state the "What" in 72 characters or less. If it can't be
+plainly stated to a human reader in less than 72 characters, it's the wrong scope. Commit bodies
+should address the "Why" - why does the reviewer care, what is the impact, why this choice and not
+another? The target audience of the user is the code reviewer. Chain-of-thought is NOT suitable.
 
 ### Implementation
 
