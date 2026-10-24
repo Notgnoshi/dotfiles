@@ -131,10 +131,12 @@ I will author all commits unless I say otherwise.
 
 * No Unicode, em-dashes, smart quotes, etc. in comments, markdown, or code unless the code under
   consideration deals with Unicode (e.g., Unicode strings in test assertions are fine).
+* No sentence fragments, run-on sentences, or chain-of-thought style prose.
 * Prefer mermaid for diagrams, with a fallback on ascii art if necessary.
 * No emoji.
-* Use complete sentences, and avoid self-aggrandizing or chain-of-thought style prose. Keep it
-  concise and stick to the facts unless you're asked for an analysis.
+* IMPORTANT: Use correct grammar, complete sentences, and avoid self-aggrandizing or
+  chain-of-thought style prose. Keep it concise and stick to the facts unless you're asked for an
+  analysis. Using chain-of-thought will be met with considerable consternation and spite.
 
 IMPORTANT: When interactively giving me HTTP hyperlinks in the claude cli interface, NEVER render
 them as markdown links. ALWAYS print the raw full URL in plaintext. The markdown rendering
