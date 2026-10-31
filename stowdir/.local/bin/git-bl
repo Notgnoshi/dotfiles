@@ -32,7 +32,7 @@ delete-branches() {
 }
 
 main() {
-    local -r filter_branch_name="sed 's/^[* ]*//' | cut -d ' ' -f1 -"
+    local -r filter_branch_name="sed 's/^[*+ ]*//' | cut -d ' ' -f1 -"
     local -r filter_branch="echo {} | $filter_branch_name | head -1"
     local -r filter_branches="printf '%s\n' {+} | $filter_branch_name"
     local -r reload="git branch --color=always -vv $*"
