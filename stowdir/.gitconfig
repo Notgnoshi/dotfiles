@@ -46,9 +46,9 @@
     helper = cache
     help = cache --timeout=60000
 [alias]
-    lg    = log --color --graph --format='%C(auto)%h%d %s %C(dim)%an, %ar' --abbrev-commit --decorate
-    ll    = log --pretty=format:'%C(red)%h%C(reset) -%C(yellow)%d%C(reset) %s %C(bold blue) <%an>' --decorate --numstat --abbrev-commit
-    rf    = reflog --pretty=format:'%C(auto)%h %gd %gs%C(black)%C(bold), %cr'
+    lg    = log --color --graph --format='%C(auto)%h%d %s %C(dim)%an, %ar%C(reset)' --abbrev-commit --decorate
+    ll    = log --pretty=format:'%C(red)%h%C(reset) -%C(yellow)%d%C(reset) %s %C(bold blue) <%an>%C(reset)' --decorate --numstat --abbrev-commit
+    rf    = reflog --pretty=format:'%C(auto)%h %gd %gs%C(black)%C(bold), %cr%C(reset)'
     co    = checkout
     sw    = switch
     amend = commit --amend --no-edit

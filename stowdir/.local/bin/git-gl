@@ -102,7 +102,7 @@ git-short-log() {
     git log \
         $graph \
         --color=always \
-        --format="%C(auto)%h%d %s %C(dim)%an, %ar" \
+        --format="%C(auto)%h%d %s %C(dim)%an, %ar%C(reset)" \
         --decorate=short \
         "$@"
 }
