@@ -6,14 +6,14 @@ set -o noclobber
 
 # Filter out anything other than normal files (notably submodules)
 filter_files() {
-    while read -r path; do
+    while read -r -d '' path; do
         if [[ -f "$path" ]]; then
-            echo "$path"
+            printf '%s\0' "$path"
         fi
     done
 }
 
 # Quickly open modified and untracked (non-ignored) files in your $EDITOR
-git ls-files --modified --others --exclude-standard |
+git ls-files -z --modified --others --exclude-standard |
     filter_files |
-    xargs --open-tty "${EDITOR:-vim}" "$@"
+    xargs --null --open-tty "${EDITOR:-vim}" "$@"
