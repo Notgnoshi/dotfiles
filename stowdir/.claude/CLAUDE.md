@@ -26,8 +26,9 @@ For each review finding, provide the user-facing symptom and realistic severity.
 ### Brainstorming
 
 * Start by identifying the problem statement and use-cases before performing any design.
-* Limit design decisions to 1 or 2 at a time. Do NOT present a full design with many decisions at
-  once.
+* Limit design decisions to a single item at a time. Do NOT present a full design with many
+  decisions at once. Most often, the design evolves iteratively, and generating a full design at
+  once is a recipe for thrashing.
 * Design should avoid most implementation details (architectural proposals are suitable however).
   It's all about _what_ we're trying to achieve and _why_.
 * Every design session produces a written spec. The brainstorming skill's bounded paths say "no spec
