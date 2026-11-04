@@ -13,7 +13,22 @@ filter_files() {
     done
 }
 
-# Quickly open modified and untracked (non-ignored) files in your $EDITOR
-git ls-files -z --modified --others --exclude-standard |
+staged=false
+editor_args=()
+for arg in "$@"; do
+    if [[ "$arg" == "--staged" ]]; then
+        staged=true
+    else
+        editor_args+=("$arg")
+    fi
+done
+
+{
+    git ls-files -z --modified --others --exclude-standard
+    if [[ "$staged" == true ]]; then
+        git diff --staged -z --name-only
+    fi
+} |
     filter_files |
-    xargs --null --open-tty "${EDITOR:-vim}" "$@"
+    sort -z -u |
+    xargs --null --open-tty "${EDITOR:-vim}" "${editor_args[@]}"
