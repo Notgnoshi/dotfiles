@@ -69,5 +69,6 @@
   "editorMode": "vim",
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "feedbackDrafts": "off"
 }
