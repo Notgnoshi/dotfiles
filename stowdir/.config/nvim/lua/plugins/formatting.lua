@@ -35,7 +35,7 @@ return {
                 djlint = {
                     prepend_args = {
                         "--profile",
-                        "django",
+                        "askama",
                         "--indent",
                         "4",
                         "--max-line-length",
