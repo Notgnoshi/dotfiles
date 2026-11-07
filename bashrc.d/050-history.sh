@@ -5,6 +5,13 @@
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 # NOTE: these settings can have undesirable effects with older bash versions.
 ##################################################################################################
+
+# Use a custom HISTFILE so that if something (like claude, or docker) truncates the default
+# ~/.bash_history because it skipped my ~/.bashrc, then my HISTFILE is unaffected.
+HISTFILE=~/.history
+if [[ ! -e "$HISTFILE" && -e ~/.bash_history ]]; then
+    cp -p ~/.bash_history "$HISTFILE"
+fi
 HISTSIZE=-1
 # Save all history
 HISTFILESIZE=-1
