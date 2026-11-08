@@ -27,6 +27,12 @@ return {
         opts = {},
     },
     {
+        "andymass/vim-matchup",
+        init = function()
+            vim.g.matchup_matchparen_offscreen = { method = "popup" }
+        end,
+    },
+    {
         "mrcjkb/nvim-lastplace",
         event = "BufReadPre",
     },
