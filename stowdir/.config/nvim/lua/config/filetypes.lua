@@ -7,6 +7,7 @@ vim.filetype.add({
         [".*/nginx/.*%.conf"] = "nginx",
         [".*%.env"] = "sh",
         [".*%.env%..*"] = "sh",
+        [".*/templates/.*%.html"] = "htmldjango",
     },
 })
 
