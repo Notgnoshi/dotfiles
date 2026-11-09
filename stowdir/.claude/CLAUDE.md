@@ -36,9 +36,16 @@ For each review finding, provide the user-facing symptom and realistic severity.
   truly small enough not to need it, in which case I will make the decision.
 * The spec is a design: goals, architecture, interfaces, tradeoffs. It is not a task list.
 * Write the spec, but do not commit it.
+* Do not write the spec all at once. I must review and approve anything that you write, and I prefer
+  that to be an interactive conversation that doesn't cover everything at once.
+* If there are any code details (API definitions, design patterns, even implementation details) that
+  go in a spec, I expect to review them and give my explicit approval. It is unacceptable to ask me
+  only behavioral details, and then decide the code details yourself. It _is_ acceptable to define
+  smaller behavioral details yourself when it's obvious or doesn't change what gets built.
 
 If there's design or planning friction, that's an indication that perhaps the problem is too large,
-and we need to take a step back and break it down differently.
+and we need to take a step back and break it down differently. Here and throughout, I do NOT want to
+be overwhelmed with details. Being verbose results in important details getting lost.
 
 ### Planning
 
@@ -63,8 +70,10 @@ cherry-pick or rebase. Rather, I want to follow Martin Fowler's "Parallel Change
 refactor to make the change easy (possibly over multiple commits) and then make the easy change(s).
 This might have to be done multiple times throughout a plan.
 
-Each commit is intended to stand alone, and be independently reviewable, so DO NOT add comments or
-e.g., `#[allow(dead_code)]` artifacts that refer to future stages or commits.
+Each commit is intended to stand alone, and be independently reviewable, so DO NOT add ephemeral
+comments or `#[allow(dead_code]` attributes that will be deleted in a future commit within the same
+branch. It's common, acceptable, and desired to build out capabilities in one commit that will be
+used in a future commit.
 
 Commit message subject lines should state the "What" in 72 characters or less. If it can't be
 plainly stated to a human reader in less than 72 characters, it's the wrong scope. Commit bodies
@@ -73,8 +82,8 @@ another? The target audience of the user is the code reviewer. Chain-of-thought 
 
 ### Implementation
 
-Default to subagent-driven-development. DO NOT proceed with implementation unless instructed to
-explicitly.
+Default to subagent-driven-development unless a plan is small enough that inline makes more sense.
+DO NOT proceed with implementation unless instructed to explicitly.
 
 1. Make the changes for a commit
 2. Prompt me for review and revision. Provide a suggested commit message
@@ -118,15 +127,18 @@ I will author all commits unless I say otherwise.
 
 ## Testing Philosophy
 
-* Prefer high-value tests over high coverage.
-* Tests must fail if there's a bug, and be simple enough to understand.
+* Prefer high-value tests over high coverage. I do not desire every last branch be covered in a
+  test.
+* Tests are predictions of future bugs. If the future bug is obvious, it doesn't need a test. If the
+  future bug is unlikely, it doesn't need a test.
 * Strong assertions (assert_eq over loose checks).
+* Prefer to test _outcomes_ over output
 * Tests are code that needs maintenance -- consider value vs. cost. Large amounts of test code are a
   maintenance burden. Complex test code is a maintenance burden. Tests that assert trivial behavior
   is a maintenance burden.
 * Right split between unit and integration tests: public API behavior in integration tests, edge
   cases in unit tests.
-* Good test fixtures and harnesses.
+* Good (and simple) test fixtures and harnesses.
 
 ## Writing Style
 
